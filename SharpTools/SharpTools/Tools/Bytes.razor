@@ -1,0 +1,36 @@
+﻿@page "/bytes"
+
+@inject ISyncLocalStorageService LocalStorage
+@inject IBlazorDownloadFileService FileDownloader
+@inject ISnackbar MudSnackbar
+
+<PageTitle>字节数组处理 - SharpTools</PageTitle>
+
+<MudText Typo="Typo.h2" Class="mb-5">字节数组处理</MudText>
+
+<MudTextField T="string" Value="@inputedString" AutoGrow="true" ValueChanged="OnInputted" Label="内容" MaxLines="10"></MudTextField>
+
+<MudSelect T="Display" Value="selectedDisplay" ValueChanged="OnSelected" Label="编码">
+    @foreach (var display in this.displays)
+    {
+        <MudSelectItem Value="display">@display.Name</MudSelectItem>
+    }
+</MudSelect>
+
+<div class="mt-2">
+    <MudFileUpload T="IBrowserFile" FilesChanged="@this.OnFilesChanged" Class="d-inline">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label" Color="Color.Primary" for="@context.Id">
+                <MudText>
+                    从文件导入
+                </MudText>
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+
+    <MudButton Color="Color.Primary" OnClick="this.OnExportClicked" Class="d-inline">
+        <MudText>
+            导出为文件
+        </MudText>
+    </MudButton>
+</div>

@@ -1,10 +1,10 @@
 ﻿@page "/guid"
 
-@inject ISyncLocalStorageService localStorage
+@inject ISyncLocalStorageService LocalStorage
 
-<PageTitle>Guid 生成器 - SharpTools</PageTitle>
+<PageTitle>Guid 生成 - SharpTools</PageTitle>
 
-<MudText Typo="Typo.h2" Class="mb-5">Guid 生成器</MudText>
+<MudText Typo="Typo.h2" Class="mb-5">Guid 生成</MudText>
 
 <MudTextField T="string" AutoGrow="true" ReadOnly="true" Text="@output" MaxLines="5"></MudTextField>
 
@@ -18,5 +18,5 @@
         }
     </MudSelect>
 
-    <MudButton OnClick="@DisplayNewGuids" Class="mt-2">重新生成</MudButton>
+    <MudButton OnClick="@DisplayNewGuids" Class="mt-2" Color="Color.Primary">重新生成</MudButton>
 </div>

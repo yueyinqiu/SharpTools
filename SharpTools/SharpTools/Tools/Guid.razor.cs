@@ -31,26 +31,27 @@ public partial class Guid
             new("字节数组大端序 Base64", (guid) => Convert.ToBase64String(guid.ToByteArray(true))),
         ];
 
-    private sealed record Preferences(string FormatName, int Count);
+    private sealed record Preferences(string FormatName, int Count, ImmutableArray<System.Guid> Guids);
 
     protected override async Task OnParametersSetAsync()
     {
+        // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
+        await Task.Yield();
+
         try
         {
-            var preference = localStorage.GetItem<Preferences>("sharptools.preferences.guid");
+            var preference = LocalStorage.GetItem<Preferences>("sharptools.preferences.guid");
             this.inputedCount = preference.Count;
-            this.selectedFormat = formats.Where(x => x.Name == preference.FormatName).Single();
+            this.selectedFormat = formats.Single(x => x.Name == preference.FormatName);
+            this.currentGuids = preference.Guids;
+            this.RedisplayCurrentGuids();
         }
         catch
         {
             this.inputedCount = 1;
-            this.selectedFormat = formats[2];
+            this.selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            this.DisplayNewGuids();
         }
-
-        // 如果直接同步运行，会导致输出框的 AutoGrow 不能正常工作，
-        // Task.Yield() 一下就可以了，不知道是什么原因。
-        await Task.Yield();
-        this.DisplayNewGuids();
     }
     
     private static ImmutableArray<System.Guid> NewGuids(int count)
@@ -72,9 +73,9 @@ public partial class Guid
 
         Debug.Assert(this.inputedCount.HasValue);
 
-        localStorage.SetItem(
+        LocalStorage.SetItem(
             "sharptools.preferences.guid",
-            new Preferences(selectedFormat.Name, inputedCount.Value));
+            new Preferences(selectedFormat.Name, inputedCount.Value, currentGuids.Value));
     }
 
     private void DisplayNewGuids()
