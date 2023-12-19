@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using Blazored.LocalStorage;
+using MudBlazor;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -26,14 +27,25 @@ public partial class Guid
             new("(XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)", (guid) => guid.ToString("P").ToUpperInvariant()),
             new("{xxxxxxxxxx,xxxxxx,xxxxxx,{xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx}}", (guid) => guid.ToString("X")),
             new("{XXXXXXXXXX,XXXXXX,XXXXXX,{XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,XXXX}}", (guid) => guid.ToString("X").ToUpperInvariant()),
-            new("字节数组小端序", (guid) => Convert.ToBase64String(guid.ToByteArray())),
-            new("字节数组大端序", (guid) => Convert.ToBase64String(guid.ToByteArray(true))),
+            new("字节数组小端序 Base64", (guid) => Convert.ToBase64String(guid.ToByteArray())),
+            new("字节数组大端序 Base64", (guid) => Convert.ToBase64String(guid.ToByteArray(true))),
         ];
+
+    private sealed record Preferences(string FormatName, int Count);
 
     protected override async Task OnParametersSetAsync()
     {
-        this.inputedCount = 1;
-        this.selectedFormat = formats[2];
+        try
+        {
+            var preference = localStorage.GetItem<Preferences>("sharptools.preferences.guid");
+            this.inputedCount = preference.Count;
+            this.selectedFormat = formats.Where(x => x.Name == preference.FormatName).Single();
+        }
+        catch
+        {
+            this.inputedCount = 1;
+            this.selectedFormat = formats[2];
+        }
 
         // 如果直接同步运行，会导致输出框的 AutoGrow 不能正常工作，
         // Task.Yield() 一下就可以了，不知道是什么原因。
@@ -57,6 +69,12 @@ public partial class Guid
 
         var output = currentGuids.Select(this.selectedFormat.Converter);
         this.output = string.Join(Environment.NewLine, output);
+
+        Debug.Assert(this.inputedCount.HasValue);
+
+        localStorage.SetItem(
+            "sharptools.preferences.guid",
+            new Preferences(selectedFormat.Name, inputedCount.Value));
     }
 
     private void DisplayNewGuids()
