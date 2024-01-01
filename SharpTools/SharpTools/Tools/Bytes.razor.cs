@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using SharpTools.Services.GradedLocalStoraging;
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ public partial class Bytes
 {
     private string? inputedString;
     private Display? selectedDisplay;
+    private LocalStorageEntry<Preferences>? preferencesStorage;
+    private LocalStorageEntry<Inputs>? inputsStorage;
 
     private sealed record Display(
         string Name, Func<string, byte[]> ToBytes, Func<byte[], string> FromBytes);
@@ -36,23 +39,38 @@ public partial class Bytes
                 }),
         ];
 
-    private sealed record Preferences(string? DisplayName, string? Input);
+    private sealed record Preferences(string? DisplayName);
+    private sealed record Inputs(string? Input, byte[]? Bytes);
     protected override async Task OnParametersSetAsync()
     {
+        this.preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("bytes", 1);
+        this.inputsStorage = GradedLocalStorage.GetEntry<Inputs>("bytes.inputs", 0);
+
         // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
         await Task.Yield();
 
-        try
-        {
-            var preference = LocalStorage.GetItem<Preferences>("sharptools.preferences.bytes");
-            this.inputedString = preference.Input;
-            this.selectedDisplay = displays.Single(x => x.Name == preference.DisplayName);
-        }
-        catch
+        var preference = this.preferencesStorage.Get();
+        if (preference is null)
         {
             this.selectedDisplay = displays.Single(x => x.Name == "Base64");
-            var bytes = Encoding.UTF8.GetBytes("你好！");
-            this.inputedString = this.selectedDisplay.FromBytes(bytes);
+        }
+        else
+        {
+            this.selectedDisplay = displays.FirstOrDefault(
+                x => x.Name == preference.DisplayName,
+                this.displays.Single(x => x.Name == "Base64"));
+        }
+
+        var inputs = this.inputsStorage.Get();
+        if (inputs is null)
+        {
+            this.cachedBytes = Encoding.UTF8.GetBytes("Hello World!");
+            this.inputedString = this.selectedDisplay.FromBytes(this.cachedBytes);
+        }
+        else
+        {
+            this.cachedBytes = inputs.Bytes;
+            this.inputedString = inputs.Input;
         }
     }
 
@@ -91,9 +109,8 @@ public partial class Bytes
         this.inputedString = value.FromBytes(this.cachedBytes);
         this.selectedDisplay = value;
 
-        LocalStorage.SetItem(
-            "sharptools.preferences.bytes",
-            new Preferences(value.Name, this.inputedString));
+        preferencesStorage?.Set(new(value.Name));
+        inputsStorage?.Set(new(this.inputedString, this.cachedBytes));
     }
     private void OnInputted(string value)
     {
@@ -101,9 +118,9 @@ public partial class Bytes
         this.inputedString = value;
 
         Debug.Assert(this.selectedDisplay is not null);
-        LocalStorage.SetItem(
-            "sharptools.preferences.bytes",
-            new Preferences(this.selectedDisplay.Name, value));
+
+        preferencesStorage?.Set(new(this.selectedDisplay.Name));
+        inputsStorage?.Set(new(value, null));
     }
     private async Task OnFilesChanged(IBrowserFile file)
     {
@@ -121,6 +138,7 @@ public partial class Bytes
         this.cachedBytes = memory.ToArray();
         OnSelected(displays.Single(x => x.Name == "Base64"));
     }
+
     private async Task OnExportClicked()
     {
         if (!CacheBytes())
@@ -128,6 +146,6 @@ public partial class Bytes
             MudSnackbar.Add("导出失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
             return;
         }
-        await FileDownloader.DownloadFileAsync("bytes.bin", this.cachedBytes);
+        _ = await FileDownloader.DownloadFileAsync("bytes.bin", this.cachedBytes);
     }
 }

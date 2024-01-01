@@ -1,12 +1,12 @@
 ﻿@page "/bytes"
 
-@inject ISyncLocalStorageService LocalStorage
+@inject GradedLocalStorage GradedLocalStorage
 @inject IBlazorDownloadFileService FileDownloader
 @inject ISnackbar MudSnackbar
 
-<PageTitle>字节数组处理 - SharpTools</PageTitle>
+<PageTitle>字节数组表示 - SharpTools</PageTitle>
 
-<MudText Typo="Typo.h2" Class="mb-5">字节数组处理</MudText>
+<MudText Typo="Typo.h2" Class="mb-5">字节数组表示</MudText>
 
 <MudTextField T="string" Value="@inputedString" AutoGrow="true" ValueChanged="OnInputted" Label="内容" MaxLines="10"></MudTextField>
 

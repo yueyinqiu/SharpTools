@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
+using SharpTools.Services.GradedLocalStoraging;
 
 namespace SharpTools;
 public class Program
@@ -19,6 +20,7 @@ public class Program
         });
         _ = builder.Services.AddBlazoredLocalStorage();
         _ = builder.Services.AddBlazorDownloadFile();
+        _ = builder.Services.AddScoped<GradedLocalStorage>();
 
         await builder.Build().RunAsync();
     }

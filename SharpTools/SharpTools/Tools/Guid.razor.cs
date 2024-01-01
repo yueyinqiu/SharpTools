@@ -1,13 +1,18 @@
 ﻿using Blazored.LocalStorage;
 using MudBlazor;
+using SharpTools.Services.GradedLocalStoraging;
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using static MudBlazor.Colors;
+using System.Globalization;
+using System.Numerics;
 
 namespace SharpTools.Tools;
 
 public partial class Guid
 {
+    private LocalStorageEntry<Preferences>? preferencesStorage;
     private string? output;
     private int? inputedCount;
     private GuidFormat? selectedFormat;
@@ -35,22 +40,24 @@ public partial class Guid
 
     protected override async Task OnParametersSetAsync()
     {
+        this.preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("guid", 1);
+
         // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
         await Task.Yield();
 
-        try
-        {
-            var preference = LocalStorage.GetItem<Preferences>("sharptools.preferences.guid");
-            this.inputedCount = preference.Count;
-            this.selectedFormat = formats.Single(x => x.Name == preference.FormatName);
-            this.currentGuids = preference.Guids;
-            this.RedisplayCurrentGuids();
-        }
-        catch
+        var preference = preferencesStorage.Get();
+        if (preference == null)
         {
             this.inputedCount = 1;
             this.selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
             this.DisplayNewGuids();
+        }
+        else
+        {
+            this.inputedCount = preference.Count;
+            this.selectedFormat = formats.Single(x => x.Name == preference.FormatName);
+            this.currentGuids = preference.Guids;
+            this.RedisplayCurrentGuids();
         }
     }
     
@@ -72,10 +79,8 @@ public partial class Guid
         this.output = string.Join(Environment.NewLine, output);
 
         Debug.Assert(this.inputedCount.HasValue);
-
-        LocalStorage.SetItem(
-            "sharptools.preferences.guid",
-            new Preferences(selectedFormat.Name, inputedCount.Value, currentGuids.Value));
+        preferencesStorage?.Set(
+            new(selectedFormat.Name, inputedCount.Value, currentGuids.Value));
     }
 
     private void DisplayNewGuids()
@@ -84,5 +89,28 @@ public partial class Guid
 
         this.currentGuids = NewGuids(inputedCount.Value);
         RedisplayCurrentGuids();
+    }
+
+    private sealed class NoExceptionIntConverter : MudBlazor.Converter<int?, string>
+    {
+        public NoExceptionIntConverter()
+        {
+            this.SetFunc = (i) => i?.ToString() ?? "";
+            this.GetFunc = (s) =>
+            {
+                const NumberStyles style = NumberStyles.Integer | NumberStyles.AllowThousands;
+                if (BigInteger.TryParse(s, style, Culture, out var result))
+                {
+                    if (result < int.MinValue)
+                        return int.MinValue;
+                    else if (result > int.MaxValue)
+                        return int.MaxValue;
+                    else
+                        return (int)result;
+                }
+
+                return 0;
+            };
+        }
     }
 }

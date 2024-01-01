@@ -1,6 +1,6 @@
 ﻿@page "/guid"
 
-@inject ISyncLocalStorageService LocalStorage
+@inject GradedLocalStorage GradedLocalStorage
 
 <PageTitle>Guid 生成 - SharpTools</PageTitle>
 
@@ -9,7 +9,7 @@
 <MudTextField T="string" AutoGrow="true" ReadOnly="true" Text="@output" MaxLines="5"></MudTextField>
 
 <div class="mt-8">
-    <MudNumericField T="int?" @bind-Value="@inputedCount" Min="1" Label="数量"></MudNumericField>
+    <MudNumericField T="int?" @bind-Value="@inputedCount" Min="1" Max="int.MaxValue" Label="数量" Converter="new NoExceptionIntConverter()"></MudNumericField>
 
     <MudSelect T="GuidFormat" Value="@selectedFormat" ValueChanged="@RedisplayCurrentGuids" Label="格式">
         @foreach (var format in formats)
