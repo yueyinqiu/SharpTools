@@ -8,9 +8,9 @@ using static MudBlazor.Colors;
 using System.Globalization;
 using System.Numerics;
 
-namespace SharpTools.Tools;
+namespace SharpTools.ToolPages.Guid;
 
-public partial class Guid
+partial class Guid
 {
     private LocalStorageEntry<Preferences>? preferencesStorage;
     private string? output;
@@ -40,7 +40,7 @@ public partial class Guid
 
     protected override async Task OnParametersSetAsync()
     {
-        this.preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("guid", 1);
+        preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("guid", 1);
 
         // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
         await Task.Yield();
@@ -48,19 +48,21 @@ public partial class Guid
         var preference = preferencesStorage.Get();
         if (preference == null)
         {
-            this.inputedCount = 1;
-            this.selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-            this.DisplayNewGuids();
+            inputedCount = 1;
+            selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            DisplayNewGuids();
         }
         else
         {
-            this.inputedCount = preference.Count;
-            this.selectedFormat = formats.Single(x => x.Name == preference.FormatName);
-            this.currentGuids = preference.Guids;
-            this.RedisplayCurrentGuids();
+            inputedCount = preference.Count;
+            selectedFormat = formats.FirstOrDefault(
+                x => x.Name == preference.FormatName,
+                formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
+            currentGuids = preference.Guids;
+            RedisplayCurrentGuids();
         }
     }
-    
+
     private static ImmutableArray<System.Guid> NewGuids(int count)
     {
         var guids = Enumerable.Range(0, count)
@@ -70,24 +72,24 @@ public partial class Guid
 
     private void RedisplayCurrentGuids(GuidFormat? newFormat = null)
     {
-        Debug.Assert(this.currentGuids is not null);
+        Debug.Assert(currentGuids is not null);
 
-        this.selectedFormat = newFormat ?? this.selectedFormat;
-        Debug.Assert(this.selectedFormat is not null);
+        selectedFormat = newFormat ?? selectedFormat;
+        Debug.Assert(selectedFormat is not null);
 
-        var output = currentGuids.Select(this.selectedFormat.Converter);
+        var output = currentGuids.Select(selectedFormat.Converter);
         this.output = string.Join(Environment.NewLine, output);
 
-        Debug.Assert(this.inputedCount.HasValue);
+        Debug.Assert(inputedCount.HasValue);
         preferencesStorage?.Set(
             new(selectedFormat.Name, inputedCount.Value, currentGuids.Value));
     }
 
     private void DisplayNewGuids()
     {
-        Debug.Assert(this.inputedCount.HasValue);
+        Debug.Assert(inputedCount.HasValue);
 
-        this.currentGuids = NewGuids(inputedCount.Value);
+        currentGuids = NewGuids(inputedCount.Value);
         RedisplayCurrentGuids();
     }
 
@@ -95,8 +97,8 @@ public partial class Guid
     {
         public NoExceptionIntConverter()
         {
-            this.SetFunc = (i) => i?.ToString() ?? "";
-            this.GetFunc = (s) =>
+            SetFunc = (i) => i?.ToString() ?? "";
+            GetFunc = (s) =>
             {
                 const NumberStyles style = NumberStyles.Integer | NumberStyles.AllowThousands;
                 if (BigInteger.TryParse(s, style, Culture, out var result))

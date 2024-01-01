@@ -6,9 +6,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace SharpTools.Tools;
+namespace SharpTools.ToolPages.Bytes;
 
-public partial class Bytes
+partial class Bytes
 {
     private string? inputedString;
     private Display? selectedDisplay;
@@ -22,7 +22,6 @@ public partial class Bytes
         [
             new("Base64", Convert.FromBase64String, Convert.ToBase64String),
             new("Hex", Convert.FromHexString, Convert.ToHexString),
-            new("UTF-8 文本", Encoding.UTF8.GetBytes, Encoding.UTF8.GetString),
             new("字节数组",
                 (s) =>
                 {
