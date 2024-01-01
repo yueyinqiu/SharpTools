@@ -8,7 +8,7 @@ public sealed partial class GradedLocalStorage(ISyncLocalStorageService localSto
 
     public string GetFullKey(string subKey)
     {
-        return $"{RootKey}.{subKey}";
+        return $"{this.RootKey}.{subKey}";
     }
 
     public LocalStorageEntry<T> GetEntry<T>(string subKey, int importance) where T : class
@@ -55,7 +55,7 @@ public sealed partial class GradedLocalStorage(ISyncLocalStorageService localSto
     {
         try
         {
-            localStorage.SetItem(GetFullKey(subKey), new GradedData<T>(value, importance));
+            localStorage.SetItem(this.GetFullKey(subKey), new GradedData<T>(value, importance));
             return true;
         }
         catch
@@ -71,7 +71,7 @@ public sealed partial class GradedLocalStorage(ISyncLocalStorageService localSto
     {
         try
         {
-            return localStorage.GetItem<GradedData<T>>(GetFullKey(subKey)).Value;
+            return localStorage.GetItem<GradedData<T>>(this.GetFullKey(subKey)).Value;
         }
         catch
         {

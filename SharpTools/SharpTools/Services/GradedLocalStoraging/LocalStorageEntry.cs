@@ -1,9 +1,7 @@
-﻿using Blazored.LocalStorage;
-
-namespace SharpTools.Services.GradedLocalStoraging;
+﻿namespace SharpTools.Services.GradedLocalStoraging;
 
 public sealed class LocalStorageEntry<T>(
-    GradedLocalStorage root, string subKey, int importance) 
+    GradedLocalStorage root, string subKey, int importance)
     where T : class
 {
     public void Set(T data)

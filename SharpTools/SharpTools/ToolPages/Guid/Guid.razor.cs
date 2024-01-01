@@ -1,16 +1,12 @@
-﻿using Blazored.LocalStorage;
-using MudBlazor;
-using SharpTools.Services.GradedLocalStoraging;
-using System.Collections.Frozen;
+﻿using SharpTools.Services.GradedLocalStoraging;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using static MudBlazor.Colors;
 using System.Globalization;
 using System.Numerics;
 
 namespace SharpTools.ToolPages.Guid;
 
-partial class Guid
+public partial class Guid
 {
     private LocalStorageEntry<Preferences>? preferencesStorage;
     private string? output;
@@ -40,26 +36,26 @@ partial class Guid
 
     protected override async Task OnParametersSetAsync()
     {
-        preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("guid", 1);
+        this.preferencesStorage = this.GradedLocalStorage.GetEntry<Preferences>("guid", 1);
 
         // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
         await Task.Yield();
 
-        var preference = preferencesStorage.Get();
+        var preference = this.preferencesStorage.Get();
         if (preference == null)
         {
-            inputedCount = 1;
-            selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-            DisplayNewGuids();
+            this.inputedCount = 1;
+            this.selectedFormat = formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+            this.DisplayNewGuids();
         }
         else
         {
-            inputedCount = preference.Count;
-            selectedFormat = formats.FirstOrDefault(
+            this.inputedCount = preference.Count;
+            this.selectedFormat = formats.FirstOrDefault(
                 x => x.Name == preference.FormatName,
                 formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
-            currentGuids = preference.Guids;
-            RedisplayCurrentGuids();
+            this.currentGuids = preference.Guids;
+            this.RedisplayCurrentGuids();
         }
     }
 
@@ -72,36 +68,36 @@ partial class Guid
 
     private void RedisplayCurrentGuids(GuidFormat? newFormat = null)
     {
-        Debug.Assert(currentGuids is not null);
+        Debug.Assert(this.currentGuids is not null);
 
-        selectedFormat = newFormat ?? selectedFormat;
-        Debug.Assert(selectedFormat is not null);
+        this.selectedFormat = newFormat ?? this.selectedFormat;
+        Debug.Assert(this.selectedFormat is not null);
 
-        var output = currentGuids.Select(selectedFormat.Converter);
+        var output = this.currentGuids.Select(this.selectedFormat.Converter);
         this.output = string.Join(Environment.NewLine, output);
 
-        Debug.Assert(inputedCount.HasValue);
-        preferencesStorage?.Set(
-            new(selectedFormat.Name, inputedCount.Value, currentGuids.Value));
+        Debug.Assert(this.inputedCount.HasValue);
+        this.preferencesStorage?.Set(
+            new(this.selectedFormat.Name, this.inputedCount.Value, this.currentGuids.Value));
     }
 
     private void DisplayNewGuids()
     {
-        Debug.Assert(inputedCount.HasValue);
+        Debug.Assert(this.inputedCount.HasValue);
 
-        currentGuids = NewGuids(inputedCount.Value);
-        RedisplayCurrentGuids();
+        this.currentGuids = NewGuids(this.inputedCount.Value);
+        this.RedisplayCurrentGuids();
     }
 
     private sealed class NoExceptionIntConverter : MudBlazor.Converter<int?, string>
     {
         public NoExceptionIntConverter()
         {
-            SetFunc = (i) => i?.ToString() ?? "";
-            GetFunc = (s) =>
+            this.SetFunc = (i) => i?.ToString() ?? "";
+            this.GetFunc = (s) =>
             {
                 const NumberStyles style = NumberStyles.Integer | NumberStyles.AllowThousands;
-                if (BigInteger.TryParse(s, style, Culture, out var result))
+                if (BigInteger.TryParse(s, style, this.Culture, out var result))
                 {
                     if (result < int.MinValue)
                         return int.MinValue;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using SharpTools.Services.GradedLocalStoraging;
-using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +7,7 @@ using System.Text;
 
 namespace SharpTools.ToolPages.Bytes;
 
-partial class Bytes
+public partial class Bytes
 {
     private string? inputedString;
     private Display? selectedDisplay;
@@ -42,8 +41,8 @@ partial class Bytes
     private sealed record Inputs(string? Input, byte[]? Bytes);
     protected override async Task OnParametersSetAsync()
     {
-        this.preferencesStorage = GradedLocalStorage.GetEntry<Preferences>("bytes", 1);
-        this.inputsStorage = GradedLocalStorage.GetEntry<Inputs>("bytes.inputs", 0);
+        this.preferencesStorage = this.GradedLocalStorage.GetEntry<Preferences>("bytes", 1);
+        this.inputsStorage = this.GradedLocalStorage.GetEntry<Inputs>("bytes.inputs", 0);
 
         // 同步运行会导致输出框的 AutoGrow 不能正常工作，不知道是什么原因。
         await Task.Yield();
@@ -51,11 +50,11 @@ partial class Bytes
         var preference = this.preferencesStorage.Get();
         if (preference is null)
         {
-            this.selectedDisplay = displays.Single(x => x.Name == "Base64");
+            this.selectedDisplay = this.displays.Single(x => x.Name == "Base64");
         }
         else
         {
-            this.selectedDisplay = displays.FirstOrDefault(
+            this.selectedDisplay = this.displays.FirstOrDefault(
                 x => x.Name == preference.DisplayName,
                 this.displays.Single(x => x.Name == "Base64"));
         }
@@ -89,7 +88,7 @@ partial class Bytes
             if (string.IsNullOrWhiteSpace(this.inputedString))
                 this.cachedBytes = Array.Empty<byte>();
             else
-                this.cachedBytes = selectedDisplay.ToBytes(this.inputedString);
+                this.cachedBytes = this.selectedDisplay.ToBytes(this.inputedString);
             return true;
         }
         catch
@@ -101,15 +100,15 @@ partial class Bytes
     {
         if (!this.CacheBytes())
         {
-            MudSnackbar.Add("转换失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
+            this.MudSnackbar.Add("转换失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
             return;
         }
 
         this.inputedString = value.FromBytes(this.cachedBytes);
         this.selectedDisplay = value;
 
-        preferencesStorage?.Set(new(value.Name));
-        inputsStorage?.Set(new(this.inputedString, this.cachedBytes));
+        this.preferencesStorage?.Set(new(value.Name));
+        this.inputsStorage?.Set(new(this.inputedString, this.cachedBytes));
     }
     private void OnInputted(string value)
     {
@@ -118,8 +117,8 @@ partial class Bytes
 
         Debug.Assert(this.selectedDisplay is not null);
 
-        preferencesStorage?.Set(new(this.selectedDisplay.Name));
-        inputsStorage?.Set(new(value, null));
+        this.preferencesStorage?.Set(new(this.selectedDisplay.Name));
+        this.inputsStorage?.Set(new(value, null));
     }
     private async Task OnFilesChanged(IBrowserFile file)
     {
@@ -131,20 +130,20 @@ partial class Bytes
         }
         catch
         {
-            MudSnackbar.Add("读取文件时出现了错误", MudBlazor.Severity.Error);
+            this.MudSnackbar.Add("读取文件时出现了错误", MudBlazor.Severity.Error);
             return;
         }
         this.cachedBytes = memory.ToArray();
-        OnSelected(displays.Single(x => x.Name == "Base64"));
+        this.OnSelected(this.displays.Single(x => x.Name == "Base64"));
     }
 
     private async Task OnExportClicked()
     {
-        if (!CacheBytes())
+        if (!this.CacheBytes())
         {
-            MudSnackbar.Add("导出失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
+            this.MudSnackbar.Add("导出失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
             return;
         }
-        _ = await FileDownloader.DownloadFileAsync("bytes.bin", this.cachedBytes);
+        _ = await this.FileDownloader.DownloadFileAsync("bytes.bin", this.cachedBytes);
     }
 }
