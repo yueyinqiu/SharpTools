@@ -1,5 +1,6 @@
 ﻿@page "/bytes"
 
+@inject ILogger<Bytes> Logger
 @inject GradedLocalStorage GradedLocalStorage
 @inject IBlazorDownloadFileService FileDownloader
 @inject ISnackbar MudSnackbar
@@ -33,4 +34,14 @@
             导出为文件
         </MudText>
     </MudButton>
+
+    <MudFileUpload T="IBrowserFile" FilesChanged="@this.OnQrCodeFilesChanged" Class="d-inline">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label" Color="Color.Primary" for="@context.Id">
+                <MudText>
+                    扫描二维码
+                </MudText>
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
 </div>

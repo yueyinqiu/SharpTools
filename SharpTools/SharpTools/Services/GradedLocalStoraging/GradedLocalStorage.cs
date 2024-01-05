@@ -1,8 +1,11 @@
 ﻿using Blazored.LocalStorage;
+using Microsoft.Extensions.Logging;
 
 namespace SharpTools.Services.GradedLocalStoraging;
 
-public sealed partial class GradedLocalStorage(ISyncLocalStorageService localStorage)
+public sealed partial class GradedLocalStorage(
+    ILogger<GradedLocalStorage> logger,
+    ISyncLocalStorageService localStorage)
 {
     public string RootKey => "sharptools";
 
@@ -43,8 +46,9 @@ public sealed partial class GradedLocalStorage(ISyncLocalStorageService localSto
             }
             return result;
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogError(ex, "Cannot access the local storage.");
             return result;
         }
     }

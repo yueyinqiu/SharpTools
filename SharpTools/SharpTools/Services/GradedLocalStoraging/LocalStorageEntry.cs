@@ -4,9 +4,9 @@ public sealed class LocalStorageEntry<T>(
     GradedLocalStorage root, string subKey, int importance)
     where T : class
 {
-    public void Set(T data)
+    public bool Set(T data)
     {
-        root.SetValue(subKey, data, importance);
+        return root.SetValue(subKey, data, importance);
     }
 
     public T? Get()

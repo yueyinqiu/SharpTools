@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using SharpTools.Services.GradedLocalStoraging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using ZXing;
+using ZXing.Common;
+using ZXing.ImageSharp;
+using ZXing.QrCode;
 
 namespace SharpTools.ToolPages.Bytes;
 
@@ -27,7 +33,7 @@ public partial class Bytes
                     s = s.Trim().Trim('[', ']');
                     var strings = s.Split(',');
                     if (strings.Length is 1 && string.IsNullOrWhiteSpace(strings[0]))
-                        return Array.Empty<byte>();
+                        return [];
                     return strings.Select(x => byte.Parse(x)).ToArray();
                 },
                 (b) =>
@@ -86,13 +92,14 @@ public partial class Bytes
         try
         {
             if (string.IsNullOrWhiteSpace(this.inputedString))
-                this.cachedBytes = Array.Empty<byte>();
+                this.cachedBytes = [];
             else
                 this.cachedBytes = this.selectedDisplay.ToBytes(this.inputedString);
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            this.Logger.LogError(ex, "Failed to resolve the input string.");
             return false;
         }
     }
@@ -100,15 +107,15 @@ public partial class Bytes
     {
         if (!this.CacheBytes())
         {
-            this.MudSnackbar.Add("转换失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
+            _ = this.MudSnackbar.Add("转换失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
             return;
         }
 
         this.inputedString = value.FromBytes(this.cachedBytes);
         this.selectedDisplay = value;
 
-        this.preferencesStorage?.Set(new(value.Name));
-        this.inputsStorage?.Set(new(this.inputedString, this.cachedBytes));
+        _ = this.preferencesStorage?.Set(new(value.Name));
+        _ = this.inputsStorage?.Set(new(this.inputedString, this.cachedBytes));
     }
     private void OnInputted(string value)
     {
@@ -117,8 +124,8 @@ public partial class Bytes
 
         Debug.Assert(this.selectedDisplay is not null);
 
-        this.preferencesStorage?.Set(new(this.selectedDisplay.Name));
-        this.inputsStorage?.Set(new(value, null));
+        _ = this.preferencesStorage?.Set(new(this.selectedDisplay.Name));
+        _ = this.inputsStorage?.Set(new(value, null));
     }
     private async Task OnFilesChanged(IBrowserFile file)
     {
@@ -128,9 +135,10 @@ public partial class Bytes
             using var stream = file.OpenReadStream(file.Size);
             await stream.CopyToAsync(memory);
         }
-        catch
+        catch(Exception ex)
         {
-            this.MudSnackbar.Add("读取文件时出现了错误", MudBlazor.Severity.Error);
+            this.Logger.LogError(ex, "Failed to load the file.");
+            _ = this.MudSnackbar.Add("读取文件时出现了错误", MudBlazor.Severity.Error);
             return;
         }
         this.cachedBytes = memory.ToArray();
@@ -141,9 +149,27 @@ public partial class Bytes
     {
         if (!this.CacheBytes())
         {
-            this.MudSnackbar.Add("导出失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
+            _ = this.MudSnackbar.Add("导出失败，请检查输入内容是否匹配所选格式", MudBlazor.Severity.Error);
             return;
         }
         _ = await this.FileDownloader.DownloadFileAsync("bytes.bin", this.cachedBytes);
+    }
+    private async Task OnQrCodeFilesChanged(IBrowserFile file)
+    {
+        try
+        {
+            using var stream = file.OpenReadStream(file.Size);
+            var image = await Image.LoadAsync<Rgba32>(stream);
+            LuminanceSource luminanceSource = new ImageSharpLuminanceSource<Rgba32>(image);
+            var bitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
+            this.cachedBytes = new QRCodeReader().decode(bitmap).RawBytes;
+        }
+        catch (Exception ex)
+        {
+            this.Logger.LogError(ex, "Failed to decode the QR code.");
+            _ = this.MudSnackbar.Add("扫描二维码时出现了错误", MudBlazor.Severity.Error);
+            return;
+        }
+        this.OnSelected(this.displays.Single(x => x.Name == "Base64"));
     }
 }
