@@ -7,6 +7,12 @@
 
 <MudText Typo="Typo.h2" Class="mb-5">Guid 生成</MudText>
 
+<MudAlert Class="mb-5" Severity="Severity.Warning">
+    <MudText>
+        注意：受限于浏览器环境的能力，不建议一次生成太多的 Guid 。如果在刚打开此页面时就出现长时间加载，可以尝试删除浏览器 local storage 中的历史记录解决。
+    </MudText>
+</MudAlert>
+
 <MudTextField T="string" AutoGrow="true" ReadOnly="true" Text="@output" MaxLines="5"></MudTextField>
 
 <div class="mt-8">

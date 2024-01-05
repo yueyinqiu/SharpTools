@@ -166,7 +166,7 @@ public partial class Bytes
         }
         catch (Exception ex)
         {
-            this.Logger.LogError(ex, "Failed to decode the QR code.");
+            this.Logger.LogError(ex, "Failed to decode the Qr code.");
             _ = this.MudSnackbar.Add("扫描二维码时出现了错误", MudBlazor.Severity.Error);
             return;
         }

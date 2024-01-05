@@ -9,6 +9,12 @@
 
 <MudText Typo="Typo.h2" Class="mb-5">字节数组表示</MudText>
 
+<MudAlert Class="mb-5" Severity="Severity.Warning">
+    <MudText>
+        注意：受限于浏览器环境的能力，不建议上传过大的文件或者输入过多的内容。如果在刚打开此页面时就出现长时间加载，可以尝试删除浏览器 local storage 中的历史记录解决。
+    </MudText>
+</MudAlert>
+
 <MudTextField T="string" Value="@inputedString" AutoGrow="true" ValueChanged="OnInputted" Label="内容" MaxLines="10"></MudTextField>
 
 <MudSelect T="Display" Value="selectedDisplay" ValueChanged="OnSelected" Label="编码">
