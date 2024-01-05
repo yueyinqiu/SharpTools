@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using Microsoft.Extensions.Logging;
 
 namespace SharpTools.Services.GradedLocalStoraging;
 

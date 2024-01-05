@@ -135,7 +135,7 @@ public partial class Bytes
             using var stream = file.OpenReadStream(file.Size);
             await stream.CopyToAsync(memory);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             this.Logger.LogError(ex, "Failed to load the file.");
             _ = this.MudSnackbar.Add("读取文件时出现了错误", MudBlazor.Severity.Error);
