@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace SptlWebsite.Pages;
+namespace SptlWebsite.Components;
 
-partial class ErrorPage
+partial class ErrorComponent
 {
     [Parameter]
     public Exception? Exception { get; set; }

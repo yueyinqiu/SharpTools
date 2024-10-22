@@ -3,13 +3,20 @@
 @inject NavigationManager Navigation
 @inject TypeRampBaseFontSize BaseFontSize
 
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-    </Found>
-    <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <NotFoundPage></NotFoundPage>
-        </LayoutView>
-    </NotFound>
-</Router>
+<LayoutView Layout="@typeof(MainLayout)">
+    <ErrorBoundary>
+        <ChildContent>
+            <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                    <RouteView RouteData="@routeData" />
+                </Found>
+                <NotFound>
+                    <NotFoundPage></NotFoundPage>
+                </NotFound>
+            </Router>
+        </ChildContent>
+        <ErrorContent Context="ex">
+            <ErrorComponent Exception="ex"></ErrorComponent>
+        </ErrorContent>
+    </ErrorBoundary>
+</LayoutView>
