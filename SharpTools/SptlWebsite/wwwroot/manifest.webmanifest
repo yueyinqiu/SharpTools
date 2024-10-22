@@ -1,0 +1,13 @@
+﻿{
+    "name": "SharpTools",
+    "start_url": "./",
+    "display": "standalone",
+    "icons":
+    [
+        {
+            "src": "favicon.svg",
+            "type": "image/svg+xml",
+            "sizes": "any"
+        }
+    ]
+}

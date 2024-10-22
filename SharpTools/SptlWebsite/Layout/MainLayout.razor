@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<FluentLayout>
+    <FluentHeader>
+        SharpTools
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Vertical" Width="100%">
+        <FluentBodyContent Class="body-content">
+            <div class="content">
+                <ErrorBoundary>
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent Context="ex">
+                        <ErrorPage Exception="ex"></ErrorPage>
+                    </ErrorContent>
+                </ErrorBoundary>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
