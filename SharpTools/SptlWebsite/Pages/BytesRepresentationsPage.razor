@@ -1,0 +1,29 @@
+﻿@page "/BytesRepresentations"
+@inject IGradedLocalStorage LocalStorage
+@inject Downloader Downloader
+
+<PageTitle>字节数组表示 - SharpTools</PageTitle>
+
+<h1>字节数组表示</h1>
+
+<FluentStack Orientation="Orientation.Vertical">
+    <h2>配置与输入</h2>
+
+    <FluentSelect TOption="BytesFormat" Width="100%" Label="源格式" OptionText="(x => x.Name)" Items="formats" @bind-SelectedOption="InputFormat">
+    </FluentSelect>
+
+    <FluentTextArea @bind-Value="Input" Style="width: 100%" Label="源内容" Rows="5"></FluentTextArea>
+
+    <FluentSelect TOption="BytesFormat" Width="100%" Label="目标格式" OptionText="(x => x.Name)" Items="formats" @bind-SelectedOption="OutputFormat">
+    </FluentSelect>
+
+    <h2>结果与输出</h2>
+
+    <FluentTextArea Style="width: 100%" Value="@Output" Label="目标内容" Rows="5"></FluentTextArea>
+
+    <FluentStack Orientation="Orientation.Horizontal">
+        <FluentButton OnClick="Swap" Disabled="@(inputBytes.bytes is null)">设为输入</FluentButton>
+        <FluentButton OnClick="ExportAsync" Disabled="@(inputBytes.bytes is null)">导出文件</FluentButton>
+    </FluentStack>
+
+</FluentStack>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using FileDownloader;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 using SptlServices.GradedLocalStoraging;
@@ -13,6 +14,8 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         _ = builder.Services.AddFluentUIComponents();
+
+        _ = builder.Services.AddFileDownloder();
 
         _ = builder.Services.AddSptlLocalStorage("SharpTools");
 
