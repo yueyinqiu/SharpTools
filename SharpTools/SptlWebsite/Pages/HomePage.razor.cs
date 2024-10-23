@@ -1,5 +1,4 @@
-﻿
-namespace SptlWebsite.Pages;
+﻿namespace SptlWebsite.Pages;
 
 partial class HomePage
 {

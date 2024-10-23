@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpTools", "SharpTools\SharpTools.csproj", "{69EFF93C-FFF8-404E-9841-7AC3453F21BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SptlWebsite", "SptlWebsite\SptlWebsite.csproj", "{EBD61B61-B764-4B1D-9423-4E678DCEF3F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SptlWebsite", "SptlWebsite\SptlWebsite.csproj", "{EBD61B61-B764-4B1D-9423-4E678DCEF3F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SptlServices", "SptlServices\SptlServices.csproj", "{DF4AFBD4-4247-4931-80F4-AB56AE0DF639}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EBD61B61-B764-4B1D-9423-4E678DCEF3F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBD61B61-B764-4B1D-9423-4E678DCEF3F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD61B61-B764-4B1D-9423-4E678DCEF3F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4AFBD4-4247-4931-80F4-AB56AE0DF639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4AFBD4-4247-4931-80F4-AB56AE0DF639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4AFBD4-4247-4931-80F4-AB56AE0DF639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4AFBD4-4247-4931-80F4-AB56AE0DF639}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

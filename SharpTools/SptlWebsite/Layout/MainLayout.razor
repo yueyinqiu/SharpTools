@@ -1,15 +1,34 @@
-﻿@inherits LayoutComponentBase
+﻿@using SptlServices.GradedLocalStoraging
+
+@inherits LayoutComponentBase
 @inject NavigationManager Navigation
+@inject IGradedLocalStorage LocalStorage
 
 <FluentLayout>
     <FluentHeader>
         SharpTools
     </FluentHeader>
-    <FluentStack Class="main" Orientation="Orientation.Vertical" Width="100%">
-        <FluentBodyContent Class="body-content">
-            <div class="content">
-                @Body
-            </div>
-        </FluentBodyContent>
-    </FluentStack>
+
+    <FluentSplitter Class="main" Orientation="Orientation.Horizontal" Panel1Size="@navMenuSize" OnResized="@((e) => this.SaveNavMenuSize(e.Panel1Size))">
+
+        <Panel1>
+            <FluentNavMenu>
+                <FluentNavLink Href="/">主页</FluentNavLink>
+
+                <FluentNavGroup Title="程序工具">
+                    <FluentNavLink>Guid 生成</FluentNavLink>
+                    <FluentNavLink>字节数组处理</FluentNavLink>
+                </FluentNavGroup>
+            </FluentNavMenu>
+        </Panel1>
+
+        <Panel2>
+            <FluentBodyContent Class="body-content">
+                <div class="content">
+                    @Body
+                </div>
+            </FluentBodyContent>
+        </Panel2>
+
+    </FluentSplitter>
 </FluentLayout>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
+using SptlServices.GradedLocalStoraging;
 
 namespace SptlWebsite;
 public class Program
@@ -12,6 +13,8 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         _ = builder.Services.AddFluentUIComponents();
+
+        _ = builder.Services.AddSptlLocalStorage("SharpTools");
 
         await builder.Build().RunAsync();
     }
