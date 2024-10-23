@@ -1,6 +1,4 @@
-﻿@using SptlServices.GradedLocalStoraging
-
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject IGradedLocalStorage LocalStorage
 
@@ -13,10 +11,10 @@
 
         <Panel1>
             <FluentNavMenu>
-                <FluentNavLink Href="/">主页</FluentNavLink>
+                <FluentNavLink Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
 
-                <FluentNavGroup Title="程序工具">
-                    <FluentNavLink>Guid 生成</FluentNavLink>
+                <FluentNavGroup Title="编程工具">
+                    <FluentNavLink Href="/GuidGenerator">Guid 生成器</FluentNavLink>
                     <FluentNavLink>字节数组处理</FluentNavLink>
                 </FluentNavGroup>
             </FluentNavMenu>

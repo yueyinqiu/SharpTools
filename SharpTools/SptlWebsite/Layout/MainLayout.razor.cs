@@ -5,16 +5,13 @@ namespace SptlWebsite.Layout;
 
 partial class MainLayout
 {
-    [JsonSourceGenerationOptions(WriteIndented = false)]
     [JsonSerializable(typeof(int))]
-    internal partial class SerializerContext : JsonSerializerContext
-    {
-    }
+    partial class MainLayoutSerializerContext : JsonSerializerContext { }
 
     private ILocalStorageEntry<int> NavMenuSizeStorageEntry => 
         this.LocalStorage.GetEntry(
-            "MainLayout.NavMenuSize", 10,
-            SerializerContext.Default.Int32);
+            "MainLayout.NavMenuSize", 1000,
+            MainLayoutSerializerContext.Default.Int32);
 
     private string navMenuSize = "250px";
     protected override void OnParametersSet()
