@@ -11,16 +11,16 @@ partial class GuidGeneratorPage
 
     private static readonly ImmutableArray<GuidFormat>
         formats = [
-            new("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (guid) => guid.ToString("N")),
-            new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", (guid) => guid.ToString("N").ToUpperInvariant()),
-            new("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", (guid) => guid.ToString("D")),
-            new("XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX", (guid) => guid.ToString("D").ToUpperInvariant()),
-            new("{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}", (guid) => guid.ToString("B")),
-            new("{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}", (guid) => guid.ToString("B").ToUpperInvariant()),
-            new("(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)", (guid) => guid.ToString("P")),
-            new("(XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)", (guid) => guid.ToString("P").ToUpperInvariant()),
-            new("{xxxxxxxxxx,xxxxxx,xxxxxx,{xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx,xxxx}}", (guid) => guid.ToString("X")),
-            new("{XXXXXXXXXX,XXXXXX,XXXXXX,{XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,XXXX,XXXX}}", (guid) => guid.ToString("X").ToUpperInvariant()),
+            new("oooooooooooooooooooooooooooooooo", (guid) => guid.ToString("N")),
+            new("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", (guid) => guid.ToString("N").ToUpperInvariant()),
+            new("oooooooo-oooo-oooo-oooo-oooooooooooo", (guid) => guid.ToString("D")),
+            new("OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO", (guid) => guid.ToString("D").ToUpperInvariant()),
+            new("{oooooooo-oooo-oooo-oooo-oooooooooooo}", (guid) => guid.ToString("B")),
+            new("{OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO}", (guid) => guid.ToString("B").ToUpperInvariant()),
+            new("(oooooooo-oooo-oooo-oooo-oooooooooooo)", (guid) => guid.ToString("P")),
+            new("(OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO)", (guid) => guid.ToString("P").ToUpperInvariant()),
+            new("{0xoooooooo,0xoooo,0xoooo,{0xoo,0xoo,0xoo,0xoo,0xoo,0xoo,0xoo,0xoo}}", (guid) => guid.ToString("X")),
+            new("{0xOOOOOOOO,0xOOOO,0xOOOO,{0xOO,0xOO,0xOO,0xOO,0xOO,0xOO,0xOO,0xOO}}", (guid) => guid.ToString("X").ToUpperInvariant()),
             new("字节数组小端序 Base64", (guid) => Convert.ToBase64String(guid.ToByteArray())),
             new("字节数组大端序 Base64", (guid) => Convert.ToBase64String(guid.ToByteArray(true))),
         ];
@@ -28,7 +28,7 @@ partial class GuidGeneratorPage
     private ImmutableArray<Guid> outputs = [];
     private int countInput = 1;
     private GuidFormat formatInputDontTouchMe = formats.Single(
-        x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo");
     private GuidFormat FormatInput
     {
         get
@@ -60,7 +60,7 @@ partial class GuidGeneratorPage
             this.countInput = preference.Count;
             this.FormatInput = formats.FirstOrDefault(
                 x => x.Name == preference.FormatName,
-                formats.Single(x => x.Name == "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
+                formats.Single(x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo"));
         }
     }
 
