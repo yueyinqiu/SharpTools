@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using Microsoft.FluentUI.AspNetCore.Components;
+using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace SptlWebsite.Pages;
 
@@ -110,6 +112,18 @@ partial class BytesRepresentationsPage
         if (bytes is null)
             return;
         await Downloader.DownloadFromStream(bytes, "bytes.bin");
+    }
+    private void Import(IEnumerable<FluentInputFileEventArgs> files)
+    {
+        var file = files.Single();
+        if (file.LocalFile is null)
+        {
+            this.Input = $"文件导入失败：{file.ErrorMessage}";
+            return;
+        }
+        var bytes = File.ReadAllBytes(file.LocalFile.FullName);
+        this.Input = this.InputFormat.FromBytes(bytes);
+        file.LocalFile.Delete();
     }
 
     private sealed record Preferences(string? DisplayName);

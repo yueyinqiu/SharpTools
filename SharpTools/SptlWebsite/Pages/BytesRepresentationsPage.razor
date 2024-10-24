@@ -14,6 +14,12 @@
 
     <FluentTextArea @bind-Value="Input" Style="width: 100%" Label="源内容" Rows="5"></FluentTextArea>
 
+    <FluentInputFile AnchorId="ImportButton" DragDropZoneVisible="false" MaximumFileSize="@(1024 * 1024 * 1024)" OnCompleted="Import" />
+
+    <FluentStack Orientation="Orientation.Horizontal">
+        <FluentButton Id="ImportButton">导入文件</FluentButton>
+    </FluentStack>
+
     <FluentSelect TOption="BytesFormat" Width="100%" Label="目标格式" OptionText="(x => x.Name)" Items="formats" @bind-SelectedOption="OutputFormat">
     </FluentSelect>
 
