@@ -16,6 +16,7 @@ public class Program
         _ = builder.Services.AddFluentUIComponents();
 
         _ = builder.Services.AddFileDownloder();
+        _ = builder.Services.AddQRCodeDecoder();
 
         _ = builder.Services.AddSptlLocalStorage("SharpTools");
 

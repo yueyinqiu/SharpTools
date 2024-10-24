@@ -13,6 +13,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-*" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-*" />
+		<PackageReference Include="QRCodeDecoder-ImageSharp" Version="0.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,6 +26,9 @@
 
 	<ItemGroup>
 	  <Content Update="Components\ContactInformationComponent.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Pages\QrCodeScannerPage.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
 	  <Content Update="Pages\BytesRepresentationsPage.razor">

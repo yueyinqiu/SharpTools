@@ -1,6 +1,8 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
+using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace SptlWebsite.Pages;
 
@@ -14,6 +16,7 @@ partial class BytesRepresentationsPage
         {
             inputFormatDontTouchMe = value;
             CacheInputBytes();
+            SavePreference();
         }
     }
     private BytesFormat outputFormatDontTouchMe = formats.Single(x => x.Name is "Base64");
@@ -23,11 +26,15 @@ partial class BytesRepresentationsPage
         set
         {
             outputFormatDontTouchMe = value;
+            SavePreference();
         }
     }
 
-    private string inputDontTouchMe = 
-        "[72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33]";
+    private static readonly ImmutableArray<byte> helloWorld =
+        [72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33];
+
+    private string inputDontTouchMe = formats.Single(x => x.Name is "字节数组")
+        .FromBytes([.. helloWorld]);
     private string Input
     {
         get => inputDontTouchMe;
@@ -38,9 +45,7 @@ partial class BytesRepresentationsPage
         }
     }
 
-    private (byte[]? bytes, Exception? ex) inputBytes = (
-        [72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33], 
-        null);
+    private (byte[]? bytes, Exception? ex) inputBytes = ([.. helloWorld], null);
 
     public void CacheInputBytes()
     {
@@ -126,8 +131,32 @@ partial class BytesRepresentationsPage
         file.LocalFile.Delete();
     }
 
-    private sealed record Preferences(string? DisplayName);
-    protected override async Task OnParametersSetAsync()
+    private sealed record Preferences(string? InputFormat, string? OutputFormat);
+
+    [JsonSerializable(typeof(Preferences))]
+    partial class BytesRepresentationsPageSerializerContext : JsonSerializerContext { }
+
+    private ILocalStorageEntry<Preferences> PreferenceStorage =>
+        this.LocalStorage.GetEntry(
+            "BytesRepresentationsPage.Preferences", 500,
+            BytesRepresentationsPageSerializerContext.Default.Preferences);
+
+    protected override void OnParametersSet()
     {
+        if (this.PreferenceStorage.TryGet(out var preference))
+        {
+            this.InputFormat = formats.SingleOrDefault(
+                x => x.Name == preference?.InputFormat,
+                formats.Single(x => x.Name is "字节数组"));
+            this.OutputFormat = formats.SingleOrDefault(
+                x => x.Name == preference?.OutputFormat,
+                formats.Single(x => x.Name is "Base64"));
+            this.Input = this.InputFormat.FromBytes([.. helloWorld]);
+        }
+    }
+
+    private void SavePreference()
+    {
+        this.PreferenceStorage.Set(new(this.InputFormat.Name, this.OutputFormat.Name));
     }
 }

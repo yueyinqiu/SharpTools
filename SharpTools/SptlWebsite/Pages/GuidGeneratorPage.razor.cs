@@ -56,8 +56,9 @@ partial class GuidGeneratorPage
     {
         if (this.PreferenceStorage.TryGet(out var preference))
         {
-            Debug.Assert(preference is not null);
-            this.countInput = preference.Count;
+            if (preference is null)
+                return;
+            this.countInput = Math.Clamp(preference.Count, 1, int.MaxValue);
             this.FormatInput = formats.FirstOrDefault(
                 x => x.Name == preference.FormatName,
                 formats.Single(x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo"));
