@@ -11,13 +11,17 @@
 
         <Panel1>
             <FluentNavMenu>
-                <FluentNavLink Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
+                <FluentNavLink Icon="@(new Icons.Regular.Size24.Home())" Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
 
-                <FluentNavGroup Title="编程工具">
-                    <FluentNavLink Href="/GuidGenerator">Guid 生成器</FluentNavLink>
-                    <FluentNavLink Href="/QrCodeScanner">QR 码扫描器</FluentNavLink>
-                    <FluentNavLink Href="/BytesRepresentations">字节数组表示</FluentNavLink>
-                </FluentNavGroup>
+                @foreach (var group in Groups)
+                {
+                    <FluentNavGroup Icon="@group.Icon" Title="@group.Title">
+                        @foreach (var entry in group.Entries)
+                        {
+                            <FluentNavLink Icon="@entry.Icon" Href="@entry.Href">@entry.Title</FluentNavLink>
+                        }
+                    </FluentNavGroup>
+                }
             </FluentNavMenu>
         </Panel1>
 
