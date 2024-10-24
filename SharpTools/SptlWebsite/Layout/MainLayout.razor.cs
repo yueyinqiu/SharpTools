@@ -1,4 +1,6 @@
-﻿using SptlServices.GradedLocalStoraging;
+﻿using Microsoft.FluentUI.AspNetCore.Components;
+using SptlServices.GradedLocalStoraging;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace SptlWebsite.Layout;
@@ -25,6 +27,8 @@ partial class MainLayout
         }
     }
 
+    // https://github.com/microsoft/fluentui-blazor/issues/2858
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(SplitterResizedEventArgs))]
     private void SaveNavMenuSize(int navMenuSize)
     {
         this.NavMenuSizeStorageEntry.Set(navMenuSize);
