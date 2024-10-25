@@ -13,7 +13,10 @@ public class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        _ = builder.Services.AddFluentUIComponents();
+        _ = builder.Services.AddFluentUIComponents(configuration =>
+        {
+            configuration.CollocatedJavaScriptQueryString = null;
+        });
 
         _ = builder.Services.AddFileDownloder();
         _ = builder.Services.AddQRCodeDecoder();
