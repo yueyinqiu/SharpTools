@@ -1,0 +1,19 @@
+﻿@page "/LiuyaoDivination"
+
+@inject IGradedLocalStorage LocalStorage
+
+<PageTitle>六爻排盘 - SharpTools</PageTitle>
+
+<h1>六爻排盘</h1>
+
+<FluentStack Orientation="Orientation.Vertical">
+    @for (int iDontTouchMe = 6 - 1; iDontTouchMe >= 0; iDontTouchMe--)
+    {
+        var line = iDontTouchMe;
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentButton OnClick="() => SwitchSelectedLine(line)">
+                @(selectedLines[line]?.ToString() ?? "？")
+            </FluentButton>
+        </FluentStack>
+    }
+</FluentStack>
