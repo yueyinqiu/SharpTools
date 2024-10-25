@@ -1,4 +1,4 @@
-﻿using FileDownloader;
+﻿using FileDownloadBlazor.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -18,7 +18,7 @@ public class Program
             configuration.CollocatedJavaScriptQueryString = null;
         });
 
-        _ = builder.Services.AddFileDownloder();
+        _ = builder.Services.AddFileDownloadBlazor();
         _ = builder.Services.AddQRCodeDecoder();
 
         _ = builder.Services.AddSptlLocalStorage("SharpTools");

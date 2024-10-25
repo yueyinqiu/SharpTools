@@ -1,6 +1,6 @@
 ﻿@page "/BytesRepresentations"
 @inject IGradedLocalStorage LocalStorage
-@inject Downloader Downloader
+@inject IFileDownloader Downloader
 
 <PageTitle>字节数组表示 - SharpTools</PageTitle>
 
@@ -28,7 +28,7 @@
     <FluentTextArea Style="width: 100%" Value="@Output" Label="目标内容" Rows="5"></FluentTextArea>
 
     <FluentStack Orientation="Orientation.Horizontal">
-        <FluentButton OnClick="ExportAsync" Disabled="@(inputBytes.bytes is null)">导出文件</FluentButton>
+        <FluentButton OnClick="Export" Disabled="@(inputBytes.bytes is null)">导出文件</FluentButton>
         <FluentButton OnClick="Swap" Disabled="@(inputBytes.bytes is null)">设为输入</FluentButton>
     </FluentStack>
 

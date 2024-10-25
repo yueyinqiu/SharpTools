@@ -1,7 +1,6 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
 using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace SptlWebsite.Pages;
@@ -111,12 +110,12 @@ partial class BytesRepresentationsPage
         this.InputFormat = this.OutputFormat;
         this.OutputFormat = newOutputFormat;
     }
-    private async Task ExportAsync()
+    private void Export()
     {
         var (bytes, _) = inputBytes;
         if (bytes is null)
             return;
-        await Downloader.DownloadFromStream(bytes, "bytes.bin");
+        this.Downloader.Sync.Download(bytes, "bytes");
     }
     private void Import(IEnumerable<FluentInputFileEventArgs> files)
     {
