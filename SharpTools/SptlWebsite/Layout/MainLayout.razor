@@ -5,6 +5,10 @@
 <FluentLayout>
     <FluentHeader>
         SharpTools
+        <FluentSpacer></FluentSpacer>
+        <a href="https://github.com/yueyinqiu/SharpTools.git" target="_blank">
+            <FluentIcon Value="@(MdiSvg.Github(IconVariant.Regular, IconSize.Size24))" Color="Color.Fill"></FluentIcon>
+        </a>
     </FluentHeader>
 
     <FluentSplitter Class="main" Orientation="Orientation.Horizontal" Panel1Size="@navMenuSize" OnResized="@((e) => this.SaveNavMenuSize(e.Panel1Size))">
