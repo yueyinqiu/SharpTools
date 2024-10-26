@@ -14,8 +14,8 @@ partial class BytesRepresentationsPage
         set
         {
             inputFormatDontTouchMe = value;
-            CacheInputBytes();
-            SavePreference();
+            this.CacheInputBytes();
+            this.SavePreference();
         }
     }
     private BytesFormat outputFormatDontTouchMe = formats.Single(x => x.Name is "Base64");

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
+using SptlServices.BuiltInZhouyi;
 using SptlServices.GradedLocalStoraging;
 
 namespace SptlWebsite;
@@ -21,7 +22,8 @@ public class Program
         _ = builder.Services.AddFileDownloadBlazor();
         _ = builder.Services.AddQRCodeDecoder();
 
-        _ = builder.Services.AddSptlLocalStorage("SharpTools");
+        builder.Services.AddSptlLocalStorage("SharpTools");
+        builder.Services.AddSptlBuiltInZhouyi(builder.HostEnvironment.BaseAddress);
 
         await builder.Build().RunAsync();
     }

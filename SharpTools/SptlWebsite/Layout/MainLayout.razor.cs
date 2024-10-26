@@ -53,7 +53,7 @@ partial class MainLayout
             new ToolEntry("Qr 码扫描器", "qr ma3 sao3 miao2 qi4", "/QrCodeScanner"),
         ]),
         new ToolGroup("易学工具", "yi4 xue2 gong1 ju4", [
-            new ToolEntry("六爻排盘", "liu4 yao2 pai2 pan2", "/LiuyaoDivination"),
+            new ToolEntry("六爻预测", "liu4 yao2 yu4 ce4", "/LiuyaoDivination"),
         ]),
     ];
 

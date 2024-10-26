@@ -6,7 +6,6 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
-
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
@@ -14,10 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\" />
+		<PackageReference Include="YiJingFramework.Annotating.Zhouyi" Version="7.0.1" />
 	</ItemGroup>
 
 </Project>
