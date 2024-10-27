@@ -15,6 +15,7 @@ using System.Text;
 using YiJingFramework.EntityRelations.EntityStrings.Extensions;
 using YiJingFramework.Annotating.Zhouyi.Entities;
 using YiJingFramework.Annotating.Zhouyi;
+using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
 namespace SptlWebsite.Pages;
 
@@ -358,6 +359,8 @@ partial class LiuyaoDivinationPage
 
         return builder.ToString();
     }
+
+    private SelectedNongliSolarDateTime nongliSolar = SelectedNongliSolarDateTime.Empty;
 
     // 选择单个爻后就可以显示
     private readonly Yinyang?[] 本卦爻阴阳 = [null, null, null, null, null, null];

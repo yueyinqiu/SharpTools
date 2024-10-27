@@ -29,18 +29,4 @@
 	  <ProjectReference Include="..\SptlServices\SptlServices.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="Components\ContactInformationComponent.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Pages\LiuyaoDivinationPage.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Pages\QrCodeScannerPage.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Update="Pages\BytesRepresentationsPage.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	</ItemGroup>
 </Project>

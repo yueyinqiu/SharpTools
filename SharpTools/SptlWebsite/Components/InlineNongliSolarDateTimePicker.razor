@@ -1,0 +1,14 @@
+﻿<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+    <FluentSelect TOption="NullableTiangan" Width="auto" Items="@possibleTiangans" @bind-SelectedOption="Niangan"></FluentSelect>
+    <FluentSelect TOption="NullableDizhi" Width="auto" Items="@possibleDizhis" @bind-SelectedOption="Nianzhi"></FluentSelect>
+    年
+    <FluentSelect TOption="NullableTiangan" Width="auto" Items="@possibleTiangans" @bind-SelectedOption="Yuegan"></FluentSelect>
+    <FluentSelect TOption="NullableDizhi" Width="auto" Items="@possibleDizhis" @bind-SelectedOption="Yuezhi"></FluentSelect>
+    月
+    <FluentSelect TOption="NullableTiangan" Width="auto" Items="@possibleTiangans" @bind-SelectedOption="Rigan"></FluentSelect>
+    <FluentSelect TOption="NullableDizhi" Width="auto" Items="@possibleDizhis" @bind-SelectedOption="Rizhi"></FluentSelect>
+    日
+    <FluentSelect TOption="NullableTiangan" Width="auto" Items="@possibleTiangans" @bind-SelectedOption="Shigan"></FluentSelect>
+    <FluentSelect TOption="NullableDizhi" Width="auto" Items="@possibleDizhis" @bind-SelectedOption="Shizhi"></FluentSelect>
+    时
+</FluentStack>

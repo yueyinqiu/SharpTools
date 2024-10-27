@@ -7,26 +7,17 @@
 
 <PageTitle>六爻预测 - SharpTools</PageTitle>
 
-<h1>六爻预测</h1>
-
 <FluentStack Orientation="Orientation.Vertical">
+    <h1>六爻预测</h1>
+
+    <p>
+        此工具仍在开发过程中，目前效果不代表最终结果。
+    </p>
+
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>择时</h2>
-            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-                年
-                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-                月
-                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本" Embedded="true"></FluentSelect>
-                日
-                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-                时
-            </FluentStack>
+            <InlineNongliSolarDateTimePicker @bind-Value="nongliSolar"></InlineNongliSolarDateTimePicker>
         </FluentStack>
     </FluentCard>
 
@@ -76,7 +67,8 @@
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>参考</h2>
-            <FluentTextArea></FluentTextArea>
+            <FluentTextArea Style="width: 100%">
+            </FluentTextArea>
         </FluentStack>
     </FluentCard>
 </FluentStack>
