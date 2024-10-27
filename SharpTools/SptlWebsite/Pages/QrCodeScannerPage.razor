@@ -7,33 +7,39 @@
 <h1>QR 码扫描器</h1>
 
 <FluentStack Orientation="Orientation.Vertical">
-    <h2>输入</h2>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>输入</h2>
+            <FluentInputFile Id="file" MaximumFileSize="@(1024 * 1024 * 1024)" Accept=".png .jpg .jpeg .gif .bmp .tga" Style="width: 100%; border: 1px dashed var(--accent-fill-rest);" OnCompleted="Input">
+                <ChildContent>
+                    <div>
+                        <br />
+                        拖拽文件到框内，或者<label for="file">点击选择文件</label>。
+                        <br />
+                    </div>
+                </ChildContent>
+                <ProgressTemplate>
+                    <FluentProgress Value="context.Percentage"></FluentProgress>
+                </ProgressTemplate>
+            </FluentInputFile>
+        </FluentStack>
+    </FluentCard>
 
-    <FluentInputFile Id="file" MaximumFileSize="@(1024 * 1024 * 1024)" Accept="image/*" Style="width: 100%; border: 1px dashed var(--accent-fill-rest);" OnCompleted="Input">
-        <ChildContent>
-            <div>
-                <br />
-                拖拽文件到框内，或者<label for="file">点击选择文件</label>。
-                <br />
-            </div>
-        </ChildContent>
-        <ProgressTemplate>
-            <FluentProgress Value="context.Percentage"></FluentProgress>
-        </ProgressTemplate>
-    </FluentInputFile>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>结果</h2>
 
-    <h2>结果</h2>
-    
-    <FluentTabs Width="100%" @bind-ActiveTabId="activeTab">
-        @for (int i = 0; i < outputs.Length; i++)
-        {
-            // 这里给好像有闭包相关的问题，所以在这里把值先算出来
-            var id = $"tab{i + 1}";
-            var label = $"结果 {i + 1}";
-            var value = outputs[i];
-            <FluentTab Id="@id" Label="@label">
-                <FluentTextArea Style="width: 100%" Value="@value" Rows="5"></FluentTextArea>
-            </FluentTab>
-        }
-    </FluentTabs>
+            <FluentTabs Width="100%" @bind-ActiveTabId="activeTab">
+                @for (int i = 0; i < outputs.Length; i++)
+                {
+                    var id = $"tab{i + 1}";
+                    var label = $"结果 {i + 1}";
+                    var value = outputs[i];
+                    <FluentTab Id="@id" Label="@label">
+                        <FluentTextArea Style="width: 100%" Value="@value" Rows="5"></FluentTextArea>
+                    </FluentTab>
+                }
+            </FluentTabs>
+        </FluentStack>
+    </FluentCard>
 </FluentStack>

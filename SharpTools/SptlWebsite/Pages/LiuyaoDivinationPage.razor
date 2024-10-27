@@ -10,60 +10,73 @@
 <h1>六爻预测</h1>
 
 <FluentStack Orientation="Orientation.Vertical">
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>择时</h2>
+            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
+                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
+                年
+                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
+                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
+                月
+                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
+                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本" Embedded="true"></FluentSelect>
+                日
+                <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
+                <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
+                时
+            </FluentStack>
+        </FluentStack>
+    </FluentCard>
 
-    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-        <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-        <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-        年
-        <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-        <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-        月
-        <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-        <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本" Embedded="true"></FluentSelect>
-        日
-        <FluentSelect TOption="Tiangan?" Width="auto" Items="@空甲乙丙丁等" OptionText="空天干文本"></FluentSelect>
-        <FluentSelect TOption="Dizhi?" Width="auto" Items="@空子丑寅卯等" OptionText="空地支文本"></FluentSelect>
-        时
-    </FluentStack>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>点卦</h2>
+            <div style="width: 100%; display: grid; grid: auto-flow / auto 1fr 1fr;">
+                <div style="width: 100%">
+                </div>
 
-    <div style="width: 100%; display: grid; grid: auto-flow / auto 1fr 1fr;">
-        <div style="width: 100%">
-        </div>
+                <div style="width: 100%">
+                    <FluentButton Style="width: 100%">
+                        @本卦?.Name
+                    </FluentButton>
+                </div>
+                <div style="width: 100%">
+                    <FluentButton Style="width: 100%">
+                        @之卦?.Name
+                    </FluentButton>
+                </div>
 
-        <div style="width: 100%">
-            <FluentButton Style="width: 100%">
-                @本卦?.Name
-            </FluentButton>
-        </div>
-        <div style="width: 100%">
-            <FluentButton Style="width: 100%">
-                @之卦?.Name
-            </FluentButton>
-        </div>
+                @for (int iDontTouchMe = 6 - 1; iDontTouchMe >= 0; iDontTouchMe--)
+                {
+                    var 爻 = iDontTouchMe;
 
-        @for (int iDontTouchMe = 6 - 1; iDontTouchMe >= 0; iDontTouchMe--)
-        {
-            var 爻 = iDontTouchMe;
+                    <div style="width: 100%">
+                        <FluentButton Style="width: 100%" OnClick="() => 设置单拆重交(爻)">
+                            @(设置的单拆重交[爻]?.ToString() ?? "？")
+                        </FluentButton>
+                    </div>
 
-            <div style="width: 100%">
-                <FluentButton Style="width: 100%" OnClick="() => 设置单拆重交(爻)">
-                    @(设置的单拆重交[爻]?.ToString() ?? "？")
-                </FluentButton>
+                    <div style="width: 100%">
+                        <FluentButton Style="width: 100%; background:none; border:none;">
+                            @本卦爻字符串(爻)
+                        </FluentButton>
+                    </div>
+
+                    <div style="width: 100%">
+                        <FluentButton Style="width: 100%;">
+                            @之卦爻字符串(爻)
+                        </FluentButton>
+                    </div>
+                }
             </div>
-
-            <div style="width: 100%">
-                <FluentButton Style="width: 100%; background:none; border:none;">
-                    @本卦爻字符串(爻)
-                </FluentButton>
-            </div>
-
-            <div style="width: 100%">
-                <FluentButton Style="width: 100%;">
-                    @之卦爻字符串(爻)
-                </FluentButton>
-            </div>
-        }
-    </div>
-
-    <FluentTextArea></FluentTextArea>
+        </FluentStack>
+    </FluentCard>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>参考</h2>
+            <FluentTextArea></FluentTextArea>
+        </FluentStack>
+    </FluentCard>
 </FluentStack>

@@ -6,17 +6,23 @@
 <h1>Guid 生成器</h1>
 
 <FluentStack Orientation="Orientation.Vertical">
-    <h2>配置</h2>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>配置</h2>
 
-    <FluentNumberField Label="数量" Style="width: 100%" Min="1" @bind-Value="countInput"></FluentNumberField>
+            <FluentNumberField Label="数量" Style="width: 100%" Min="1" @bind-Value="countInput"></FluentNumberField>
 
-    <FluentSelect TOption="GuidFormat" Label="格式" Width="100%" Items="formats" OptionText="@(x => x.Name)" @bind-SelectedOption="FormatInput"></FluentSelect>
+            <FluentSelect TOption="GuidFormat" Label="格式" Width="100%" Items="formats" OptionText="@(x => x.Name)" @bind-SelectedOption="FormatInput"></FluentSelect>
+        </FluentStack>
+    </FluentCard>
 
-    <FluentDivider Orientation="Orientation.Horizontal" Role="DividerRole.Separator" Style="width: 100%"></FluentDivider>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>结果</h2>
 
-    <h2>结果</h2>
+            <FluentButton Style="width: 100%" OnClick="(() => ButtonClick())">重新生成</FluentButton>
 
-    <FluentButton Style="width: 100%" OnClick="(() => ButtonClick())">重新生成</FluentButton>
-
-    <FluentTextArea Style="width: 100%" ReadOnly="true" Rows="Math.Clamp(outputs.Length, 1, 10)" Value="@string.Join(Environment.NewLine, outputs.Select(x => FormatInput.Converter(x)))" Placeholder="点击上方按钮生成"></FluentTextArea>
+            <FluentTextArea Style="width: 100%" ReadOnly="true" Rows="Math.Clamp(outputs.Length, 1, 10)" Value="@string.Join(Environment.NewLine, outputs.Select(x => FormatInput.Converter(x)))" Placeholder="点击上方按钮生成"></FluentTextArea>
+        </FluentStack>
+    </FluentCard>
 </FluentStack>
