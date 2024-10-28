@@ -22,7 +22,7 @@
 
             <FluentButton Style="width: 100%" OnClick="(() => ButtonClick())">重新生成</FluentButton>
 
-            <FluentTextArea Style="width: 100%" ReadOnly="true" Rows="Math.Clamp(outputs.Length, 1, 10)" Value="@string.Join(Environment.NewLine, outputs.Select(x => FormatInput.Converter(x)))" Placeholder="点击上方按钮生成"></FluentTextArea>
+            <FluentTextArea Style="width: 100%" ReadOnly="true" Rows="5" Value="@string.Join(Environment.NewLine, outputs.Select(x => FormatInput.Converter(x)))" Placeholder="点击上方按钮生成"></FluentTextArea>
         </FluentStack>
     </FluentCard>
 </FluentStack>
