@@ -11,7 +11,7 @@
         </a>
     </FluentHeader>
 
-    <FluentSplitter Class="main" Orientation="Orientation.Horizontal" Panel1Size="@navMenuSize" OnResized="@((e) => this.SaveNavMenuSize(e.Panel1Size))">
+    <FluentSplitter Class="main" Orientation="Orientation.Horizontal" Panel1Size="@panel1Size" OnResized="@(SaveNavMenuRatio)">
 
         <Panel1>
             <FluentNavMenu>

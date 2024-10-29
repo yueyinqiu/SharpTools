@@ -1,6 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.Extensions.Logging;
-using System.Text.Json.Serialization.Metadata;
 
 namespace SptlServices.GradedLocalStoraging;
 
@@ -9,10 +8,8 @@ internal sealed partial class GradedLocalStorage(
     ISyncLocalStorageService localStorage,
     string rootKey) : IGradedLocalStorage
 {
-    public ILocalStorageEntry<T> GetEntry<T>(
-        string subKey, int importance, JsonTypeInfo<T> serializer)
+    public ILocalStorageEntry<T> GetEntry<T>(string subKey, int importance)
     {
-        return new LocalStorageEntry<T>(
-            localStorage, logger, rootKey, subKey, importance, serializer);
+        return new LocalStorageEntry<T>(localStorage, logger, rootKey, subKey, importance);
     }
 }

@@ -1,17 +1,17 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
 namespace SptlServices.GradedLocalStoraging;
 
-internal sealed class LocalStorageEntry<T>(
-        ISyncLocalStorageService localStorage,
-        ILogger<GradedLocalStorage> logger,
-        string rootKey,
-        string subKey,
-        int importance,
-        JsonTypeInfo<T> serializer) : ILocalStorageEntry<T>
+internal sealed class LocalStorageEntry<
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+    ISyncLocalStorageService localStorage,
+    ILogger<GradedLocalStorage> logger,
+    string rootKey,
+    string subKey,
+    int importance) : ILocalStorageEntry<T>
 {
     public string FullKey { get; } = $"{rootKey}.{subKey}";
 
@@ -50,7 +50,7 @@ internal sealed class LocalStorageEntry<T>(
 
     public void Set(T data)
     {
-        var serialized = JsonSerializer.Serialize(data, serializer);
+        var serialized = JsonSerializer.Serialize(data);
         var dataString = $"{importance}{separator}{serialized}";
         try
         {
@@ -88,7 +88,7 @@ internal sealed class LocalStorageEntry<T>(
         var serialized = split[1];
         try
         {
-            data = JsonSerializer.Deserialize(serialized, serializer);
+            data = JsonSerializer.Deserialize<T>(serialized);
             return true;
         }
         catch (JsonException)

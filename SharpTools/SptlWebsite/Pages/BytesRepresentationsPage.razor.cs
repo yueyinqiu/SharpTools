@@ -25,7 +25,7 @@ partial class BytesRepresentationsPage
         set
         {
             outputFormatDontTouchMe = value;
-            SavePreference();
+            this.SavePreference();
         }
     }
 
@@ -40,7 +40,7 @@ partial class BytesRepresentationsPage
         set
         {
             inputDontTouchMe = value;
-            CacheInputBytes();
+            this.CacheInputBytes();
         }
     }
 
@@ -55,7 +55,7 @@ partial class BytesRepresentationsPage
         }
         try
         {
-            inputBytes = (InputFormat.ToBytes(this.Input), null);
+            inputBytes = (this.InputFormat.ToBytes(this.Input), null);
         }
         catch (Exception ex)
         {
@@ -69,9 +69,9 @@ partial class BytesRepresentationsPage
         {
             var (bytes, ex) = inputBytes;
             if (bytes is not null)
-                return OutputFormat.FromBytes(bytes);
+                return this.OutputFormat.FromBytes(bytes);
             else if (ex is not null)
-                return $"转换失败：{Environment.NewLine}{ex.ToString()}";
+                return $"转换失败：{Environment.NewLine}{ex}";
             else
                 return $"转换失败。";
         }
@@ -131,14 +131,8 @@ partial class BytesRepresentationsPage
     }
 
     private sealed record Preferences(string? InputFormat, string? OutputFormat);
-
-    [JsonSerializable(typeof(Preferences))]
-    partial class BytesRepresentationsPageSerializerContext : JsonSerializerContext { }
-
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
-        this.LocalStorage.GetEntry(
-            "BytesRepresentationsPage.Preferences", 500,
-            BytesRepresentationsPageSerializerContext.Default.Preferences);
+        this.LocalStorage.GetEntry<Preferences>("BytesRepresentationsPage.Preferences", 500);
 
     protected override void OnParametersSet()
     {

@@ -44,13 +44,8 @@ partial class GuidGeneratorPage
 
     internal sealed record Preferences(string FormatName, int Count);
 
-    [JsonSerializable(typeof(Preferences))]
-    partial class GuidGeneratorPageSerializerContext : JsonSerializerContext { }
-
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
-        this.LocalStorage.GetEntry(
-            "GuidGeneratorPage.Preferences", 500,
-            GuidGeneratorPageSerializerContext.Default.Preferences);
+        this.LocalStorage.GetEntry<Preferences>("GuidGeneratorPage.Preferences", 500);
 
     protected override void OnParametersSet()
     {
