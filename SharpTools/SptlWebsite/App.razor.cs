@@ -1,9 +1,6 @@
-﻿
-using Microsoft.FluentUI.AspNetCore.Components.DesignTokens;
+﻿namespace SptlWebsite;
 
-namespace SptlWebsite;
-
-partial class App
+public partial class App
 {
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

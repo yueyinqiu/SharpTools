@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace SptlServices.GradedLocalStoraging;
+﻿namespace SptlServices.GradedLocalStoraging;
 
 public interface ILocalStorageEntry<T>
 {

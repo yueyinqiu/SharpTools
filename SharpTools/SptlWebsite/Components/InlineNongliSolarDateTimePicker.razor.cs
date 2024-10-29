@@ -1,28 +1,27 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components;
 using System.Collections.Immutable;
 using YiJingFramework.PrimitiveTypes;
 
 namespace SptlWebsite.Components;
 
-partial class InlineNongliSolarDateTimePicker
+public partial class InlineNongliSolarDateTimePicker
 {
     private sealed record NullableTiangan(Tiangan? Value)
     {
         public override string ToString()
         {
-            if (!Value.HasValue)
+            if (!this.Value.HasValue)
                 return "？";
-            return Value.Value.ToString("C");
+            return this.Value.Value.ToString("C");
         }
     }
     private sealed record NullableDizhi(Dizhi? Value)
     {
         public override string ToString()
         {
-            if (!Value.HasValue)
+            if (!this.Value.HasValue)
                 return "？";
-            return Value.Value.ToString("C");
+            return this.Value.Value.ToString("C");
         }
     }
 
@@ -53,7 +52,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Niangan = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableDizhi Nianzhi
@@ -62,7 +61,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Nianzhi = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableTiangan Yuegan
@@ -71,7 +70,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Yuegan = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableDizhi Yuezhi
@@ -80,7 +79,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Yuezhi = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableTiangan Rigan
@@ -89,7 +88,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Rigan = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableDizhi Rizhi
@@ -98,7 +97,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Rizhi = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableTiangan Shigan
@@ -107,7 +106,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Shigan = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
     private NullableDizhi Shizhi
@@ -116,7 +115,7 @@ partial class InlineNongliSolarDateTimePicker
         set
         {
             this.Value = this.Value with { Shizhi = value.Value };
-            _ = ValueChanged.InvokeAsync(this.Value);
+            _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
 

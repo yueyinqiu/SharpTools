@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace SptlWebsite.Pages;
 
-partial class QrCodeScannerPage
+public partial class QrCodeScannerPage
 {
     private ImmutableArray<string> outputs = ["这里会以 Base64 字符串的形式显示扫描结果。"];
     private string activeTab = "tab0";
@@ -14,8 +14,8 @@ partial class QrCodeScannerPage
         var file = files.Single();
         if (file.LocalFile is null)
         {
-            outputs = [$"文件导入失败：{Environment.NewLine}{file.ErrorMessage}"];
-            activeTab = "tab0";
+            this.outputs = [$"文件导入失败：{Environment.NewLine}{file.ErrorMessage}"];
+            this.activeTab = "tab0";
             return;
         }
 
@@ -26,8 +26,8 @@ partial class QrCodeScannerPage
         }
         catch (Exception ex)
         {
-            outputs = [$"图像解析失败：{Environment.NewLine}{ex}"];
-            activeTab = "tab0";
+            this.outputs = [$"图像解析失败：{Environment.NewLine}{ex}"];
+            this.activeTab = "tab0";
             file.LocalFile.Delete();
             return;
         }
@@ -35,22 +35,22 @@ partial class QrCodeScannerPage
         byte[][]? bytes;
         try
         {
-            bytes = Qr.ImageDecoder(image);
+            bytes = this.Qr.ImageDecoder(image);
         }
         catch (Exception ex)
         {
-            outputs = [$"Qr 码识别失败：{Environment.NewLine}{ex}"];
-            activeTab = "tab0";
+            this.outputs = [$"Qr 码识别失败：{Environment.NewLine}{ex}"];
+            this.activeTab = "tab0";
             file.LocalFile.Delete();
             return;
         }
 
         // 找不到的时候会返回 null 而不是零个元素
         if (bytes is null)
-            outputs = [$"识别失败或图像中不存在 Qr 码。"];
+            this.outputs = [$"识别失败或图像中不存在 Qr 码。"];
         else
-            outputs = bytes.Select(Convert.ToBase64String).ToImmutableArray();
-        activeTab = "tab0";
+            this.outputs = bytes.Select(Convert.ToBase64String).ToImmutableArray();
+        this.activeTab = "tab0";
         file.LocalFile.Delete();
     }
 }

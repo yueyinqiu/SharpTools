@@ -2,13 +2,12 @@
 using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
 
 namespace SptlWebsite.Layout;
 
-partial class MainLayout
+public partial class MainLayout
 {
-    private readonly static ImmutableArray<Icon> alphabetIcons = [
+    private static readonly ImmutableArray<Icon> alphabetIcons = [
         FluentUiBlazorMdiSvgIcons.MdiSvg.AlphaABoxOutline(IconVariant.Regular, IconSize.Size24),
         FluentUiBlazorMdiSvgIcons.MdiSvg.AlphaBBoxOutline(IconVariant.Regular, IconSize.Size24),
         FluentUiBlazorMdiSvgIcons.MdiSvg.AlphaCBoxOutline(IconVariant.Regular, IconSize.Size24),
@@ -85,7 +84,7 @@ partial class MainLayout
     {
         base.OnParametersSet();
 
-        if(this.NavMenuRatioStorageEntry.TryGet(out var navMenuSize))
+        if (this.NavMenuRatioStorageEntry.TryGet(out var navMenuSize))
         {
             this.panel1Size = $"{navMenuSize * 100}%";
             this.StateHasChanged();

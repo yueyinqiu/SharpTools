@@ -2,7 +2,7 @@
 
 namespace SptlWebsite.Components;
 
-partial class ErrorComponent
+public partial class ErrorComponent
 {
     [Parameter]
     public Exception? Exception { get; set; }

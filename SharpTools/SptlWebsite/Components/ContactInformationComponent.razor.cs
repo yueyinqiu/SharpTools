@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿namespace SptlWebsite.Components;
 
-namespace SptlWebsite.Components;
-
-partial class ContactInformationComponent
+public partial class ContactInformationComponent
 {
 }

@@ -59,7 +59,7 @@ internal sealed class LocalStorageEntry<
         catch
         {
             _ = this.RemoveUnimportant();
-            
+
             localStorage.SetItemAsString(this.FullKey, dataString);
         }
     }

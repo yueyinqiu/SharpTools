@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using YiJingFramework.Annotating.Zhouyi;
+﻿using YiJingFramework.Annotating.Zhouyi;
 
 namespace SptlServices.BuiltInZhouyi;
 

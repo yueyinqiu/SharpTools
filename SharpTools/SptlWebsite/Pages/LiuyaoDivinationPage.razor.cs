@@ -1,25 +1,23 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
+using System.Text;
+using YiJingFramework.Annotating.Zhouyi;
+using YiJingFramework.Annotating.Zhouyi.Entities;
 using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
 using YiJingFramework.EntityRelations.EntityStrings;
 using YiJingFramework.EntityRelations.EntityStrings.Conversions;
+using YiJingFramework.EntityRelations.EntityStrings.Extensions;
+using YiJingFramework.EntityRelations.GuaCharacters.Extensions;
 using YiJingFramework.EntityRelations.GuaHexagramBagongs.Extensions;
 using YiJingFramework.EntityRelations.GuaHexagramNajias.Extensions;
 using YiJingFramework.EntityRelations.WuxingRelations;
 using YiJingFramework.EntityRelations.WuxingRelations.Extensions;
 using YiJingFramework.PrimitiveTypes;
 using YiJingFramework.PrimitiveTypes.GuaWithFixedCount;
-using YiJingFramework.EntityRelations.GuaCharacters.Extensions;
-using System.Text;
-using YiJingFramework.EntityRelations.EntityStrings.Extensions;
-using YiJingFramework.Annotating.Zhouyi.Entities;
-using YiJingFramework.Annotating.Zhouyi;
 using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
 namespace SptlWebsite.Pages;
 
-partial class LiuyaoDivinationPage
+public partial class LiuyaoDivinationPage
 {
     private record 单拆重交(Yinyang 阴阳, bool 动否)
     {
@@ -30,10 +28,10 @@ partial class LiuyaoDivinationPage
 
         public override string ToString()
         {
-            if (阴阳.IsYang)
-                return 动否 ? "重" : "单";
+            if (this.阴阳.IsYang)
+                return this.动否 ? "重" : "单";
             else
-                return 动否 ? "交" : "拆";
+                return this.动否 ? "交" : "拆";
         }
     }
 
@@ -60,9 +58,9 @@ partial class LiuyaoDivinationPage
 
     private void 设置单拆重交(int 要改变的爻)
     {
-        var 当前空单拆重交 = 空单拆重交.IndexOf(设置的单拆重交[要改变的爻]);
-        var 改为空单拆重交 = (当前空单拆重交 + 1) % 空单拆重交.Length;
-        设置的单拆重交[要改变的爻] = 空单拆重交[改为空单拆重交];
+        var 当前空单拆重交 = this.空单拆重交.IndexOf(this.设置的单拆重交[要改变的爻]);
+        var 改为空单拆重交 = (当前空单拆重交 + 1) % this.空单拆重交.Length;
+        this.设置的单拆重交[要改变的爻] = this.空单拆重交[改为空单拆重交];
 
         var 内卦给定 = true;
         var 外卦给定 = true;
@@ -70,25 +68,25 @@ partial class LiuyaoDivinationPage
         var 之卦各爻 = new Yinyang[6];
         for (int 爻 = 0; 爻 < 6; 爻++)
         {
-            var 单拆重交 = 设置的单拆重交[爻];
+            var 单拆重交 = this.设置的单拆重交[爻];
             if (单拆重交 is null)
             {
                 if (爻 < 3)
                     内卦给定 = false;
                 else
                     外卦给定 = false;
-                本卦爻阴阳[爻] = null;
-                本卦爻动否[爻] = null;
-                之卦爻阴阳[爻] = null;
+                this.本卦爻阴阳[爻] = null;
+                this.本卦爻动否[爻] = null;
+                this.之卦爻阴阳[爻] = null;
             }
             else
             {
                 本卦各爻[爻] = 单拆重交.阴阳;
                 之卦各爻[爻] = 单拆重交.动否 ? !单拆重交.阴阳 : 单拆重交.阴阳;
 
-                本卦爻阴阳[爻] = 本卦各爻[爻];
-                本卦爻动否[爻] = 单拆重交.动否;
-                之卦爻阴阳[爻] = 之卦各爻[爻];
+                this.本卦爻阴阳[爻] = 本卦各爻[爻];
+                this.本卦爻动否[爻] = 单拆重交.动否;
+                this.之卦爻阴阳[爻] = 之卦各爻[爻];
             }
         }
 
@@ -115,23 +113,23 @@ partial class LiuyaoDivinationPage
 
                 缺失五行.Remove(本卦爻五行);
 
-                本卦爻天干[i] = 本卦干支[i].Tiangan;
+                this.本卦爻天干[i] = 本卦干支[i].Tiangan;
                 this.本卦爻地支[i] = 本卦爻地支;
                 this.本卦爻五行[i] = 本卦爻五行;
 
-                之卦爻天干[i] = 之卦干支[i].Tiangan;
+                this.之卦爻天干[i] = 之卦干支[i].Tiangan;
                 this.之卦爻地支[i] = 之卦爻地支;
                 this.之卦爻五行[i] = 之卦爻五行;
 
-                本卦爻六亲[i] = 本卦五行.GetRelation(本卦爻五行);
-                之卦爻六亲[i] = 本卦五行.GetRelation(之卦爻五行);
+                this.本卦爻六亲[i] = 本卦五行.GetRelation(本卦爻五行);
+                this.之卦爻六亲[i] = 本卦五行.GetRelation(之卦爻五行);
 
                 if (i == 世爻)
-                    本卦爻世应真世假应[i] = true;
+                    this.本卦爻世应真世假应[i] = true;
                 else if (i == 应爻)
-                    本卦爻世应真世假应[i] = false;
+                    this.本卦爻世应真世假应[i] = false;
                 else
-                    本卦爻世应真世假应[i] = null;
+                    this.本卦爻世应真世假应[i] = null;
             }
 
             var 八纯卦 = new GuaHexagram(本卦八宫.Gong.Concat(本卦八宫.Gong));
@@ -154,8 +152,8 @@ partial class LiuyaoDivinationPage
                 this.伏神爻六亲[i] = 本卦五行.GetRelation(伏神爻五行);
             }
 
-            this.本卦 = zhouyi.GetHexagram(本卦);
-            this.之卦 = zhouyi.GetHexagram(之卦);
+            this.本卦 = this.zhouyi.GetHexagram(本卦);
+            this.之卦 = this.zhouyi.GetHexagram(之卦);
         }
         else if (内卦给定)
         {
@@ -174,30 +172,30 @@ partial class LiuyaoDivinationPage
                 var 之卦爻地支 = 之卦干支[i].Dizhi;
                 var 之卦爻五行 = 之卦爻地支.Wuxing();
 
-                本卦爻天干[i] = 本卦干支[i].Tiangan;
+                this.本卦爻天干[i] = 本卦干支[i].Tiangan;
                 this.本卦爻地支[i] = 本卦爻地支;
                 this.本卦爻五行[i] = 本卦爻五行;
 
-                之卦爻天干[i] = 之卦干支[i].Tiangan;
+                this.之卦爻天干[i] = 之卦干支[i].Tiangan;
                 this.之卦爻地支[i] = 之卦爻地支;
                 this.之卦爻五行[i] = 之卦爻五行;
             }
             for (int i = 3; i < 6; i++)
             {
-                本卦爻天干[i] = null;
+                this.本卦爻天干[i] = null;
                 this.本卦爻地支[i] = null;
                 this.本卦爻五行[i] = null;
 
-                之卦爻天干[i] = null;
+                this.之卦爻天干[i] = null;
                 this.之卦爻地支[i] = null;
                 this.之卦爻五行[i] = null;
             }
 
             for (int i = 0; i < 6; i++)
             {
-                本卦爻六亲[i] = null;
-                之卦爻六亲[i] = null;
-                本卦爻世应真世假应[i] = null;
+                this.本卦爻六亲[i] = null;
+                this.之卦爻六亲[i] = null;
+                this.本卦爻世应真世假应[i] = null;
 
                 this.伏神爻天干[i] = null;
                 this.伏神爻地支[i] = null;
@@ -220,11 +218,11 @@ partial class LiuyaoDivinationPage
             var 之卦干支 = 之卦.Najia();
             for (int i = 0; i < 3; i++)
             {
-                本卦爻天干[i] = null;
+                this.本卦爻天干[i] = null;
                 this.本卦爻地支[i] = null;
                 this.本卦爻五行[i] = null;
 
-                之卦爻天干[i] = null;
+                this.之卦爻天干[i] = null;
                 this.之卦爻地支[i] = null;
                 this.之卦爻五行[i] = null;
             }
@@ -235,20 +233,20 @@ partial class LiuyaoDivinationPage
                 var 之卦爻地支 = 之卦干支[i].Dizhi;
                 var 之卦爻五行 = 之卦爻地支.Wuxing();
 
-                本卦爻天干[i] = 本卦干支[i].Tiangan;
+                this.本卦爻天干[i] = 本卦干支[i].Tiangan;
                 this.本卦爻地支[i] = 本卦爻地支;
                 this.本卦爻五行[i] = 本卦爻五行;
 
-                之卦爻天干[i] = 之卦干支[i].Tiangan;
+                this.之卦爻天干[i] = 之卦干支[i].Tiangan;
                 this.之卦爻地支[i] = 之卦爻地支;
                 this.之卦爻五行[i] = 之卦爻五行;
             }
 
             for (int i = 0; i < 6; i++)
             {
-                本卦爻六亲[i] = null;
-                之卦爻六亲[i] = null;
-                本卦爻世应真世假应[i] = null;
+                this.本卦爻六亲[i] = null;
+                this.之卦爻六亲[i] = null;
+                this.本卦爻世应真世假应[i] = null;
 
                 this.伏神爻天干[i] = null;
                 this.伏神爻地支[i] = null;
@@ -263,25 +261,25 @@ partial class LiuyaoDivinationPage
         {
             for (int i = 0; i < 6; i++)
             {
-                本卦爻天干[i] = null;
+                this.本卦爻天干[i] = null;
                 this.本卦爻地支[i] = null;
                 this.本卦爻五行[i] = null;
 
-                之卦爻天干[i] = null;
+                this.之卦爻天干[i] = null;
                 this.之卦爻地支[i] = null;
                 this.之卦爻五行[i] = null;
 
-                本卦爻六亲[i] = null;
-                之卦爻六亲[i] = null;
-                本卦爻世应真世假应[i] = null;
+                this.本卦爻六亲[i] = null;
+                this.之卦爻六亲[i] = null;
+                this.本卦爻世应真世假应[i] = null;
 
                 this.伏神爻天干[i] = null;
                 this.伏神爻地支[i] = null;
                 this.伏神爻五行[i] = null;
                 this.伏神爻六亲[i] = null;
             }
-            本卦 = null;
-            之卦 = null;
+            this.本卦 = null;
+            this.之卦 = null;
         }
     }
 
@@ -320,15 +318,15 @@ partial class LiuyaoDivinationPage
             _ = builder.Append('　', length - s.Length).Append(s);
         }
 
-        Append(本卦爻世应真世假应[爻]?.ToString(世应文本), 1);
+        Append(this.本卦爻世应真世假应[爻]?.ToString(this.世应文本), 1);
 
-        Append(本卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin), 3);
+        Append(this.本卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin), 3);
 
-        Append(本卦爻天干[爻]?.ToString("C"), 2);
-        Append(本卦爻地支[爻]?.ToString("C"), 1);
-        Append(本卦爻五行[爻]?.ToString("C"), 1);
+        Append(this.本卦爻天干[爻]?.ToString("C"), 2);
+        Append(this.本卦爻地支[爻]?.ToString("C"), 1);
+        Append(this.本卦爻五行[爻]?.ToString("C"), 1);
 
-        Append(本卦爻阴阳[爻]?.ToString(阴阳文本), 2);
+        Append(this.本卦爻阴阳[爻]?.ToString(this.阴阳文本), 2);
 
         return builder.ToString();
     }
@@ -347,15 +345,15 @@ partial class LiuyaoDivinationPage
             _ = builder.Append('　', length - s.Length).Append(s);
         }
 
-        Append(本卦爻动否[爻] is true ? "动" : null, 1);
+        Append(this.本卦爻动否[爻] is true ? "动" : null, 1);
 
-        Append(之卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin), 3);
+        Append(this.之卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin), 3);
 
-        Append(之卦爻天干[爻]?.ToString("C"), 2);
-        Append(之卦爻地支[爻]?.ToString("C"), 1);
-        Append(之卦爻五行[爻]?.ToString("C"), 1);
+        Append(this.之卦爻天干[爻]?.ToString("C"), 2);
+        Append(this.之卦爻地支[爻]?.ToString("C"), 1);
+        Append(this.之卦爻五行[爻]?.ToString("C"), 1);
 
-        Append(之卦爻阴阳[爻]?.ToString(阴阳文本), 2);
+        Append(this.之卦爻阴阳[爻]?.ToString(this.阴阳文本), 2);
 
         return builder.ToString();
     }
@@ -389,6 +387,6 @@ partial class LiuyaoDivinationPage
     private ZhouyiStore zhouyi = new ZhouyiStore(null);
     protected override async Task OnParametersSetAsync()
     {
-        zhouyi = await BuiltInZhouyi.GetZhouyiAsync();
+        this.zhouyi = await this.BuiltInZhouyi.GetZhouyiAsync();
     }
 }
