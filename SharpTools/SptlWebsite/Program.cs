@@ -1,4 +1,5 @@
 ﻿using FileDownloadBlazor.Extensions;
+using HistoryBlazor.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -20,6 +21,7 @@ public class Program
         });
 
         _ = builder.Services.AddFileDownloadBlazor();
+        _ = builder.Services.AddHistoryBlazor();
         _ = builder.Services.AddQRCodeDecoder();
 
         builder.Services.AddSptlLocalStorage("SharpTools");
