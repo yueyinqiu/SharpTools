@@ -35,7 +35,7 @@ public partial class LiuyaoDivinationPage
         }
     }
 
-    private 单拆重交?[] 设置的单拆重交 = [null, null, null, null, null, null];
+    private readonly 单拆重交?[] 设置的单拆重交 = [null, null, null, null, null, null];
     private readonly ImmutableArray<单拆重交?> 空单拆重交 = [
         null,
         单拆重交.单,
@@ -43,18 +43,6 @@ public partial class LiuyaoDivinationPage
         单拆重交.重,
         单拆重交.交
     ];
-    private readonly ImmutableArray<Tiangan?> 空甲乙丙丁等 =
-        Enumerable.Range(1, 10)
-        .Select(Tiangan.FromIndex)
-        .Cast<Tiangan?>()
-        .Prepend(null)
-        .ToImmutableArray();
-    private readonly ImmutableArray<Dizhi?> 空子丑寅卯等 =
-        Enumerable.Range(1, 12)
-        .Select(Dizhi.FromIndex)
-        .Cast<Dizhi?>()
-        .Prepend(null)
-        .ToImmutableArray();
 
     private void 设置单拆重交(int 要改变的爻)
     {
@@ -111,7 +99,7 @@ public partial class LiuyaoDivinationPage
                 var 之卦爻地支 = 之卦干支[i].Dizhi;
                 var 之卦爻五行 = 之卦爻地支.Wuxing();
 
-                缺失五行.Remove(本卦爻五行);
+                _ = 缺失五行.Remove(本卦爻五行);
 
                 本卦爻天干[i] = 本卦干支[i].Tiangan;
                 this.本卦爻地支[i] = 本卦爻地支;
@@ -292,16 +280,6 @@ public partial class LiuyaoDivinationPage
         = (x) =>
         {
             return x ? "世" : "应";
-        };
-    private readonly Func<Tiangan?, string?> 空天干文本
-        = (x) =>
-        {
-            return x?.ToString("C") ?? "空";
-        };
-    private readonly Func<Dizhi?, string?> 空地支文本
-        = (x) =>
-        {
-            return x?.ToString("C") ?? "空";
         };
 
     private string 本卦爻字符串(int 爻)

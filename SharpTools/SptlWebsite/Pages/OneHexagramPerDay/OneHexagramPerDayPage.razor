@@ -1,0 +1,65 @@
+﻿@page "/OneHexagramPerDay"
+@using YiJingFramework.Annotating.Zhouyi.Entities
+
+@inject IFileDownloader Downloader
+@inject IBuiltInZhouyiAccessor BuiltInZhouyi
+@inject IHistoryBlazor HistoryBlazor
+@inject NavigationManager Navigation
+
+<PageTitle>一日一卦 - SharpTools</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical">
+    <h1>一日一卦</h1>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>查询</h2>
+            <div>
+                <FluentCombobox TOption="string" Items="paintingsToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputPainting"></FluentCombobox>
+                <FluentCombobox TOption="string" Items="namesToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputName"></FluentCombobox>
+                <FluentCombobox TOption="string" Items="upperLowerToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputUpperLower"></FluentCombobox>
+            </div>
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical" Width="100%">
+            @if (displayingGua is not null)
+            {
+                var gua = displayingGua.Gua;
+
+                <h2>@displayingGua.DisplayedTitle</h2>
+
+                @if (gua.Painting == todaysGua.gua)
+                {
+                    <p>@todaysGua.display</p>
+                }
+
+                <p>
+                    @gua.Text <br />
+                    @gua.Xiang <br />
+                    @gua.Tuan <br />
+                </p>
+
+                <p>
+                    @foreach (var line in gua.EnumerateYaos())
+                    {
+                        if (line.YaoText is not null)
+                        {
+                            @line.YaoText <br />
+                            @line.Xiang <br />
+                        }
+                    }
+                </p>
+            }
+            else
+            {
+                <h2>结果</h2>
+
+                <p>
+                    请选择一卦。
+                </p>
+            }
+        </FluentStack>
+    </FluentCard>
+</FluentStack>
