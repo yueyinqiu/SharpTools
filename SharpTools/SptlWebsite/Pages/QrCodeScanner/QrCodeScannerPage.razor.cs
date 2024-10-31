@@ -14,8 +14,8 @@ public partial class QrCodeScannerPage
         var file = files.Single();
         if (file.LocalFile is null)
         {
-            outputs = [$"文件导入失败：{Environment.NewLine}{file.ErrorMessage}"];
-            activeTab = "tab0";
+            this.outputs = [$"文件导入失败：{Environment.NewLine}{file.ErrorMessage}"];
+            this.activeTab = "tab0";
             return;
         }
 
@@ -26,8 +26,8 @@ public partial class QrCodeScannerPage
         }
         catch (Exception ex)
         {
-            outputs = [$"图像解析失败：{Environment.NewLine}{ex}"];
-            activeTab = "tab0";
+            this.outputs = [$"图像解析失败：{Environment.NewLine}{ex}"];
+            this.activeTab = "tab0";
             file.LocalFile.Delete();
             return;
         }
@@ -39,18 +39,18 @@ public partial class QrCodeScannerPage
         }
         catch (Exception ex)
         {
-            outputs = [$"Qr 码识别失败：{Environment.NewLine}{ex}"];
-            activeTab = "tab0";
+            this.outputs = [$"Qr 码识别失败：{Environment.NewLine}{ex}"];
+            this.activeTab = "tab0";
             file.LocalFile.Delete();
             return;
         }
 
         // 找不到的时候会返回 null 而不是零个元素
         if (bytes is null)
-            outputs = [$"识别失败或图像中不存在 Qr 码。"];
+            this.outputs = [$"识别失败或图像中不存在 Qr 码。"];
         else
-            outputs = bytes.Select(Convert.ToBase64String).ToImmutableArray();
-        activeTab = "tab0";
+            this.outputs = bytes.Select(Convert.ToBase64String).ToImmutableArray();
+        this.activeTab = "tab0";
         file.LocalFile.Delete();
     }
 }

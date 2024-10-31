@@ -9,7 +9,7 @@ public partial class OneHexagramPerDayPage
 {
     private sealed class ProcessedGua
     {
-        public ProcessedGua(GuaHexagram gua, ZhouyiStoreWithLineTitles zhouyi) 
+        public ProcessedGua(GuaHexagram gua, ZhouyiStoreWithLineTitles zhouyi)
         {
             this.Gua = zhouyi[gua];
             var (upper, lower) = this.Gua.SplitToTrigrams(zhouyi.InnerStore);
@@ -21,17 +21,17 @@ public partial class OneHexagramPerDayPage
                 this.UpperLowerOption = this.PaintingOption;
 
             this.UpperLowerOption = $"{upper.Name}上{lower.Name}下";
-            if(string.IsNullOrEmpty(this.UpperLowerOption))
+            if (string.IsNullOrEmpty(this.UpperLowerOption))
                 this.UpperLowerOption = this.PaintingOption;
 
             if (upper.Painting == lower.Painting)
             {
-                this.DisplayedTitle = 
+                this.DisplayedTitle =
                     $"{this.Gua.Painting.ToUnicodeChar()} {this.Gua.Name}为{upper.Nature}";
             }
             else
             {
-                this.DisplayedTitle = 
+                this.DisplayedTitle =
                     $"{this.Gua.Painting.ToUnicodeChar()} {upper.Nature}{lower.Nature}{this.Gua.Name}";
             }
         }

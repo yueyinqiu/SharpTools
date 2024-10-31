@@ -16,7 +16,7 @@ public partial class OneHexagramPerDayPage
     private Dictionary<string, ProcessedGua> upperLowerToGuas = [];
 
     private ProcessedGua? displayingGua;
-    private (GuaHexagram gua, string display) todaysGua = 
+    private (GuaHexagram gua, string display) todaysGua =
         (new(Enumerable.Repeat(Yinyang.Yang, 6)), "");
 
     private void SetDontTouchAs(ProcessedGua gua)
@@ -31,17 +31,17 @@ public partial class OneHexagramPerDayPage
     {
         get
         {
-            return inputPaintingDontTouchMe;
+            return this.inputPaintingDontTouchMe;
         }
         set
         {
-            if (paintingsToGuas.TryGetValue(value!, out displayingGua))
+            if (this.paintingsToGuas.TryGetValue(value!, out this.displayingGua))
             {
-                SetDontTouchAs(displayingGua);
+                this.SetDontTouchAs(this.displayingGua);
             }
             else
             {
-                inputPaintingDontTouchMe = value;
+                this.inputPaintingDontTouchMe = value;
                 this.displayingGua = null;
                 this.InputName = null;
                 this.InputUpperLower = null;
@@ -53,17 +53,17 @@ public partial class OneHexagramPerDayPage
     {
         get
         {
-            return inputNameDontTouchMe;
+            return this.inputNameDontTouchMe;
         }
         set
         {
-            if (namesToGuas.TryGetValue(value!, out displayingGua))
+            if (this.namesToGuas.TryGetValue(value!, out this.displayingGua))
             {
-                SetDontTouchAs(displayingGua);
+                this.SetDontTouchAs(this.displayingGua);
             }
             else
             {
-                inputNameDontTouchMe = value;
+                this.inputNameDontTouchMe = value;
                 this.displayingGua = null;
                 this.InputPainting = null;
                 this.InputUpperLower = null;
@@ -75,17 +75,17 @@ public partial class OneHexagramPerDayPage
     {
         get
         {
-            return inputUpperLowerDontTouchMe;
+            return this.inputUpperLowerDontTouchMe;
         }
         set
         {
-            if (upperLowerToGuas.TryGetValue(value!, out displayingGua))
+            if (this.upperLowerToGuas.TryGetValue(value!, out this.displayingGua))
             {
-                SetDontTouchAs(displayingGua);
+                this.SetDontTouchAs(this.displayingGua);
             }
             else
             {
-                inputUpperLowerDontTouchMe = value;
+                this.inputUpperLowerDontTouchMe = value;
                 this.displayingGua = null;
                 this.InputPainting = null;
                 this.InputName = null;
@@ -111,9 +111,9 @@ public partial class OneHexagramPerDayPage
             var gua = Gua.Parse(Convert.ToString(i, 2).PadLeft(6, '0'));
             var zhouyiGua = new ProcessedGua(gua.AsFixed<GuaHexagram>(), zhouyi);
 
-            paintingsToGuas.Add(zhouyiGua.PaintingOption, zhouyiGua);
-            namesToGuas.Add(zhouyiGua.NameOption, zhouyiGua);
-            upperLowerToGuas.Add(zhouyiGua.UpperLowerOption, zhouyiGua);
+            this.paintingsToGuas.Add(zhouyiGua.PaintingOption, zhouyiGua);
+            this.namesToGuas.Add(zhouyiGua.NameOption, zhouyiGua);
+            this.upperLowerToGuas.Add(zhouyiGua.UpperLowerOption, zhouyiGua);
         }
 
         var date = DateOnly.FromDateTime(DateTime.Now);

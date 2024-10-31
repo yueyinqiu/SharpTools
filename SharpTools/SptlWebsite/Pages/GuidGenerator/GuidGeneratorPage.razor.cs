@@ -31,12 +31,12 @@ public partial class GuidGeneratorPage
     {
         get
         {
-            return formatInputDontTouchMe;
+            return this.formatInputDontTouchMe;
         }
         set
         {
-            formatInputDontTouchMe = value;
-            SavePreference();
+            this.formatInputDontTouchMe = value;
+            this.SavePreference();
         }
     }
 
@@ -47,12 +47,12 @@ public partial class GuidGeneratorPage
 
     protected override void OnParametersSet()
     {
-        if (PreferenceStorage.TryGet(out var preference))
+        if (this.PreferenceStorage.TryGet(out var preference))
         {
             if (preference is null)
                 return;
-            countInput = Math.Clamp(preference.Count, 1, int.MaxValue);
-            FormatInput = formats.FirstOrDefault(
+            this.countInput = Math.Clamp(preference.Count, 1, int.MaxValue);
+            this.FormatInput = formats.FirstOrDefault(
                 x => x.Name == preference.FormatName,
                 formats.Single(x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo"));
         }
@@ -60,16 +60,16 @@ public partial class GuidGeneratorPage
 
     private void SavePreference()
     {
-        PreferenceStorage.Set(new(FormatInput.Name, countInput));
+        this.PreferenceStorage.Set(new(this.FormatInput.Name, this.countInput));
     }
 
     private void ButtonClick()
     {
-        outputs = Enumerable.Range(0, countInput)
+        this.outputs = Enumerable.Range(0, this.countInput)
             .Select(_ => Guid.NewGuid())
             .ToImmutableArray();
 
-        SavePreference();
+        this.SavePreference();
         this.StateHasChanged();
     }
 }

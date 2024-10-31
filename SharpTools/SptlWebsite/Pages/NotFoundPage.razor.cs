@@ -10,8 +10,8 @@ public partial class NotFoundPage
 
     protected override async Task OnParametersSetAsync()
     {
-        await HistoryBlazor.ReplaceStateWithCurrentStateAsync(
-            new UriBuilder(Navigation.Uri)
+        await this.HistoryBlazor.ReplaceStateWithCurrentStateAsync(
+            new UriBuilder(this.Navigation.Uri)
             .SetQuery()
             .ToString());
     }
