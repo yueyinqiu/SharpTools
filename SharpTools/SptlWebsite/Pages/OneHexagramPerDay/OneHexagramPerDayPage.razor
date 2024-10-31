@@ -15,9 +15,9 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>查询</h2>
             <div>
-                <FluentCombobox TOption="string" Items="paintingsToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputPainting"></FluentCombobox>
-                <FluentCombobox TOption="string" Items="namesToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputName"></FluentCombobox>
-                <FluentCombobox TOption="string" Items="upperLowerToGuas.Keys" Autocomplete="ComboboxAutocomplete.Both" @bind-SelectedOption="InputUpperLower"></FluentCombobox>
+                <FluentCombobox TOption="ProcessedGua" Items="guas" Autocomplete="ComboboxAutocomplete.Both" OptionText="@(x => x.PaintingOption)" @bind-SelectedOption="displayingGua"></FluentCombobox>
+                <FluentCombobox TOption="ProcessedGua" Items="guas" Autocomplete="ComboboxAutocomplete.Both" OptionText="@(x => x.UpperLowerOption)" @bind-SelectedOption="displayingGua"></FluentCombobox>
+                <FluentCombobox TOption="ProcessedGua" Items="guas" Autocomplete="ComboboxAutocomplete.Both" OptionText="@(x => x.NameOption)" @bind-SelectedOption="displayingGua"></FluentCombobox>
             </div>
         </FluentStack>
     </FluentCard>
