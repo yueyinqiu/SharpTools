@@ -2,7 +2,7 @@
 using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
 
-namespace SptlWebsite.Pages;
+namespace SptlWebsite.Pages.BytesRepresentations;
 
 public partial class BytesRepresentationsPage
 {

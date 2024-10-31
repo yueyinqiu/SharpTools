@@ -1,7 +1,7 @@
 ﻿using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
 
-namespace SptlWebsite.Pages;
+namespace SptlWebsite.Pages.GuidGenerator;
 
 public partial class GuidGeneratorPage
 {
@@ -31,12 +31,12 @@ public partial class GuidGeneratorPage
     {
         get
         {
-            return this.formatInputDontTouchMe;
+            return formatInputDontTouchMe;
         }
         set
         {
-            this.formatInputDontTouchMe = value;
-            this.SavePreference();
+            formatInputDontTouchMe = value;
+            SavePreference();
         }
     }
 
@@ -47,12 +47,12 @@ public partial class GuidGeneratorPage
 
     protected override void OnParametersSet()
     {
-        if (this.PreferenceStorage.TryGet(out var preference))
+        if (PreferenceStorage.TryGet(out var preference))
         {
             if (preference is null)
                 return;
-            this.countInput = Math.Clamp(preference.Count, 1, int.MaxValue);
-            this.FormatInput = formats.FirstOrDefault(
+            countInput = Math.Clamp(preference.Count, 1, int.MaxValue);
+            FormatInput = formats.FirstOrDefault(
                 x => x.Name == preference.FormatName,
                 formats.Single(x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo"));
         }
@@ -60,16 +60,16 @@ public partial class GuidGeneratorPage
 
     private void SavePreference()
     {
-        this.PreferenceStorage.Set(new(this.FormatInput.Name, this.countInput));
+        PreferenceStorage.Set(new(FormatInput.Name, countInput));
     }
 
     private void ButtonClick()
     {
-        this.outputs = Enumerable.Range(0, this.countInput)
+        outputs = Enumerable.Range(0, countInput)
             .Select(_ => Guid.NewGuid())
             .ToImmutableArray();
 
-        this.SavePreference();
+        SavePreference();
         this.StateHasChanged();
     }
 }
