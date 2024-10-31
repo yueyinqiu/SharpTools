@@ -35,7 +35,8 @@ public partial class OneHexagramPerDayPage
         }
         set
         {
-            if (this.paintingsToGuas.TryGetValue(value!, out this.displayingGua))
+            if (value is not null && 
+                this.paintingsToGuas.TryGetValue(value!, out this.displayingGua))
             {
                 this.SetDontTouchAs(this.displayingGua);
             }
@@ -57,7 +58,8 @@ public partial class OneHexagramPerDayPage
         }
         set
         {
-            if (this.namesToGuas.TryGetValue(value!, out this.displayingGua))
+            if (value is not null && 
+                this.namesToGuas.TryGetValue(value, out this.displayingGua))
             {
                 this.SetDontTouchAs(this.displayingGua);
             }
@@ -79,7 +81,8 @@ public partial class OneHexagramPerDayPage
         }
         set
         {
-            if (this.upperLowerToGuas.TryGetValue(value!, out this.displayingGua))
+            if (value is not null && 
+                this.upperLowerToGuas.TryGetValue(value!, out this.displayingGua))
             {
                 this.SetDontTouchAs(this.displayingGua);
             }
@@ -125,9 +128,8 @@ public partial class OneHexagramPerDayPage
         var todaysGua = new HexagramProvider(date).GetHexagram();
         this.todaysGua = (todaysGua, todaysGuaString);
 
-        if (this.DefaultGua is null)
-            this.InputPainting = this.todaysGua.gua.ToString();
-        else
+        if (this.DefaultGua is not null &&
+            this.paintingsToGuas.ContainsKey(this.DefaultGua))
         {
             this.InputPainting = this.DefaultGua;
             await this.HistoryBlazor.ReplaceStateWithCurrentStateAsync(
@@ -135,5 +137,7 @@ public partial class OneHexagramPerDayPage
                 .SetQuery()
                 .ToString());
         }
+        else
+            this.InputPainting = this.todaysGua.gua.ToString();
     }
 }
