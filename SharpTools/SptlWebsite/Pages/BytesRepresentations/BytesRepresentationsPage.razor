@@ -31,7 +31,7 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>结果与输出</h2>
 
-            <FluentTextArea Style="width: 100%" Value="@Output" Label="目标内容" Rows="5"></FluentTextArea>
+            <FluentTextArea Style="width: 100%" Value="@Output" ReadOnly="true" Label="目标内容" Rows="5"></FluentTextArea>
 
             <div>
                 <FluentButton OnClick="Export" Disabled="@(inputBytes.bytes is null)">导出文件</FluentButton>

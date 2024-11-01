@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Immutable;
+using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
 
 namespace SptlWebsite.Components;
@@ -31,6 +32,15 @@ public partial class InlineNongliSolarDateTimePicker
     {
         public static SelectedNongliSolarDateTime Empty =>
             new(null, null, null, null, null, null, null, null);
+
+        public SelectedNongliSolarDateTime(SolarDateTime dateTime)
+            : this(dateTime.Nian.Tiangan, dateTime.Nian.Dizhi,
+                  dateTime.Yue.Tiangan, dateTime.Yue.Dizhi,
+                  dateTime.Ri.Tiangan, dateTime.Ri.Dizhi,
+                  dateTime.Shi.Tiangan, dateTime.Shi.Dizhi)
+        {
+            
+        }
     }
 
     private readonly ImmutableArray<NullableTiangan> possibleTiangans =

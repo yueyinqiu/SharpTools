@@ -36,7 +36,7 @@
                     var label = $"结果 {i + 1}";
                     var value = outputs[i];
                     <FluentTab Id="@id" Label="@label">
-                        <FluentTextArea Style="width: 100%" Value="@value" Rows="5"></FluentTextArea>
+                        <FluentTextArea Style="width: 100%" ReadOnly="true" Value="@value" Rows="5"></FluentTextArea>
                     </FluentTab>
                 }
             </FluentTabs>

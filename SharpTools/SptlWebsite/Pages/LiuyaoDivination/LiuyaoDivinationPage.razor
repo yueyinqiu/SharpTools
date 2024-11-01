@@ -1,5 +1,6 @@
 ﻿@page "/LiuyaoDivination"
 
+@using YiJingFramework.EntityRelations.EntityStrings.Conversions
 @using YiJingFramework.EntityRelations.EntityStrings.Extensions;
 
 @inject IGradedLocalStorage LocalStorage
@@ -11,29 +12,56 @@
     <h1>六爻预测</h1>
 
     <p>
-        此工具仍在开发过程中，目前效果不代表最终结果。
+        此工具仍在开发过程中，但主要功能已经可用。
     </p>
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>择时</h2>
-            <InlineNongliSolarDateTimePicker @bind-Value="nongliSolar"></InlineNongliSolarDateTimePicker>
+            <div>
+                西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="westernDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="westernTime"></FluentTimePicker>
+            </div>
+            <div>
+                阴历：<InlineNongliLunarDateTimePicker @bind-Value="nongliLunar"></InlineNongliLunarDateTimePicker>
+            </div>
+            <div>
+                干支：<InlineNongliSolarDateTimePicker @bind-Value="NongliSolar"></InlineNongliSolarDateTimePicker>
+            </div>
+            <div>
+                <FluentButton Style="vertical-align: middle" OnClick="ClearDateTime">清空所选时间</FluentButton>
+                <FluentButton Style="vertical-align: middle" OnClick="FillCurrent">填入当前时间</FluentButton>
+                <FluentButton Style="vertical-align: middle" OnClick="FillNongli">按西历填农历</FluentButton>
+            </div>
         </FluentStack>
     </FluentCard>
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>点卦</h2>
-            <div style="width: 100%; display: grid; grid: auto-flow / auto 1fr 1fr; overflow-x: scroll;">
-                <div style="width: 100%">
+            <!-- 点 六神 六亲干支行 本卦之卦象 世 动 六亲干支行 之卦之卦象 空 -->
+            <div style="display: grid; grid: auto-flow / 2fr 3fr 6fr 6fr 2fr 2fr 6fr 6fr; overflow-x: scroll; max-width: 100%">
+                <div style="width: 100%; grid-column: 1">
+                    <!-- 点 -->
                 </div>
-
-                <div style="width: 100%">
+                <div style="width: 100%; grid-column: 2">
+                    <!-- 六神 -->
+                </div>
+                <div style="width: 100%; grid-column: 3 / 5">
+                    <!-- 六亲干支行 -->
+                    <!-- 本卦之卦象 -->
                     <FluentButton Style="width: 100%">
                         @本卦?.Name
                     </FluentButton>
                 </div>
-                <div style="width: 100%">
+                <div style="width: 100%; grid-column: 5">
+                    <!-- 世 -->
+                </div>
+                <div style="width: 100%; grid-column: 6">
+                    <!-- 动 -->
+                </div>
+                <div style="width: 100%; grid-column: 7 / 9">
+                    <!-- 六亲干支行 -->
+                    <!-- 之卦之卦象 -->
                     <FluentButton Style="width: 100%">
                         @之卦?.Name
                     </FluentButton>
@@ -43,21 +71,69 @@
                 {
                     var 爻 = iDontTouchMe;
 
-                    <div style="width: 100%">
+                    <div style="width: 100%; grid-column: 1">
+                        <!-- 点 -->
                         <FluentButton Style="width: 100%" OnClick="() => 设置单拆重交(爻)">
                             @(设置的单拆重交[爻]?.ToString() ?? "？")
                         </FluentButton>
                     </div>
-
-                    <div style="width: 100%">
-                        <FluentButton Style="width: 100%; background:none; border:none;">
-                            @本卦爻字符串(爻)
+                    <div style="width: 100%; grid-column: 2">
+                        <!-- 六神 -->
+                        <FluentButton Style="width: 100%">
+                            @各爻六神[爻]
                         </FluentButton>
                     </div>
 
-                    <div style="width: 100%">
-                        <FluentButton Style="width: 100%;">
-                            @之卦爻字符串(爻)
+                    <div style="width: 100%; grid-column: 3">
+                        <!-- 六亲干支行 -->
+                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+                            <FluentButton Style="width: 100%">
+                                @($"{this.本卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin)}{this.本卦爻天干[爻]:C}{this.本卦爻地支[爻]:C}{this.本卦爻五行[爻]:C}")
+                            </FluentButton>
+                            @if (this.伏神爻地支[爻] is not null)
+                            {
+                                <FluentButton Style="width: 100%">
+                                    @($"{this.伏神爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin)}{this.伏神爻天干[爻]:C}{this.伏神爻地支[爻]:C}{this.伏神爻五行[爻]:C}")
+                                </FluentButton>
+                            }
+                        </FluentStack>
+                    </div>
+                    <div style="width: 100%; grid-column: 4">
+                        <!-- 本卦之卦象 -->
+                        <FluentButton Style="width: 100%">
+                            @this.本卦爻阴阳[爻]?.ToString(this.阴阳文本)
+                        </FluentButton>
+                        @if (this.伏神爻地支[爻] is not null)
+                        {
+                            <FluentButton Style="width: 100%">
+                                伏神
+                            </FluentButton>
+                        }
+                    </div>
+
+                    <div style="width: 100%; grid-column: 5">
+                        <!-- 世 -->
+                        <FluentButton Style="width: 100%">
+                            @this.本卦爻世应真世假应[爻]?.ToString(this.世应文本)
+                        </FluentButton>
+                    </div>
+                    <div style="width: 100%; grid-column: 6">
+                        <!-- 动 -->
+                        <FluentButton Style="width: 100%">
+                            @(this.本卦爻动否[爻] is true ? "动" : null)
+                        </FluentButton>
+                    </div>
+
+                    <div style="width: 100%; grid-column: 7">
+                        <!-- 六亲干支行 -->
+                        <FluentButton Style="width: 100%">
+                            @($"{this.之卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin)}{this.之卦爻天干[爻]:C}{this.之卦爻地支[爻]:C}{this.之卦爻五行[爻]:C}")
+                        </FluentButton>
+                    </div>
+                    <div style="width: 100%; grid-column: 8">
+                        <!-- 之卦之卦象 -->
+                        <FluentButton Style="width: 100%">
+                            @this.之卦爻阴阳[爻]?.ToString(this.阴阳文本)
                         </FluentButton>
                     </div>
                 }
@@ -67,7 +143,7 @@
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>参考</h2>
-            <FluentTextArea Style="width: 100%">
+            <FluentTextArea ReadOnly="true" Style="width: 100%" Rows="5">
             </FluentTextArea>
         </FluentStack>
     </FluentCard>
