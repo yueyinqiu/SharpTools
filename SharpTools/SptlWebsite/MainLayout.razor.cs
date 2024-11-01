@@ -3,10 +3,22 @@ using SptlServices.GradedLocalStoraging;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SptlWebsite.Layout;
+namespace SptlWebsite;
 
 public partial class MainLayout
 {
+    private static readonly ImmutableArray<ToolGroup> Groups = [
+        new ToolGroup("编程工具", "bian1 cheng2 gong1 ju4", [
+            new ToolEntry("Guid 生成器", "guid sheng1 cheng2 qi4", "/GuidGenerator"),
+            new ToolEntry("字节数组表示", "zi4 jie2 shu4 zu3 biao3 shi4", "/BytesRepresentations"),
+            new ToolEntry("Qr 码扫描器", "qr ma3 sao3 miao2 qi4", "/QrCodeScanner"),
+        ]),
+        new ToolGroup("易学工具", "yi4 xue2 gong1 ju4", [
+            new ToolEntry("六爻预测", "liu4 yao2 yu4 ce4", "/LiuyaoDivination"),
+            new ToolEntry("一日一卦", "yi2 ri4 yi2 gua4", "/OneHexagramPerDay"),
+        ]),
+    ];
+
     private static readonly ImmutableArray<Icon> alphabetIcons = [
         FluentUiBlazorMdiSvgIcons.MdiSvg.AlphaABoxOutline(IconVariant.Regular, IconSize.Size24),
         FluentUiBlazorMdiSvgIcons.MdiSvg.AlphaBBoxOutline(IconVariant.Regular, IconSize.Size24),
@@ -45,18 +57,6 @@ public partial class MainLayout
         public Icon Icon => alphabetIcons[this.Pinyin[0] - 'a'];
     }
 
-    private static readonly ImmutableArray<ToolGroup> Groups = [
-        new ToolGroup("编程工具", "bian1 cheng2 gong1 ju4", [
-            new ToolEntry("Guid 生成器", "guid sheng1 cheng2 qi4", "/GuidGenerator"),
-            new ToolEntry("字节数组表示", "zi4 jie2 shu4 zu3 biao3 shi4", "/BytesRepresentations"),
-            new ToolEntry("Qr 码扫描器", "qr ma3 sao3 miao2 qi4", "/QrCodeScanner"),
-        ]),
-        new ToolGroup("易学工具", "yi4 xue2 gong1 ju4", [
-            new ToolEntry("六爻预测", "liu4 yao2 yu4 ce4", "/LiuyaoDivination"),
-            new ToolEntry("一日一卦", "yi2 ri4 yi2 gua4", "/OneHexagramPerDay"),
-        ]),
-    ];
-
     static MainLayout()
     {
         var orderedGroups = new List<ToolGroup>();
@@ -68,27 +68,5 @@ public partial class MainLayout
         Groups = [.. orderedGroups.OrderBy(x => x.Pinyin)];
     }
 
-    private ILocalStorageEntry<double> NavMenuRatioStorageEntry =>
-        this.LocalStorage.GetEntry<double>("MainLayout.NavMenuRatio", 1000);
-
-    private string panel1Size = "250px";
-
-    // https://github.com/microsoft/fluentui-blazor/issues/2858
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(SplitterResizedEventArgs))]
-    private void SaveNavMenuRatio(SplitterResizedEventArgs e)
-    {
-        var ratio = (double)e.Panel1Size / (e.Panel1Size + e.Panel2Size);
-        this.NavMenuRatioStorageEntry.Set(ratio);
-    }
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-
-        if (this.NavMenuRatioStorageEntry.TryGet(out var navMenuSize))
-        {
-            this.panel1Size = $"{navMenuSize * 100}%";
-            this.StateHasChanged();
-        }
-    }
+    private bool showNavMeau = true;
 }

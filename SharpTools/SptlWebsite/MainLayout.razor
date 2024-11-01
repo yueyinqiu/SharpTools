@@ -1,0 +1,41 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject IGradedLocalStorage LocalStorage
+
+<FluentLayout>
+    <FluentHeader>
+        <FluentButton IconStart="new Icons.Regular.Size24.Navigation()" OnClick="@(() => showNavMeau = !showNavMeau)" Appearance="Appearance.Accent" Style="font-size: var(--type-ramp-plus-1-font-size)" BackgroundColor="var(--accent-fill-rest)" Color="var(--fill-color)">
+            SharpTools
+        </FluentButton>
+        <FluentSpacer></FluentSpacer>
+        <a href="https://github.com/yueyinqiu/SharpTools.git" target="_blank">
+            <FluentIcon Value="@(MdiSvg.Github(IconVariant.Regular, IconSize.Size24))" Color="Color.Fill"></FluentIcon>
+        </a>
+    </FluentHeader>
+
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentNavMenu Width="250" hidden="@(!showNavMeau)">
+            <FluentNavLink Icon="@(new Icons.Regular.Size24.Home())" Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
+
+            @foreach (var group in Groups)
+            {
+                <FluentNavGroup Icon="@group.Icon" Title="@group.Title">
+                    @foreach (var entry in group.Entries)
+                    {
+                        <FluentNavLink Icon="@entry.Icon" Href="@entry.Href">@entry.Title</FluentNavLink>
+                    }
+                </FluentNavGroup>
+            }
+        </FluentNavMenu>
+
+        <FluentBodyContent Class="body-content">
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+
+    <FluentFooter>
+        欢迎使用 SharpTools
+    </FluentFooter>
+</FluentLayout>
