@@ -38,8 +38,8 @@
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>点卦</h2>
-            <!-- 点 六神 六亲干支行 本卦之卦象 世 动 六亲干支行 之卦之卦象 空 -->
-            <div style="display: grid; grid: auto-flow / 2fr 3fr 6fr 6fr 2fr 2fr 6fr 6fr; overflow-x: scroll; max-width: 100%">
+            <!-- 点 六神 本亲干支行 本 世 动 之亲干支行 之 -->
+            <div style="display: grid; grid: auto-flow / 2fr 3fr 6fr 2fr 2fr 2fr 6fr 2fr; overflow-x: auto; max-width: 100%">
                 <div style="width: 100%; grid-column: 1">
                     <!-- 点 -->
                 </div>
@@ -47,8 +47,8 @@
                     <!-- 六神 -->
                 </div>
                 <div style="width: 100%; grid-column: 3 / 5">
-                    <!-- 六亲干支行 -->
-                    <!-- 本卦之卦象 -->
+                    <!-- 本亲干支行 -->
+                    <!-- 本 -->
                     <FluentButton Style="width: 100%">
                         @本卦?.Name
                     </FluentButton>
@@ -60,8 +60,8 @@
                     <!-- 动 -->
                 </div>
                 <div style="width: 100%; grid-column: 7 / 9">
-                    <!-- 六亲干支行 -->
-                    <!-- 之卦之卦象 -->
+                    <!-- 之亲干支行 -->
+                    <!-- 之 -->
                     <FluentButton Style="width: 100%">
                         @之卦?.Name
                     </FluentButton>
@@ -85,7 +85,7 @@
                     </div>
 
                     <div style="width: 100%; grid-column: 3">
-                        <!-- 六亲干支行 -->
+                        <!-- 本亲干支行 -->
                         <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
                             <FluentButton Style="width: 100%">
                                 @($"{this.本卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin)}{this.本卦爻天干[爻]:C}{this.本卦爻地支[爻]:C}{this.本卦爻五行[爻]:C}")
@@ -99,16 +99,18 @@
                         </FluentStack>
                     </div>
                     <div style="width: 100%; grid-column: 4">
-                        <!-- 本卦之卦象 -->
-                        <FluentButton Style="width: 100%">
-                            @this.本卦爻阴阳[爻]?.ToString(this.阴阳文本)
-                        </FluentButton>
-                        @if (this.伏神爻地支[爻] is not null)
-                        {
+                        <!-- 本 -->
+                        <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
                             <FluentButton Style="width: 100%">
-                                伏神
+                                @this.本卦爻阴阳[爻]?.ToString(this.阴阳文本)
                             </FluentButton>
-                        }
+                            @if (this.伏神爻地支[爻] is not null)
+                            {
+                                <FluentButton Style="width: 100%">
+                                    伏
+                                </FluentButton>
+                            }
+                        </FluentStack>
                     </div>
 
                     <div style="width: 100%; grid-column: 5">
@@ -125,13 +127,13 @@
                     </div>
 
                     <div style="width: 100%; grid-column: 7">
-                        <!-- 六亲干支行 -->
+                        <!-- 之亲干支行 -->
                         <FluentButton Style="width: 100%">
                             @($"{this.之卦爻六亲[爻]?.ToString(WuxingRelationToStringConversions.Liuqin)}{this.之卦爻天干[爻]:C}{this.之卦爻地支[爻]:C}{this.之卦爻五行[爻]:C}")
                         </FluentButton>
                     </div>
                     <div style="width: 100%; grid-column: 8">
-                        <!-- 之卦之卦象 -->
+                        <!-- 之 -->
                         <FluentButton Style="width: 100%">
                             @this.之卦爻阴阳[爻]?.ToString(this.阴阳文本)
                         </FluentButton>
