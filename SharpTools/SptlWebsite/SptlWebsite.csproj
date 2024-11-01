@@ -8,9 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HistoryBlazor" Version="0.0.2" />
-		<PackageReference Include="FileDownloadBlazor" Version="0.0.3" />
-		<PackageReference Include="FluentUiBlazorMdiSvgIcons" Version="0.0.2" />
+		<PackageReference Include="HistoryBlazor" Version="0.0.3" />
+		<PackageReference Include="FileDownloadBlazor" Version="0.0.4" />
+		<PackageReference Include="FluentUiBlazorMdiSvgIcons" Version="0.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-*" />

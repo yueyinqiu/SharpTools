@@ -79,7 +79,7 @@ public partial class LiuyaoDivinationPage
         var now = DateTime.Now;
         this.westernDate = now;
         this.westernTime = now;
-        FillNongli();
+        this.FillNongli();
     }
     private void ClearDateTime()
     {

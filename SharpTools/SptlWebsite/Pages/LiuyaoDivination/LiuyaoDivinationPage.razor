@@ -17,7 +17,14 @@
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
-            <h2>择时</h2>
+            <h2>择时点卦</h2>
+            <div>
+                <FluentButton Style="vertical-align: middle" OnClick="ClearDateTime">清空所选时间</FluentButton>
+                <FluentButton Style="vertical-align: middle" OnClick="ClearDateTime">清空所选卦象</FluentButton>
+                <FluentButton Style="vertical-align: middle" OnClick="FillCurrent">填入当前时间</FluentButton>
+                <FluentButton Style="vertical-align: middle" OnClick="FillNongli">按西历填农历</FluentButton>
+            </div>
+
             <div>
                 西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="westernDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="westernTime"></FluentTimePicker>
             </div>
@@ -27,17 +34,7 @@
             <div>
                 干支：<InlineNongliSolarDateTimePicker @bind-Value="NongliSolar"></InlineNongliSolarDateTimePicker>
             </div>
-            <div>
-                <FluentButton Style="vertical-align: middle" OnClick="ClearDateTime">清空所选时间</FluentButton>
-                <FluentButton Style="vertical-align: middle" OnClick="FillCurrent">填入当前时间</FluentButton>
-                <FluentButton Style="vertical-align: middle" OnClick="FillNongli">按西历填农历</FluentButton>
-            </div>
-        </FluentStack>
-    </FluentCard>
 
-    <FluentCard AreaRestricted="false">
-        <FluentStack Orientation="Orientation.Vertical">
-            <h2>点卦</h2>
             <!-- 点 六神 本亲干支行 本 世 动 之亲干支行 之 -->
             <div style="display: grid; grid: auto-flow / 2fr 3fr 6fr 2fr 2fr 2fr 6fr 2fr; overflow-x: auto; max-width: 100%">
                 <div style="width: 100%; grid-column: 1">
@@ -144,7 +141,7 @@
     </FluentCard>
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
-            <h2>参考</h2>
+            <h2>占断参考</h2>
             <FluentTextArea ReadOnly="true" Style="width: 100%" Rows="5">
             </FluentTextArea>
         </FluentStack>
