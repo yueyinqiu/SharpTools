@@ -19,7 +19,6 @@ public partial class LiuyaoDivinationPage
         玄武
     }
 
-    private string? nongliSolarWarning;
     private SelectedNongliSolarDateTime nongliSolarDontTouchMe = SelectedNongliSolarDateTime.Empty;
     private SelectedNongliSolarDateTime NongliSolar
     {
