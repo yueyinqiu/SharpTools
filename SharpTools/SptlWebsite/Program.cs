@@ -1,4 +1,5 @@
-﻿using FileDownloadBlazor.Extensions;
+﻿using Append.Blazor.Clipboard;
+using FileDownloadBlazor.Extensions;
 using HistoryBlazor.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -21,6 +22,7 @@ public class Program
         });
 
         _ = builder.Services.AddFileDownloadBlazor();
+        _ = builder.Services.AddClipboard();
         _ = builder.Services.AddHistoryBlazor();
         _ = builder.Services.AddQRCodeDecoder();
 

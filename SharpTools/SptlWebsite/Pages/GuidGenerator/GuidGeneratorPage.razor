@@ -22,7 +22,12 @@
 
             <FluentButton Style="width: 100%" OnClick="(() => ButtonClick())">重新生成</FluentButton>
 
-            <FluentTextArea Style="width: 100%" ReadOnly="true" Rows="5" Value="@string.Join(Environment.NewLine, outputs.Select(x => FormatInput.Converter(x)))" Placeholder="点击上方按钮生成"></FluentTextArea>
+            <div>
+                @foreach (var guid in outputs)
+                {
+                    @FormatInput.Converter(guid); <br />
+                }
+            </div>
         </FluentStack>
     </FluentCard>
 </FluentStack>

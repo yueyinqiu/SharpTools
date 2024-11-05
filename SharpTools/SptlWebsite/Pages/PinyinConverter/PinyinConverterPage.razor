@@ -1,6 +1,8 @@
 ﻿@page "/PinyinConverter"
 @using hyjiacan.py4n
+
 @inject IGradedLocalStorage LocalStorage
+@inject IClipboardService ClipboardService
 
 <PageTitle>拼音转换器 - SharpTools</PageTitle>
 
@@ -8,23 +10,29 @@
     <h1>拼音转换器</h1>
 
     <p>
-        此工具仍在开发过程中。
+        此工具仍在开发过程中，但主要功能已经可用。
     </p>
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
-            <h2>配置与输入</h2>
+            <h2>配置</h2>
 
-            <div>
-                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="CaseFormats" @bind-SelectedOption="CaseFormat">
+                <FluentSelect TOption="PinyinFormat" Label="声调" OptionText="GetOptionText" Items="ToneFormats" @bind-SelectedOption="toneFormat">
                 </FluentSelect>
-                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="VFormats" @bind-SelectedOption="VFormat">
+                <FluentSelect TOption="PinyinFormat" Label="ü" OptionText="GetOptionText" Items="VFormats" @bind-SelectedOption="vFormat">
                 </FluentSelect>
-                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="ToneFormats" @bind-SelectedOption="ToneFormat">
+                <FluentSelect TOption="PinyinFormat" Label="大小写" OptionText="GetOptionText" Items="CaseFormats" @bind-SelectedOption="caseFormat">
                 </FluentSelect>
-            </div>
+        </FluentStack>
+    </FluentCard>
 
-            <FluentTextField @bind-Value="input" Style="width: 100%" Label="文本"></FluentTextField>
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>输入</h2>
+
+            <FluentTextField Placeholder="在这里输入内容" @bind-Value="input"></FluentTextField>
+
+            <FluentButton OnClick="Convert">转换</FluentButton>
         </FluentStack>
     </FluentCard>
 
@@ -32,10 +40,13 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>结果与输出</h2>
             <div>
-                @foreach (var x in Output)
+                @foreach (var item in output)
                 {
-                    <FluentSelect TOption="string" Items="x.AvailablePinyins" SelectedOption="x.SelectedPinyin"></FluentSelect>
+                    <FluentSelect TOption="string" @key="item" Style="vertical-align: middle" Width="auto" Items="item.AvailablePinyins" @bind-SelectedOption="item.SelectedPinyin"></FluentSelect>
                 }
+            </div>
+            <div>
+                <FluentButton OnClick="CopyAsync">复制</FluentButton>
             </div>
         </FluentStack>
     </FluentCard>

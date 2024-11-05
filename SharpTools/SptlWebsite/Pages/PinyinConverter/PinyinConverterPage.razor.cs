@@ -1,43 +1,18 @@
 ﻿using hyjiacan.py4n;
-using Microsoft.FluentUI.AspNetCore.Components;
 using System.Collections.Immutable;
 
 namespace SptlWebsite.Pages.PinyinConverter;
 
 public partial class PinyinConverterPage
 {
-    private PinyinFormat caseFormatDontTouchMe = PinyinFormat.LOWERCASE;
-    private PinyinFormat CaseFormat
-    {
-        get
-        {
-            return caseFormatDontTouchMe;
-        }
-        set
-        {
-            this.caseFormatDontTouchMe = value;
-            this.SavePreference();
-        }
-    }
+    private PinyinFormat caseFormat = PinyinFormat.LOWERCASE;
     private readonly ImmutableArray<PinyinFormat> CaseFormats = [
         PinyinFormat.LOWERCASE,
         PinyinFormat.UPPERCASE,
         PinyinFormat.CAPITALIZE_FIRST_LETTER,
     ];
 
-    private PinyinFormat vFormatDontTouchMe = PinyinFormat.WITH_V;
-    private PinyinFormat VFormat
-    {
-        get
-        {
-            return vFormatDontTouchMe;
-        }
-        set
-        {
-            this.vFormatDontTouchMe = value;
-            this.SavePreference();
-        }
-    }
+    private PinyinFormat vFormat = PinyinFormat.WITH_V;
     private readonly ImmutableArray<PinyinFormat> VFormats = [
         PinyinFormat.WITH_V,
         PinyinFormat.WITH_U_UNICODE,
@@ -45,19 +20,7 @@ public partial class PinyinConverterPage
         PinyinFormat.WITH_U_AND_COLON
     ];
 
-    private PinyinFormat toneFormatDontTouchMe = PinyinFormat.WITH_TONE_NUMBER;
-    private PinyinFormat ToneFormat
-    {
-        get
-        {
-            return toneFormatDontTouchMe;
-        }
-        set
-        {
-            this.toneFormatDontTouchMe = value;
-            this.SavePreference();
-        }
-    }
+    private PinyinFormat toneFormat = PinyinFormat.WITH_TONE_NUMBER;
     private readonly ImmutableArray<PinyinFormat> ToneFormats = [
         PinyinFormat.WITH_TONE_NUMBER,
         PinyinFormat.WITH_TONE_MARK,
@@ -85,7 +48,7 @@ public partial class PinyinConverterPage
         };
     }
 
-    private string input = "你好！";
+    private string input = "";
 
     private sealed class OutputItem
     {
@@ -96,18 +59,31 @@ public partial class PinyinConverterPage
             this.AvailablePinyins = [.. item, item.RawChar.ToString()];
             this.SelectedPinyin = this.AvailablePinyins[0];
         }
-    }
-    private ImmutableArray<OutputItem> Output
-    {
-        get
+        public OutputItem(IEnumerable<string> item)
         {
-            return Pinyin4Net.GetPinyinArray(input, CaseFormat | VFormat | ToneFormat)
-                .Select(x => new OutputItem(x))
-                .ToImmutableArray();
+            this.AvailablePinyins = [.. item];
+            this.SelectedPinyin = this.AvailablePinyins[0];
         }
     }
-
-    private void SavePreference()
+    private void Convert()
     {
+        if (toneFormat == PinyinFormat.WITH_TONE_MARK && caseFormat != PinyinFormat.WITH_U_UNICODE)
+        {
+            output = [new(["无法在 v 、 yu 或 u: 上标记声调，可以改用 ü 或者数字声调"])];
+            return;
+        }
+
+        output = Pinyin4Net.GetPinyinArray(input, caseFormat | vFormat | toneFormat)
+            .Select(x => new OutputItem(x))
+            .ToImmutableArray();
+    }
+
+    private ImmutableArray<OutputItem> output = [new(["点击转换开始转换"])];
+
+    private async Task CopyAsync()
+    {
+        var items = output.Select(x => x.SelectedPinyin);
+        var result = string.Join(" ", items);
+        await ClipboardService.CopyTextToClipboardAsync(result);
     }
 }

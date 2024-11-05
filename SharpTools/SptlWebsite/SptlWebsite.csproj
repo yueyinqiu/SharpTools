@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Append.Blazor.Clipboard" Version="1.0.0" />
 		<PackageReference Include="HistoryBlazor" Version="0.0.3" />
 		<PackageReference Include="FileDownloadBlazor" Version="0.0.4" />
 		<PackageReference Include="FluentUiBlazorMdiSvgIcons" Version="0.0.3" />
