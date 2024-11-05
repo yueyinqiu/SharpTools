@@ -1,0 +1,42 @@
+﻿@page "/PinyinConverter"
+@using hyjiacan.py4n
+@inject IGradedLocalStorage LocalStorage
+
+<PageTitle>拼音转换器 - SharpTools</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical">
+    <h1>拼音转换器</h1>
+
+    <p>
+        此工具仍在开发过程中。
+    </p>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>配置与输入</h2>
+
+            <div>
+                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="CaseFormats" @bind-SelectedOption="CaseFormat">
+                </FluentSelect>
+                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="VFormats" @bind-SelectedOption="VFormat">
+                </FluentSelect>
+                <FluentSelect TOption="PinyinFormat" OptionText="GetOptionText" Items="ToneFormats" @bind-SelectedOption="ToneFormat">
+                </FluentSelect>
+            </div>
+
+            <FluentTextField @bind-Value="input" Style="width: 100%" Label="文本"></FluentTextField>
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>结果与输出</h2>
+            <div>
+                @foreach (var x in Output)
+                {
+                    <FluentSelect TOption="string" Items="x.AvailablePinyins" SelectedOption="x.SelectedPinyin"></FluentSelect>
+                }
+            </div>
+        </FluentStack>
+    </FluentCard>
+</FluentStack>
