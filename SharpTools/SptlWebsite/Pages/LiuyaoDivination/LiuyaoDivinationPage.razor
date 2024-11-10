@@ -26,14 +26,14 @@
             </div>
 
             <div>
-                西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="westernDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="westernTime"></FluentTimePicker>
-            </div>
-            <div>
-                阴历：<InlineNongliLunarDateTimePicker @bind-Value="nongliLunar"></InlineNongliLunarDateTimePicker>
-            </div>
-            <div>
+                西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="WesternDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="WesternTime"></FluentTimePicker>
+                <br />
+                阴历：<InlineNongliLunarDateTimePicker @bind-Value="NongliLunar"></InlineNongliLunarDateTimePicker>
+                <br />
                 干支：<InlineNongliSolarDateTimePicker @bind-Value="NongliSolar"></InlineNongliSolarDateTimePicker>
             </div>
+
+            <div style="white-space: pre-wrap">@timeWarnings</div>
 
             <!-- 点 六神 本亲干支行 本 世 动 之亲干支行 之 -->
             <div style="display: grid; grid: auto-flow / 2fr 3fr 6fr 2fr 2fr 2fr 6fr 2fr; overflow-x: auto; max-width: 100%">

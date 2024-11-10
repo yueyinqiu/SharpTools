@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
+using static SptlWebsite.Components.InlineNongliLunarDateTimePicker;
 
 namespace SptlWebsite.Components;
 
@@ -39,7 +40,33 @@ public partial class InlineNongliSolarDateTimePicker
                   dateTime.Ri.Tiangan, dateTime.Ri.Dizhi,
                   dateTime.Shi.Tiangan, dateTime.Shi.Dizhi)
         {
-            
+
+        }
+
+        public bool Meet(SelectedNongliSolarDateTime other)
+        {
+            if (this.Niangan is not null && other.Niangan is not null && this.Niangan != other.Niangan)
+                return false;
+            if (this.Nianzhi is not null && other.Nianzhi is not null && this.Nianzhi != other.Nianzhi)
+                return false;
+            if (this.Yuegan is not null && other.Yuegan is not null && this.Yuegan != other.Yuegan)
+                return false;
+            if (this.Yuezhi is not null && other.Yuezhi is not null && this.Yuezhi != other.Yuezhi)
+                return false;
+            if (this.Rigan is not null && other.Rigan is not null && this.Rigan != other.Rigan)
+                return false;
+            if (this.Rizhi is not null && other.Rizhi is not null && this.Rizhi != other.Rizhi)
+                return false;
+            if (this.Shigan is not null && other.Shigan is not null && this.Shigan != other.Shigan)
+                return false;
+            if (this.Shizhi is not null && other.Shizhi is not null && this.Shizhi != other.Shizhi)
+                return false;
+            return true;
+        }
+
+        public bool Meet(SolarDateTime other)
+        {
+            return this.Meet(new SelectedNongliSolarDateTime(other));
         }
     }
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Immutable;
 using YiJingFramework.Nongli.Lunar;
+using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
+using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
 namespace SptlWebsite.Components;
 
@@ -45,21 +47,41 @@ public partial class InlineNongliLunarDateTimePicker
     }
 
     public sealed record SelectedNongliLunarDateTime(
-        Tiangan? Niangan, Dizhi? Nianzhi, 
+        Dizhi? Nian, 
         int? Yue, bool? IsRunyue, 
         int? Ri,
         Dizhi? Shi)
     {
         public static SelectedNongliLunarDateTime Empty =>
-            new(null, null, null, null, null, null);
+            new(null, null, null, null, null);
 
         public SelectedNongliLunarDateTime(LunarDateTime dateTime)
-            : this(dateTime.Nian.Tiangan, dateTime.Nian.Dizhi,
+            : this(dateTime.Nian.Dizhi,
                   dateTime.Yue, dateTime.IsRunyue, 
                   dateTime.Ri,
                   dateTime.Shi)
         {
 
+        }
+
+        public bool Meet(SelectedNongliLunarDateTime other)
+        {
+            if (this.Nian is not null && other.Nian is not null && this.Nian != other.Nian)
+                return false;
+            if (this.Yue is not null && other.Yue is not null && this.Yue != other.Yue)
+                return false;
+            if (this.IsRunyue is not null && other.IsRunyue is not null && this.IsRunyue != other.IsRunyue)
+                return false;
+            if (this.Ri is not null && other.Ri is not null && this.Ri != other.Ri)
+                return false;
+            if (this.Shi is not null && other.Shi is not null && this.Shi != other.Shi)
+                return false;
+            return true;
+        }
+
+        public bool Meet(LunarDateTime other)
+        {
+            return this.Meet(new SelectedNongliLunarDateTime(other));
         }
     }
 
@@ -87,21 +109,12 @@ public partial class InlineNongliLunarDateTimePicker
         .Prepend(new NullableNumber(null))
         .ToImmutableArray();
 
-    private NullableTiangan Niangan
+    private NullableDizhi Nian
     {
-        get => new(this.Value.Niangan);
+        get => new(this.Value.Nian);
         set
         {
-            this.Value = this.Value with { Niangan = value.Value };
-            _ = this.ValueChanged.InvokeAsync(this.Value);
-        }
-    }
-    private NullableDizhi Nianzhi
-    {
-        get => new(this.Value.Nianzhi);
-        set
-        {
-            this.Value = this.Value with { Nianzhi = value.Value };
+            this.Value = this.Value with { Nian = value.Value };
             _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }

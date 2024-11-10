@@ -1,4 +1,7 @@
-﻿using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
+﻿using System.Text;
+using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
+using YiJingFramework.EntityRelations.TianganNianYuesAndRishis.Extensions;
+using YiJingFramework.Nongli.Extensions;
 using YiJingFramework.Nongli.Lunar;
 using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
@@ -52,40 +55,179 @@ public partial class LiuyaoDivinationPage
                     current = (current + 1) % 6;
                 }
             }
+            ValidateTime();
         }
     }
     private readonly 六神?[] 各爻六神 = [null, null, null, null, null, null];
 
-    private SelectedNongliLunarDateTime nongliLunar = SelectedNongliLunarDateTime.Empty;
-    private DateTime? westernDate = null;
-    private DateTime? westernTime = null;
-    private void FillNongli()
+    private SelectedNongliLunarDateTime nongliLunarDontTouchMe = SelectedNongliLunarDateTime.Empty;
+    private SelectedNongliLunarDateTime NongliLunar
     {
-        if (westernDate.HasValue && westernTime.HasValue)
+        get => nongliLunarDontTouchMe;
+        set
         {
-            var date = westernDate.Value.Date;
-            var time = westernDate.Value.TimeOfDay;
+            nongliLunarDontTouchMe = value;
+            ValidateTime();
+        }
+    }
+    private DateTime? westernDateDontTouchMe = null;
+    private DateTime? WesternDate
+    {
+        get => westernDateDontTouchMe;
+        set
+        {
+            westernDateDontTouchMe = value;
+            ValidateTime();
+        }
+    }
+    private DateTime? westernTimeDontTouchMe = null;
+    private DateTime? WesternTime
+    {
+        get => westernTimeDontTouchMe;
+        set
+        {
+            westernTimeDontTouchMe = value;
+            ValidateTime();
+        }
+    }
+    private (LunarDateTime lunar, SolarDateTime solar)? GetNongliFromWestern()
+    {
+        if (WesternDate.HasValue && WesternTime.HasValue)
+        {
+            var date = WesternDate.Value.Date;
+            var time = WesternDate.Value.TimeOfDay;
             var dateTime = date.Add(time);
 
-            var lunar = LunarDateTime.FromGregorian(dateTime);
-            this.nongliLunar = new SelectedNongliLunarDateTime(lunar);
-
-            var solar = SolarDateTime.FromGregorian(dateTime);
-            this.NongliSolar = new SelectedNongliSolarDateTime(solar);
+            return (LunarDateTime.FromGregorian(dateTime), 
+                SolarDateTime.FromGregorian(dateTime));
         }
+        return null;
+    }
+    
+    private void FillNongli()
+    {
+        var value = GetNongliFromWestern();
+        if (!value.HasValue)
+            return;
+        this.NongliLunar = new(value.Value.lunar);
+        this.NongliSolar = new(value.Value.solar);
+        ValidateTime();
     }
     private void FillCurrent()
     {
         var now = DateTime.Now;
-        this.westernDate = now;
-        this.westernTime = now;
+        this.WesternDate = now;
+        this.WesternTime = now;
         this.FillNongli();
     }
     private void ClearDateTime()
     {
-        this.westernDate = null;
-        this.westernTime = null;
+        this.WesternDate = null;
+        this.WesternTime = null;
         this.NongliSolar = SelectedNongliSolarDateTime.Empty;
-        this.nongliLunar = SelectedNongliLunarDateTime.Empty;
+        this.NongliLunar = SelectedNongliLunarDateTime.Empty;
+        ValidateTime();
+    }
+
+    private string? timeWarnings = "未填入时间";
+    private void ValidateTime()
+    {
+        if (this.WesternDate is null &&
+            this.WesternTime is null &&
+            this.NongliLunar == SelectedNongliLunarDateTime.Empty &&
+            this.NongliSolar == SelectedNongliSolarDateTime.Empty)
+        {
+            timeWarnings = "未填入时间";
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        var nongliFromWestern = this.GetNongliFromWestern();
+        if (nongliFromWestern.HasValue)
+        {
+            var (lunar, solar) = nongliFromWestern.Value;
+
+            if (!NongliLunar.Meet(lunar))
+                _ = builder.AppendLine(
+                    $"阴历与西历不符，按西历应为" +
+                    $"{lunar.Nian.Dizhi:C}年{lunar.YueInChinese()}月" +
+                    $"{lunar.RiInChinese()}日{lunar.Shi:C}时");
+            if (!NongliSolar.Meet(solar))
+                _ = builder.AppendLine(
+                    $"干支与西历不符，按西历应为" +
+                    $"{solar.Nian:C}年{solar.Yue:C}月" +
+                    $"{solar.Ri:C}日{solar.Shi:C}时");
+        }
+
+        if (NongliLunar.Nian.HasValue && NongliSolar.Nianzhi.HasValue)
+        {
+            if (NongliSolar.Nianzhi != NongliLunar.Nian &&
+                NongliSolar.Nianzhi != NongliLunar.Nian.Value.Next(1) &&
+                NongliSolar.Nianzhi != NongliLunar.Nian.Value.Next(-1))
+                _ = builder.AppendLine("干支与阴历年不一致");
+        }
+
+        if (NongliLunar.Yue.HasValue && NongliSolar.Yuezhi.HasValue)
+        {
+            if (NongliSolar.Yuezhi != (Dizhi)(NongliLunar.Yue + 1) &&
+                NongliSolar.Yuezhi != (Dizhi)(NongliLunar.Yue + 2) &&
+                NongliSolar.Yuezhi != (Dizhi)(NongliLunar.Yue))
+                _ = builder.AppendLine("阴历与干支月不一致");
+        }
+
+        if (NongliLunar.Shi.HasValue && NongliSolar.Shizhi.HasValue)
+        {
+            if (NongliSolar.Shizhi != NongliLunar.Shi)
+                _ = builder.AppendLine("干支与阴历时不一致");
+        }
+
+        if (NongliSolar.Niangan.HasValue && NongliSolar.Nianzhi.HasValue)
+        {
+            if (NongliSolar.Niangan.Value.Yinyang() != NongliSolar.Nianzhi.Value.Yinyang())
+                _ = builder.AppendLine("干支历年干支阴阳不一致");
+        }
+
+        if (NongliSolar.Yuegan.HasValue && NongliSolar.Yuezhi.HasValue)
+        {
+            if (NongliSolar.Yuegan.Value.Yinyang() != NongliSolar.Yuezhi.Value.Yinyang())
+                _ = builder.AppendLine("干支历月干支阴阳不一致");
+        }
+
+        if (NongliSolar.Rigan.HasValue && NongliSolar.Rizhi.HasValue)
+        {
+            if (NongliSolar.Rigan.Value.Yinyang() != NongliSolar.Rizhi.Value.Yinyang())
+                _ = builder.AppendLine("干支历日干支阴阳不一致");
+        }
+
+        if (NongliSolar.Shigan.HasValue && NongliSolar.Shizhi.HasValue)
+        {
+            if (NongliSolar.Shigan.Value.Yinyang() != NongliSolar.Shizhi.Value.Yinyang())
+                _ = builder.AppendLine("干支历时干支阴阳不一致");
+        }
+
+        if (NongliSolar.Niangan.HasValue && NongliSolar.Yuegan.HasValue && NongliSolar.Yuezhi.HasValue)
+        {
+            var yues = NongliSolar.Niangan.Value.AsNianGetYues();
+            var ganzhi = yues[NongliSolar.Yuezhi.Value];
+            if (ganzhi.Tiangan != NongliSolar.Yuegan)
+                _ = builder.AppendLine($"干支" +
+                    $"{NongliSolar.Niangan:C}年无{NongliSolar.Yuegan:C}{NongliSolar.Yuezhi:C}月，" +
+                    $"只有{ganzhi:C}月");
+        }
+
+        if (NongliSolar.Rigan.HasValue && NongliSolar.Shigan.HasValue && NongliSolar.Shizhi.HasValue)
+        {
+            var yues = NongliSolar.Rigan.Value.AsRiGetShis();
+            var ganzhi = yues[NongliSolar.Shizhi.Value];
+            if (ganzhi.Tiangan != NongliSolar.Shigan)
+                _ = builder.AppendLine($"干支" +
+                    $"{NongliSolar.Rigan:C}日无{NongliSolar.Shigan:C}{NongliSolar.Shizhi:C}时，" +
+                    $"只有{ganzhi:C}时");
+        }
+
+        if (builder.Length > 0)
+            this.timeWarnings = builder.ToString();
+        else
+            this.timeWarnings = null;
     }
 }
