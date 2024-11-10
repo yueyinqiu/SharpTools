@@ -36,13 +36,66 @@ public partial class InlineNongliLunarDateTimePicker
             return this.IsRun.Value ? "闰" : "平";
         }
     }
-    private sealed record NullableNumber(int? Value)
+    private sealed record NullableYueNumber(int? Value)
     {
         public override string ToString()
         {
-            if (!this.Value.HasValue)
-                return "？";
-            return this.Value.Value.ToString();
+            return this.Value switch
+            {
+                1 => "正",
+                2 => "二",
+                3 => "三",
+                4 => "四",
+                5 => "五",
+                6 => "六",
+                7 => "七",
+                8 => "八",
+                9 => "九",
+                10 => "十",
+                11 => "冬",
+                12 => "腊",
+                _ => "？"
+            };
+        }
+    }
+    private sealed record NullableRiNumber(int? Value)
+    {
+        public override string ToString()
+        {
+            return this.Value switch
+            {
+                1 => "初一",
+                2 => "初二",
+                3 => "初三",
+                4 => "初四",
+                5 => "初五",
+                6 => "初六",
+                7 => "初七",
+                8 => "初八",
+                9 => "初九",
+                10 => "初十",
+                11 => "十一",
+                12 => "十二",
+                13 => "十三",
+                14 => "十四",
+                15 => "十五",
+                16 => "十六",
+                17 => "十七",
+                18 => "十八",
+                19 => "十九",
+                20 => "二十",
+                21 => "廿一",
+                22 => "廿二",
+                23 => "廿三",
+                24 => "廿四",
+                25 => "廿五",
+                26 => "廿六",
+                27 => "廿七",
+                28 => "廿八",
+                29 => "廿九",
+                30 => "三十",
+                _ => "？？"
+            };
         }
     }
 
@@ -98,15 +151,15 @@ public partial class InlineNongliLunarDateTimePicker
         .Prepend(new NullableDizhi(null))
         .ToImmutableArray();
     private readonly ImmutableArray<PingRun> possiblePingRuns = [new(null), new(false), new(true)];
-    private readonly ImmutableArray<NullableNumber> possibleYues =
+    private readonly ImmutableArray<NullableYueNumber> possibleYues =
         Enumerable.Range(1, 12)
-        .Select(x => new NullableNumber(x))
-        .Prepend(new NullableNumber(null))
+        .Select(x => new NullableYueNumber(x))
+        .Prepend(new NullableYueNumber(null))
         .ToImmutableArray();
-    private readonly ImmutableArray<NullableNumber> possibleRis =
+    private readonly ImmutableArray<NullableRiNumber> possibleRis =
         Enumerable.Range(1, 30)
-        .Select(x => new NullableNumber(x))
-        .Prepend(new NullableNumber(null))
+        .Select(x => new NullableRiNumber(x))
+        .Prepend(new NullableRiNumber(null))
         .ToImmutableArray();
 
     private NullableDizhi Nian
@@ -118,7 +171,7 @@ public partial class InlineNongliLunarDateTimePicker
             _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
-    private NullableNumber Yue
+    private NullableYueNumber Yue
     {
         get => new(this.Value.Yue);
         set
@@ -136,7 +189,7 @@ public partial class InlineNongliLunarDateTimePicker
             _ = this.ValueChanged.InvokeAsync(this.Value);
         }
     }
-    private NullableNumber Ri
+    private NullableRiNumber Ri
     {
         get => new(this.Value.Ri);
         set

@@ -3,7 +3,6 @@ using YiJingFramework.Annotating.Zhouyi.Entities;
 using YiJingFramework.EntityRelations.EntityStrings;
 using YiJingFramework.EntityRelations.WuxingRelations;
 using YiJingFramework.PrimitiveTypes;
-using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 using YiJingFramework.PrimitiveTypes.GuaWithFixedCount;
 using YiJingFramework.EntityRelations.GuaHexagramBagongs.Extensions;
 using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
@@ -264,6 +263,8 @@ public partial class LiuyaoDivinationPage
             this.本卦 = null;
             this.之卦 = null;
         }
+
+        this.复原占断参考();
     }
 
     private readonly EntityToStringConversion<Yinyang> 阴阳文本
