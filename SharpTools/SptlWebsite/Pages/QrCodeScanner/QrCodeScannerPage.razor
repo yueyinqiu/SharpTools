@@ -10,7 +10,7 @@
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>输入</h2>
-            <FluentInputFile Id="file" MaximumFileSize="@(1024 * 1024 * 1024)" Accept=".png .jpg .jpeg .gif .bmp .tga" Style="width: 100%; border: 1px dashed var(--accent-fill-rest);" OnCompleted="Input">
+            <FluentInputFile Id="file" MaximumFileSize="@(1024 * 1024 * 1024)" Accept=".png, .jpg, .jpeg, .gif, .bmp, .tga" Style="width: 100%; border: 1px dashed var(--accent-fill-rest);" OnCompleted="Input">
                 <ChildContent>
                     <div>
                         <br />
@@ -29,14 +29,16 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>结果</h2>
 
-            <FluentTabs Width="100%" @bind-ActiveTabId="activeTab">
+            <FluentTabs @key="@outputs" Width="100%" @bind-ActiveTabId="activeTab">
                 @for (int i = 0; i < outputs.Length; i++)
                 {
                     var id = $"tab{i + 1}";
                     var label = $"结果 {i + 1}";
                     var value = outputs[i];
                     <FluentTab Id="@id" Label="@label">
-                        <FluentTextArea Style="width: 100%" ReadOnly="true" Value="@value" Rows="5"></FluentTextArea>
+                        <p>
+                            @value
+                        </p>
                     </FluentTab>
                 }
             </FluentTabs>

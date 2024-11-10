@@ -67,7 +67,7 @@ public partial class PinyinConverterPage
         }
     }
 
-    private ImmutableArray<OutputItem> output = [new(["点击转换开始转换"])];
+    private ImmutableArray<OutputItem> output = [new((IEnumerable<string>)["点击转换开始转换"])];
 
     private async Task CopyAsync()
     {
@@ -80,7 +80,8 @@ public partial class PinyinConverterPage
     {
         if (toneFormat == PinyinFormat.WITH_TONE_MARK && caseFormat != PinyinFormat.WITH_U_UNICODE)
         {
-            output = [new(["无法在 v 、 yu 或 u: 上标记声调，可以改用 ü 或者数字声调"])];
+            output = [new((IEnumerable<string>)[
+                "无法在 v 、 yu 或 u: 上标记声调，可以改用 ü 或者数字声调"])];
             return;
         }
 
