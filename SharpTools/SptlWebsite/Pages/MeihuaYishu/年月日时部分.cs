@@ -8,20 +8,10 @@ using YiJingFramework.PrimitiveTypes;
 using static SptlWebsite.Components.InlineNongliLunarDateTimePicker;
 using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
-namespace SptlWebsite.Pages.LiuyaoDivination;
+namespace SptlWebsite.Pages.MeihuaYishu;
 
-public partial class LiuyaoDivinationPage
+public partial class MeihuaYishuPage
 {
-    private enum 六神
-    {
-        青龙,
-        朱雀,
-        勾陈,
-        螣蛇,
-        白虎,
-        玄武
-    }
-
     private SelectedNongliSolarDateTime nongliSolarDontTouchMe = SelectedNongliSolarDateTime.Empty;
     private SelectedNongliSolarDateTime NongliSolar
     {
@@ -32,34 +22,9 @@ public partial class LiuyaoDivinationPage
         set
         {
             nongliSolarDontTouchMe = value;
-            if (!value.Rigan.HasValue)
-            {
-                for (int i = 0; i < 6; i++)
-                    各爻六神[i] = null;
-            }
-            else
-            {
-                var start = (int)value.Rigan.Value.Wuxing() switch
-                {
-                    0 => 六神.青龙, // 木
-                    1 => 六神.朱雀, // 火
-                    3 => 六神.白虎, // 金
-                    4 => 六神.玄武, // 水
-                    _ when value.Rigan.Value == Tiangan.Wu => 六神.勾陈, // 戊
-                    _ => 六神.螣蛇, // 己
-                };
-                var current = (int)start;
-                for (int i = 0; i < 6; i++)
-                {
-                    各爻六神[i] = (六神)current;
-                    current = (current + 1) % 6;
-                }
-            }
             this.ValidateTime();
-            this.复原占断参考();
         }
     }
-    private readonly 六神?[] 各爻六神 = [null, null, null, null, null, null];
 
     private SelectedNongliLunarDateTime nongliLunarDontTouchMe = SelectedNongliLunarDateTime.Empty;
     private SelectedNongliLunarDateTime NongliLunar
@@ -69,7 +34,6 @@ public partial class LiuyaoDivinationPage
         {
             nongliLunarDontTouchMe = value;
             ValidateTime();
-            this.复原占断参考();
         }
     }
     private DateTime? westernDateDontTouchMe = null;
@@ -80,7 +44,6 @@ public partial class LiuyaoDivinationPage
         {
             westernDateDontTouchMe = value;
             ValidateTime();
-            this.复原占断参考();
         }
     }
     private DateTime? westernTimeDontTouchMe = null;
@@ -91,7 +54,6 @@ public partial class LiuyaoDivinationPage
         {
             westernTimeDontTouchMe = value;
             ValidateTime();
-            this.复原占断参考();
         }
     }
     private (LunarDateTime lunar, SolarDateTime solar)? GetNongliFromWestern()
@@ -131,7 +93,7 @@ public partial class LiuyaoDivinationPage
         this.NongliLunar = SelectedNongliLunarDateTime.Empty;
     }
 
-    private string timeWarnings = "未填入时间。时间乃断卦必须。";
+    private string timeWarnings = "未填入时间。";
     private void ValidateTime()
     {
         if (this.WesternDate is null &&
@@ -139,18 +101,11 @@ public partial class LiuyaoDivinationPage
             this.NongliLunar == SelectedNongliLunarDateTime.Empty &&
             this.NongliSolar == SelectedNongliSolarDateTime.Empty)
         {
-            timeWarnings = "未填入时间。时间乃断卦必须。";
+            timeWarnings = "未填入时间。";
             return;
         }
 
         StringBuilder builder = new StringBuilder();
-
-        if (this.NongliSolar.Yuezhi is null)
-            _ = builder.AppendLine("未填入月支。月将为重中之重。");
-        if (this.NongliSolar.Rizhi is null)
-            _ = builder.AppendLine("未填入日支。日辰者不可或缺。");
-        if (this.NongliSolar.Rigan is null)
-            _ = builder.AppendLine("未填入日干。不能够得知六神。");
 
         var nongliFromWestern = this.GetNongliFromWestern();
         if (nongliFromWestern.HasValue)

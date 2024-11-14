@@ -17,6 +17,7 @@ public partial class MainLayout
         new ToolGroup("易学工具", "yi4 xue2 gong1 ju4", [
             new ToolEntry("六爻预测", "liu4 yao2 yu4 ce4", "/LiuyaoDivination"),
             new ToolEntry("一日一卦", "yi1 ri4 yi1 gua4", "/OneHexagramPerDay"),
+            new ToolEntry("梅花易数", "mei2 hua1 yi4 shu4", "/MeihuaYishu"),
         ]),
     ];
 

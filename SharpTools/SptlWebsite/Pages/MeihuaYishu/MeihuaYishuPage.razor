@@ -1,0 +1,61 @@
+﻿@page "/MeihuaYishu"
+@inject IJSRuntime JsRuntime
+@inject IGradedLocalStorage LocalStorage
+
+<PageTitle>梅花易数 - SharpTools</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical">
+    <h1>梅花易数</h1>
+
+    <p>
+        此工具仍在开发过程中。
+    </p>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>起卦</h2>
+            <div>
+                <FluentButton OnClick="ClearDateTime">清空所选时间</FluentButton>
+                <FluentButton OnClick="FillCurrent">填入当前时间</FluentButton>
+                <FluentButton OnClick="FillNongli">按西历填农历</FluentButton>
+            </div>
+
+            <div>
+                西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="WesternDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="WesternTime"></FluentTimePicker>
+                <br />
+                阴历：<InlineNongliLunarDateTimePicker @bind-Value="NongliLunar"></InlineNongliLunarDateTimePicker>
+                <br />
+                干支：<InlineNongliSolarDateTimePicker @bind-Value="NongliSolar"></InlineNongliSolarDateTimePicker>
+            </div>
+
+            <div style="white-space: pre-wrap">@timeWarnings</div>
+
+            <div>
+                <FluentTextField Style="vertical-align: middle" Label="上卦" @bind-Value="upperInput"></FluentTextField>
+
+                <FluentTextField Style="vertical-align: middle" Label="下卦" @bind-Value="lowerInput"></FluentTextField>
+
+                <FluentTextField Style="vertical-align: middle" Label="动爻" @bind-Value="changingInput"></FluentTextField>
+            </div>
+            
+            <div>
+                <FluentButton OnClick="GetGuas">起卦</FluentButton>
+            </div>
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>卦象</h2>
+
+            @output
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>脚本</h2>
+            <FluentTextArea @bind-Value="script" Rows="20" Style="width: 100%"></FluentTextArea>
+        </FluentStack>
+    </FluentCard>
+</FluentStack>
