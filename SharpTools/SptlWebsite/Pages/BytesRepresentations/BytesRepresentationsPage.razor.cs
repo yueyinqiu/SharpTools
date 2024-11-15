@@ -6,17 +6,17 @@ namespace SptlWebsite.Pages.BytesRepresentations;
 
 public partial class BytesRepresentationsPage
 {
-    private BytesFormat inputFormatDontTouchMe = formats.Single(x => x.Name is "字节数组");
     private BytesFormat InputFormat
     {
-        get => this.inputFormatDontTouchMe;
+        get;
         set
         {
-            this.inputFormatDontTouchMe = value;
+            field = value;
             this.CacheInputBytes();
             this.SavePreference();
         }
-    }
+    } = formats.Single(x => x.Name is "字节数组");
+
     private BytesFormat outputFormatDontTouchMe = formats.Single(x => x.Name is "Base64");
     private BytesFormat OutputFormat
     {
