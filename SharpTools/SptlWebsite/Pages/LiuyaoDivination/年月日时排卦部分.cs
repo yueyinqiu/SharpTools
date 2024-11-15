@@ -22,16 +22,12 @@ public partial class LiuyaoDivinationPage
         玄武
     }
 
-    private SelectedNongliSolarDateTime nongliSolarDontTouchMe = SelectedNongliSolarDateTime.Empty;
     private SelectedNongliSolarDateTime NongliSolar
     {
-        get
-        {
-            return nongliSolarDontTouchMe;
-        }
+        get;
         set
         {
-            nongliSolarDontTouchMe = value;
+            field = value;
             if (!value.Rigan.HasValue)
             {
                 for (int i = 0; i < 6; i++)
@@ -58,42 +54,41 @@ public partial class LiuyaoDivinationPage
             this.ValidateTime();
             this.复原占断参考();
         }
-    }
+    } = SelectedNongliSolarDateTime.Empty;
+
     private readonly 六神?[] 各爻六神 = [null, null, null, null, null, null];
 
-    private SelectedNongliLunarDateTime nongliLunarDontTouchMe = SelectedNongliLunarDateTime.Empty;
     private SelectedNongliLunarDateTime NongliLunar
     {
-        get => nongliLunarDontTouchMe;
+        get;
         set
         {
-            nongliLunarDontTouchMe = value;
+            field = value;
             ValidateTime();
             this.复原占断参考();
         }
-    }
-    private DateTime? westernDateDontTouchMe = null;
+    } = SelectedNongliLunarDateTime.Empty;
     private DateTime? WesternDate
     {
-        get => westernDateDontTouchMe;
+        get;
         set
         {
-            westernDateDontTouchMe = value;
+            field = value;
             ValidateTime();
             this.复原占断参考();
         }
-    }
-    private DateTime? westernTimeDontTouchMe = null;
+    } = null;
+
     private DateTime? WesternTime
     {
-        get => westernTimeDontTouchMe;
+        get;
         set
         {
-            westernTimeDontTouchMe = value;
+            field = value;
             ValidateTime();
             this.复原占断参考();
         }
-    }
+    } = null;
     private (LunarDateTime lunar, SolarDateTime solar)? GetNongliFromWestern()
     {
         if (WesternDate.HasValue && WesternTime.HasValue)

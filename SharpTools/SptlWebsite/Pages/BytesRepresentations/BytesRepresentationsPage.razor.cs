@@ -17,31 +17,28 @@ public partial class BytesRepresentationsPage
         }
     } = formats.Single(x => x.Name is "字节数组");
 
-    private BytesFormat outputFormatDontTouchMe = formats.Single(x => x.Name is "Base64");
     private BytesFormat OutputFormat
     {
-        get => this.outputFormatDontTouchMe;
+        get;
         set
         {
-            this.outputFormatDontTouchMe = value;
+            field = value;
             this.SavePreference();
         }
-    }
+    } = formats.Single(x => x.Name is "Base64");
 
     private static readonly ImmutableArray<byte> helloWorld =
         [72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33];
 
-    private string inputDontTouchMe = formats.Single(x => x.Name is "字节数组")
-        .FromBytes([.. helloWorld]);
     private string Input
     {
-        get => this.inputDontTouchMe;
+        get;
         set
         {
-            this.inputDontTouchMe = value;
+            field = value;
             this.CacheInputBytes();
         }
-    }
+    } = formats.Single(x => x.Name is "字节数组").FromBytes([.. helloWorld]);
 
     private (byte[]? bytes, Exception? ex) inputBytes = ([.. helloWorld], null);
 

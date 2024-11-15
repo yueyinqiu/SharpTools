@@ -25,20 +25,15 @@ public partial class GuidGeneratorPage
 
     private ImmutableArray<Guid> outputs = [];
     private int countInput = 1;
-    private GuidFormat formatInputDontTouchMe = formats.Single(
-        x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo");
     private GuidFormat FormatInput
     {
-        get
-        {
-            return this.formatInputDontTouchMe;
-        }
+        get;
         set
         {
-            this.formatInputDontTouchMe = value;
+            field = value;
             this.SavePreference();
         }
-    }
+    } = formats.Single(x => x.Name == "oooooooo-oooo-oooo-oooo-oooooooooooo");
 
     internal sealed record Preferences(string FormatName, int Count);
 

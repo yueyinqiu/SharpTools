@@ -12,50 +12,46 @@ namespace SptlWebsite.Pages.MeihuaYishu;
 
 public partial class MeihuaYishuPage
 {
-    private SelectedNongliSolarDateTime nongliSolarDontTouchMe = SelectedNongliSolarDateTime.Empty;
     private SelectedNongliSolarDateTime NongliSolar
     {
-        get
-        {
-            return nongliSolarDontTouchMe;
-        }
+        get;
         set
         {
-            nongliSolarDontTouchMe = value;
+            field = value;
             this.ValidateTime();
         }
-    }
+    } = SelectedNongliSolarDateTime.Empty;
 
-    private SelectedNongliLunarDateTime nongliLunarDontTouchMe = SelectedNongliLunarDateTime.Empty;
     private SelectedNongliLunarDateTime NongliLunar
     {
-        get => nongliLunarDontTouchMe;
+        get;
         set
         {
-            nongliLunarDontTouchMe = value;
+            field = value;
             ValidateTime();
         }
-    }
-    private DateTime? westernDateDontTouchMe = null;
+    } = SelectedNongliLunarDateTime.Empty;
+
     private DateTime? WesternDate
     {
-        get => westernDateDontTouchMe;
+        get;
         set
         {
-            westernDateDontTouchMe = value;
+            field = value;
             ValidateTime();
         }
-    }
-    private DateTime? westernTimeDontTouchMe = null;
+    } = null;
+
     private DateTime? WesternTime
     {
-        get => westernTimeDontTouchMe;
+        get;
         set
         {
-            westernTimeDontTouchMe = value;
+            field = value;
             ValidateTime();
         }
-    }
+    } = null;
+
     private (LunarDateTime lunar, SolarDateTime solar)? GetNongliFromWestern()
     {
         if (WesternDate.HasValue && WesternTime.HasValue)
