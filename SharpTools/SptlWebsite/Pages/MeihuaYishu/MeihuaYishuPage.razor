@@ -1,24 +1,17 @@
 ﻿@page "/MeihuaYishu"
+@using YiJingFramework.EntityRelations.GuaCharacters.Extensions
 @inject IJSRuntime JsRuntime
 @inject IGradedLocalStorage LocalStorage
+@inject IBuiltInZhouyiAccessor BuiltInZhouyi
 
 <PageTitle>梅花易数 - SharpTools</PageTitle>
 
 <FluentStack Orientation="Orientation.Vertical">
     <h1>梅花易数</h1>
 
-    <p>
-        此工具仍在开发过程中。
-    </p>
-
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
-            <h2>起卦</h2>
-            <div>
-                <FluentButton OnClick="ClearDateTime">清空所选时间</FluentButton>
-                <FluentButton OnClick="FillCurrent">填入当前时间</FluentButton>
-                <FluentButton OnClick="FillNongli">按西历填农历</FluentButton>
-            </div>
+            <h2>择时</h2>
 
             <div>
                 西历：<FluentDatePicker Style="vertical-align: middle" @bind-Value="WesternDate"></FluentDatePicker><FluentTimePicker Style="vertical-align: middle" @bind-Value="WesternTime"></FluentTimePicker>
@@ -26,29 +19,90 @@
                 阴历：<InlineNongliLunarDateTimePicker @bind-Value="NongliLunar"></InlineNongliLunarDateTimePicker>
                 <br />
                 干支：<InlineNongliSolarDateTimePicker @bind-Value="NongliSolar"></InlineNongliSolarDateTimePicker>
+                <br />
             </div>
 
-            <div style="white-space: pre-wrap">@timeWarnings</div>
-
-            <div>
-                <FluentTextField Style="vertical-align: middle" Label="上卦" @bind-Value="upperInput"></FluentTextField>
-
-                <FluentTextField Style="vertical-align: middle" Label="下卦" @bind-Value="lowerInput"></FluentTextField>
-
-                <FluentTextField Style="vertical-align: middle" Label="动爻" @bind-Value="changingInput"></FluentTextField>
+            <div style="white-space: pre-wrap">
+                @timeWarnings
             </div>
-            
+
             <div>
-                <FluentButton OnClick="GetGuas">起卦</FluentButton>
+                <FluentButton OnClick="ClearDateTime">清空所选时间</FluentButton>
+                <FluentButton OnClick="FillCurrent">填入当前时间</FluentButton>
+                <FluentButton OnClick="FillNongli">按西历填农历</FluentButton>
             </div>
         </FluentStack>
     </FluentCard>
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
-            <h2>卦象</h2>
+            <h2>起卦</h2>
 
-            @output
+            <FluentTextField Style="width: 100%" Label="上卦" @bind-Value="upperInput"></FluentTextField>
+
+            <FluentTextField Style="width: 100%" Label="下卦" @bind-Value="lowerInput"></FluentTextField>
+
+            <FluentTextField Style="width: 100%" Label="动爻" @bind-Value="changingInput"></FluentTextField>
+
+            <FluentButton OnClick="GetGuas">起卦</FluentButton>
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>卦象</h2>
+            <div>
+                @errorOrWarning
+            </div>
+            @if (本卦 is not null)
+            {
+                <div>
+                    上卦卦数：@upperNumber 下卦卦数：@lowerNumber 动爻数：@changingNumber
+                </div>
+                <div>
+                    <FluentButton Style="font-size: 120px; height: 120px" OnClick="() => displayingGua = 本卦">
+                        @本卦.Painting.ToUnicodeChar()
+                    </FluentButton>
+                    <FluentButton Style="font-size: 120px; height: 120px" OnClick="() => displayingGua = 互卦">
+                        @互卦?.Painting.ToUnicodeChar()
+                    </FluentButton>
+                    <FluentButton Style="font-size: 120px; height: 120px" OnClick="() => displayingGua = 变卦">
+                        @变卦?.Painting.ToUnicodeChar()
+                    </FluentButton>
+                </div>
+            }
+        </FluentStack>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <FluentStack Orientation="Orientation.Vertical">
+            <h2>卦辞</h2>
+
+            @if (displayingGua is not null)
+            {
+                <p>
+                    @displayingGua.Text <br />
+                    @displayingGua.Xiang <br />
+                    @displayingGua.Tuan <br />
+                </p>
+
+                @foreach (var line in displayingGua.EnumerateYaos())
+                {
+                    <p>
+                        @if (line.YaoText is not null)
+                        {
+                            @line.YaoText <br />
+                            @line.Xiang <br />
+                        }
+                    </p>
+                }
+            }
+            else
+            {
+                <p>
+                    点击卦象可查看卦爻辞。
+                </p>
+            }
         </FluentStack>
     </FluentCard>
 

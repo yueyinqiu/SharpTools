@@ -2,7 +2,30 @@
 {
     constructor(rawTools)
     {
+        /**
+         * @private
+         */
+        this.rawTools = rawTools;
+    }
 
+    /**
+     * @param {Date} date
+     * @returns {NongliLunar}
+     */
+    getNongliLunarFromGregorian(date)
+    {
+        const result = this.rawTools.invokeMethod("GetNongliLunarFromGregorian", date);
+        return new NongliLunar(this, result);
+    }
+
+    /**
+     * @param {Date} date
+     * @returns {NongliSolar}
+     */
+    getNongliSolarFromGregorian(date)
+    {
+        return this.rawTools.invokeMethod("GetNongliSolarFromGregorian", date)
+        return new NongliSolar(this, result);
     }
 }
 
@@ -154,58 +177,67 @@ function THE_FUNCTION_YOU_ARE_GOING_TO_IMPLEMENT(
     // 事实上它是通过 eval 执行的，而不是调用函数。
     // 其运行结果通过 outputs 的属性来向外传递，而不使用 return （也不会取 eval 的返回值）。
     // 但有时候用 return 进行跳转很方便，可以增加一个内部方法来解决。
+    // 如果需要，可以使用 console.log 进行“调试”。
 
     // 下面是一个示例（也是默认的脚本）：
-    function calculate()
+    (() =>
     {
-        let 年 = nongliLunar.nian.index;
-        let 月 = nongliLunar.yue;
-        let 日 = nongliLunar.ri;
-        let 时 = nongliLunar.shi.index;
-    
+        const 年数 = nongliLunar.nian?.index ?? NaN;
+        const 月数 = nongliLunar.yue ?? NaN;
+        const 日数 = nongliLunar.ri ?? NaN;
+        const 时数 = nongliLunar.shi?.index ?? NaN;
+
+        const 年月日数 = 年数 + 月数 + 日数;
+        const 年月日时数 = 年月日数 + 时数;
+
         try
         {
             outputs.shanggua = eval(shangguaInput);
         }
         catch (ex)
         {
-            outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`
+            outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`;
             return;
         }
-        let 上 = outputs.shanggua;
-        
+        if (!Number.isInteger(outputs.shanggua))
+        {
+            outputs.error = `计算得到的上卦卦数并非整数。请检查输入的时间是否完整，以及上卦表达式是否正确。具体值：${outputs.shanggua}`;
+            return;
+        }
+        const 上卦卦数 = outputs.shanggua;
+
         try
         {
-            outputs.shanggua = eval(shangguaInput);
+            outputs.xiagua = eval(xiaguaInput);
         }
         catch (ex)
         {
-            outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`
+            outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`;
             return;
         }
-        let 下 = eval(xiaguaInput)
-    
+        if (!Number.isInteger(outputs.xiagua))
+        {
+            outputs.error = `计算得到的下卦卦数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.xiagua}`;
+            return;
+        }
+        const 下卦卦数 = outputs.xiagua;
+
         try
         {
             outputs.dongyao = eval(dongyaoInput);
         }
         catch (ex)
         {
-            outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`
+            outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`;
             return;
         }
-    
-        if (!Number.isInteger(outputs.shanggua) ||
-            !Number.isInteger(outputs.xiagua) ||
-            !Number.isInteger(outputs.dongyao))
+        if (!Number.isInteger(outputs.dongyao))
         {
-            outputs.error = `计算得到的卦数并非整数。其中上卦为 ${outputs.shanggua} ，下卦为 ${outputs.xiagua} ，动爻为 ${outputs.dongyao} 。`;
+            outputs.error = `计算得到的动爻数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.dongyao}`;
             return;
         }
-        
         outputs.error = null;
-    }
-    calculate()
+    })();
 }
 
 export function calculate(rawInputs, rawTools)
