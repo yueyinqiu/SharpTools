@@ -177,86 +177,93 @@ function THE_FUNCTION_YOU_ARE_GOING_TO_IMPLEMENT(
     shangguaInput, xiaguaInput, dongyaoInput,
     outputs, tools)
 {
-    // 事实上它是通过 eval 执行的，而不是调用函数。
-    // 其运行结果通过 outputs 的属性来向外传递，而不使用 return （也不会取 eval 的返回值）。
-    // 但有时候用 return 进行跳转很方便，可以增加一个内部方法来解决。
-    // 如果需要，可以使用 console.log 进行“调试”。
+    // https://github.com/yueyinqiu/SharpTools/blob/main/SharpTools/SptlWebsite/Pages/MeihuaYishu/MeihuaYishuPage.razor.js
 
-    // 下面是一个示例（也是默认的脚本）：
-    (() =>
+    const 年 = nongliLunar.nian?.index ?? NaN;
+    const 月 = nongliLunar.yue ?? NaN;
+    const 日 = nongliLunar.ri ?? NaN;
+    const 时 = nongliLunar.shi?.index ?? NaN;
+
+    const 年月日加时总数 = 年 + 月 + 日 + 时;
+
+    try
     {
-        const 年数 = nongliLunar.nian?.index ?? NaN;
-        const 月数 = nongliLunar.yue ?? NaN;
-        const 日数 = nongliLunar.ri ?? NaN;
-        const 时数 = nongliLunar.shi?.index ?? NaN;
+        outputs.shanggua = eval(shangguaInput);
+    }
+    catch (ex)
+    {
+        outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`;
+        return;
+    }
+    if (!Number.isInteger(outputs.shanggua))
+    {
+        outputs.error = `计算得到的上卦卦数并非整数。请检查输入的时间是否完整，以及上卦表达式是否正确。具体值：${outputs.shanggua}`;
+        return;
+    }
+    const 上卦卦数 = outputs.shanggua;
 
-        const 年月日数 = 年数 + 月数 + 日数;
-        const 年月日时数 = 年月日数 + 时数;
+    try
+    {
+        outputs.xiagua = eval(xiaguaInput);
+    }
+    catch (ex)
+    {
+        outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`;
+        return;
+    }
+    if (!Number.isInteger(outputs.xiagua))
+    {
+        outputs.error = `计算得到的下卦卦数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.xiagua}`;
+        return;
+    }
+    const 下卦卦数 = outputs.xiagua;
 
-        try
-        {
-            outputs.shanggua = eval(shangguaInput);
-        }
-        catch (ex)
-        {
-            outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`;
-            return;
-        }
-        if (!Number.isInteger(outputs.shanggua))
-        {
-            outputs.error = `计算得到的上卦卦数并非整数。请检查输入的时间是否完整，以及上卦表达式是否正确。具体值：${outputs.shanggua}`;
-            return;
-        }
-        const 上卦卦数 = outputs.shanggua;
+    try
+    {
+        outputs.dongyao = eval(dongyaoInput);
+    }
+    catch (ex)
+    {
+        outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`;
+        return;
+    }
+    if (!Number.isInteger(outputs.dongyao))
+    {
+        outputs.error = `计算得到的动爻数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.dongyao}`;
+        return;
+    }
 
-        try
-        {
-            outputs.xiagua = eval(xiaguaInput);
-        }
-        catch (ex)
-        {
-            outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`;
-            return;
-        }
-        if (!Number.isInteger(outputs.xiagua))
-        {
-            outputs.error = `计算得到的下卦卦数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.xiagua}`;
-            return;
-        }
-        const 下卦卦数 = outputs.xiagua;
-
-        try
-        {
-            outputs.dongyao = eval(dongyaoInput);
-        }
-        catch (ex)
-        {
-            outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`;
-            return;
-        }
-        if (!Number.isInteger(outputs.dongyao))
-        {
-            outputs.error = `计算得到的动爻数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.dongyao}`;
-            return;
-        }
-        outputs.error = null;
-    })();
+    outputs.error = null;
+    return;
 }
 
 export function calculate(rawInputs, rawTools)
 {
     const tools = new Tools(rawTools);
-    const nongliLunar = new NongliLunar(tools, rawInputs.nongliLunar);
-    const nongliSolar = new NongliSolar(tools, rawInputs.nongliSolar);
-    const gregorianCalendar = rawInputs.gregorianCalendar;
-    const shangguaInput = rawInputs.shanggua;
-    const xiaguaInput = rawInputs.xiagua;
-    const dongyaoInput = rawInputs.dongyao;
-    const outputs = new Outputs();
 
+    const script = new Function(
+        "nongliLunar",
+        "nongliSolar",
+        "gregorianCalendar",
+        "shangguaInput",
+        "xiaguaInput",
+        "dongyaoInput",
+        "outputs",
+        "tools",
+        rawInputs.script);
+
+    const outputs = new Outputs();
     try
     {
-        eval(rawInputs.script);
+        script(
+            new NongliLunar(tools, rawInputs.nongliLunar),
+            new NongliSolar(tools, rawInputs.nongliSolar),
+            rawInputs.gregorianCalendar,
+            rawInputs.shanggua,
+            rawInputs.xiagua,
+            rawInputs.dongyao,
+            outputs,
+            tools);
     }
     catch (ex)
     {

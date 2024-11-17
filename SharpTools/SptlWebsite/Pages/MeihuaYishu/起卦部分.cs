@@ -13,70 +13,70 @@ namespace SptlWebsite.Pages.MeihuaYishu;
 
 public partial class MeihuaYishuPage
 {
-    private string upperInput = "年月日数";
-    private string lowerInput = "年月日时数";
+    private string upperInput = "年+月+日";
+    private string lowerInput = "年月日加时总数";
     private string changingInput = "下卦卦数";
 
     private const string defaultScript =
         """
-        (() =>
+        // https://github.com/yueyinqiu/SharpTools/blob/main/SharpTools/SptlWebsite/Pages/MeihuaYishu/MeihuaYishuPage.razor.js
+
+        const 年 = nongliLunar.nian?.index ?? NaN;
+        const 月 = nongliLunar.yue ?? NaN;
+        const 日 = nongliLunar.ri ?? NaN;
+        const 时 = nongliLunar.shi?.index ?? NaN;
+
+        const 年月日加时总数 = 年 + 月 + 日 + 时;
+
+        try
         {
-            const 年数 = nongliLunar.nian?.index ?? NaN;
-            const 月数 = nongliLunar.yue ?? NaN;
-            const 日数 = nongliLunar.ri ?? NaN;
-            const 时数 = nongliLunar.shi?.index ?? NaN;
+            outputs.shanggua = eval(shangguaInput);
+        }
+        catch (ex)
+        {
+            outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`;
+            return;
+        }
+        if (!Number.isInteger(outputs.shanggua))
+        {
+            outputs.error = `计算得到的上卦卦数并非整数。请检查输入的时间是否完整，以及上卦表达式是否正确。具体值：${outputs.shanggua}`;
+            return;
+        }
+        const 上卦卦数 = outputs.shanggua;
 
-            const 年月日数 = 年数 + 月数 + 日数;
-            const 年月日时数 = 年月日数 + 时数;
+        try
+        {
+            outputs.xiagua = eval(xiaguaInput);
+        }
+        catch (ex)
+        {
+            outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`;
+            return;
+        }
+        if (!Number.isInteger(outputs.xiagua))
+        {
+            outputs.error = `计算得到的下卦卦数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.xiagua}`;
+            return;
+        }
+        const 下卦卦数 = outputs.xiagua;
 
-            try
-            {
-                outputs.shanggua = eval(shangguaInput);
-            }
-            catch (ex)
-            {
-                outputs.error = `上卦计算失败。请检查输入的时间是否完整，以及上卦表达式是否正确。详细信息：${ex}`;
-                return;
-            }
-            if (!Number.isInteger(outputs.shanggua))
-            {
-                outputs.error = `计算得到的上卦卦数并非整数。请检查输入的时间是否完整，以及上卦表达式是否正确。具体值：${outputs.shanggua}`;
-                return;
-            }
-            const 上卦卦数 = outputs.shanggua;
+        try
+        {
+            outputs.dongyao = eval(dongyaoInput);
+        }
+        catch (ex)
+        {
+            outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`;
+            return;
+        }
+        if (!Number.isInteger(outputs.dongyao))
+        {
+            outputs.error = `计算得到的动爻数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.dongyao}`;
+            return;
+        }
 
-            try
-            {
-                outputs.xiagua = eval(xiaguaInput);
-            }
-            catch (ex)
-            {
-                outputs.error = `下卦计算失败。请检查输入的时间是否完整，以及下卦表达式是否正确。详细信息：${ex}`;
-                return;
-            }
-            if (!Number.isInteger(outputs.xiagua))
-            {
-                outputs.error = `计算得到的下卦卦数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.xiagua}`;
-                return;
-            }
-            const 下卦卦数 = outputs.xiagua;
-
-            try
-            {
-                outputs.dongyao = eval(dongyaoInput);
-            }
-            catch (ex)
-            {
-                outputs.error = `动爻计算失败。请检查输入的时间是否完整，以及动爻表达式是否正确。详细信息：${ex}`;
-                return;
-            }
-            if (!Number.isInteger(outputs.dongyao))
-            {
-                outputs.error = `计算得到的动爻数并非整数。请检查输入的时间是否完整，以及下卦表达式是否正确。具体值：${outputs.dongyao}`;
-                return;
-            }
-            outputs.error = null;
-        })();
+        outputs.error = null;
+        return;
         """;
     private string script = defaultScript;
 
@@ -219,13 +219,5 @@ public partial class MeihuaYishuPage
 
             this.SavePreferences();
         }
-    }
-
-    private void NavigateToJs()
-    {
-        var js = (IJSInProcessRuntime)this.JsRuntime;
-        js.InvokeVoid("open",
-            "https://github.com/yueyinqiu/SharpTools/blob/main/SharpTools/SptlWebsite/Pages/MeihuaYishu/MeihuaYishuPage.razor.js",
-            "_blank");
     }
 }
