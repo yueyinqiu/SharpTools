@@ -216,6 +216,8 @@ public partial class MeihuaYishuPage
             this.互卦 = this.zhouyi[this.本卦.Painting.Hugua()];
             this.变卦 = this.zhouyi[this.本卦.Painting.ChangeYaos(((result.Dongyao - 1) % 6 + 6) % 6)];
             this.displayingGua = null;
+
+            this.SavePreferences();
         }
     }
 
