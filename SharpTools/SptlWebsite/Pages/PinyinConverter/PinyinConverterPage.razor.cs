@@ -6,29 +6,29 @@ namespace SptlWebsite.Pages.PinyinConverter;
 
 public partial class PinyinConverterPage
 {
-    private PinyinFormat caseFormat = PinyinFormat.LOWERCASE;
-    private readonly ImmutableArray<PinyinFormat> caseFormats = [
+    private PinyinFormat caseFormat = caseFormats[0];
+    private static readonly ImmutableArray<PinyinFormat> caseFormats = [
         PinyinFormat.LOWERCASE,
         PinyinFormat.UPPERCASE,
         PinyinFormat.CAPITALIZE_FIRST_LETTER,
     ];
 
-    private PinyinFormat vFormat = PinyinFormat.WITH_V;
-    private readonly ImmutableArray<PinyinFormat> vFormats = [
+    private PinyinFormat vFormat = vFormats[0];
+    private static readonly ImmutableArray<PinyinFormat> vFormats = [
         PinyinFormat.WITH_V,
         PinyinFormat.WITH_U_UNICODE,
         PinyinFormat.WITH_YU,
         PinyinFormat.WITH_U_AND_COLON
     ];
 
-    private PinyinFormat toneFormat = PinyinFormat.WITH_TONE_NUMBER;
-    private readonly ImmutableArray<PinyinFormat> toneFormats = [
+    private PinyinFormat toneFormat = toneFormats[0];
+    private static readonly ImmutableArray<PinyinFormat> toneFormats = [
         PinyinFormat.WITH_TONE_NUMBER,
         PinyinFormat.WITH_TONE_MARK,
         PinyinFormat.WITHOUT_TONE,
     ];
 
-    private string GetOptionText(PinyinFormat format)
+    private static string GetOptionText(PinyinFormat format)
     {
         return format switch
         {
@@ -95,14 +95,14 @@ public partial class PinyinConverterPage
     }
     internal sealed record Preferences(PinyinFormat Format);
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
-        this.LocalStorage.GetEntry<Preferences>("PinyinConverterPage.Preferences", 500);
+        this.LocalStorage.GetEntry<Preferences>("PinyinConverterPage.Preferences", Importance.SimpleOptions);
     protected override void OnParametersSet()
     {
         _ = this.PreferenceStorage.TryGet(out var preference);
         var format = preference?.Format ?? PinyinFormat.None;
 
-        this.caseFormat = this.caseFormats[0];
-        foreach (var value in this.caseFormats)
+        this.caseFormat = caseFormats[0];
+        foreach (var value in caseFormats)
         {
             if (format.HasFlag(value))
             {
@@ -111,8 +111,8 @@ public partial class PinyinConverterPage
             }
         }
 
-        this.vFormat = this.vFormats[0];
-        foreach (var value in this.vFormats)
+        this.vFormat = vFormats[0];
+        foreach (var value in vFormats)
         {
             if (format.HasFlag(value))
             {
@@ -121,8 +121,8 @@ public partial class PinyinConverterPage
             }
         }
 
-        this.toneFormat = this.toneFormats[0];
-        foreach (var value in this.toneFormats)
+        this.toneFormat = toneFormats[0];
+        foreach (var value in toneFormats)
         {
             if (format.HasFlag(value))
             {

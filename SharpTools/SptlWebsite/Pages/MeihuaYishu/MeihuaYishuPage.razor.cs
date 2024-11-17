@@ -16,22 +16,29 @@ public partial class MeihuaYishuPage
         var zhouyiRaw = await this.BuiltInZhouyi.GetZhouyiAsync();
         this.zhouyi = new ZhouyiStoreWithLineTitles(zhouyiRaw);
 
-        if (PreferenceStorage.TryGet(out var preferences) && preferences is not null)
+        if (this.PreferenceStorage.TryGet(out var preferences) && preferences is not null)
         {
-            this.script = preferences.Script;
             this.upperInput = preferences.Upper;
             this.lowerInput = preferences.Lower;
             this.changingInput = preferences.Changing;
         }
+
+        if (this.ScriptStorage.TryGet(out var script) && script is not null)
+        {
+            this.script = script;
+        }
     }
 
-    private sealed record Preferences(string Script, string Upper, string Lower, string Changing);
+    private sealed record Preferences(string Upper, string Lower, string Changing);
+    private ILocalStorageEntry<string> ScriptStorage =>
+        this.LocalStorage.GetEntry<string>("MeihuaYishuPage.Script", Importance.ComplexScripts);
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
-        this.LocalStorage.GetEntry<Preferences>("MeihuaYishuPage.Preferences", 750);
+        this.LocalStorage.GetEntry<Preferences>("MeihuaYishuPage.Preferences", Importance.SimpleOptions);
 
     private void SavePreferences()
     {
+        this.ScriptStorage.Set(this.script);
         this.PreferenceStorage.Set(
-            new Preferences(this.script, this.upperInput, this.lowerInput, this.changingInput));
+            new Preferences(this.upperInput, this.lowerInput, this.changingInput));
     }
 }

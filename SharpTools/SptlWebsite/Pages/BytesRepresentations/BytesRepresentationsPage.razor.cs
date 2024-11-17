@@ -128,7 +128,7 @@ public partial class BytesRepresentationsPage
 
     private sealed record Preferences(string? InputFormat, string? OutputFormat);
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
-        this.LocalStorage.GetEntry<Preferences>("BytesRepresentationsPage.Preferences", 500);
+        this.LocalStorage.GetEntry<Preferences>("BytesRepresentationsPage.Preferences", Importance.SimpleOptions);
 
     protected override void OnParametersSet()
     {
@@ -136,10 +136,10 @@ public partial class BytesRepresentationsPage
         {
             this.InputFormat = formats.SingleOrDefault(
                 x => x.Name == preference?.InputFormat,
-                formats.Single(x => x.Name is "字节数组"));
+                this.InputFormat);
             this.OutputFormat = formats.SingleOrDefault(
                 x => x.Name == preference?.OutputFormat,
-                formats.Single(x => x.Name is "Base64"));
+                this.OutputFormat);
             this.Input = this.InputFormat.FromBytes([.. helloWorld]);
         }
     }

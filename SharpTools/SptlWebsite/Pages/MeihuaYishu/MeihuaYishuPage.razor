@@ -23,9 +23,7 @@
                 <br />
             </div>
 
-            <div style="white-space: pre-wrap; color: darkred">
-                @timeWarnings
-            </div>
+            <div style="white-space: pre-wrap; color: darkred">@timeWarnings</div>
 
             <div>
                 <FluentButton OnClick="ClearDateTime">清空所选时间</FluentButton>
@@ -52,9 +50,7 @@
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>卦象</h2>
-            <div style="color: darkred">
-                @errorOrWarning
-            </div>
+            <div style="white-space: pre-wrap; color: darkred">@errorOrWarning</div>
             @if (本卦 is not null)
             {
                 <div>
@@ -110,6 +106,10 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>脚本</h2>
             <FluentTextArea @bind-Value="script" Rows="20" Style="width: 100%"></FluentTextArea>
+
+            <div>
+                修改脚本后需成功起卦一次才会保存。此外，由于浏览器限制，针对浏览器的清理行为等可能导致脚本被删除，建议在别处储存一份备份。
+            </div>
 
             <div>
                 <FluentButton OnClick="() => script = defaultScript">重置脚本</FluentButton>

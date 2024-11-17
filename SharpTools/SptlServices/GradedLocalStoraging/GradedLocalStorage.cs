@@ -8,8 +8,8 @@ internal sealed partial class GradedLocalStorage(
     ISyncLocalStorageService localStorage,
     string rootKey) : IGradedLocalStorage
 {
-    public ILocalStorageEntry<T> GetEntry<T>(string subKey, int importance)
+    public ILocalStorageEntry<T> GetEntry<T>(string subKey, Importance importance)
     {
-        return new LocalStorageEntry<T>(localStorage, logger, rootKey, subKey, importance);
+        return new LocalStorageEntry<T>(localStorage, logger, rootKey, subKey, (int)importance);
     }
 }

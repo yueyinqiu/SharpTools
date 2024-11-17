@@ -48,9 +48,15 @@ internal sealed class LocalStorageEntry<
         }
     }
 
+    private static readonly JsonSerializerOptions serializer = new JsonSerializerOptions()
+    {
+        RespectNullableAnnotations = true,
+        RespectRequiredConstructorParameters = true
+    };
+
     public void Set(T data)
     {
-        var serialized = JsonSerializer.Serialize(data);
+        var serialized = JsonSerializer.Serialize(data, serializer);
         var dataString = $"{importance}{separator}{serialized}";
         try
         {
@@ -88,7 +94,7 @@ internal sealed class LocalStorageEntry<
         var serialized = split[1];
         try
         {
-            data = JsonSerializer.Deserialize<T>(serialized);
+            data = JsonSerializer.Deserialize<T>(serialized, serializer);
             return true;
         }
         catch (JsonException)

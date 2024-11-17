@@ -2,5 +2,5 @@
 
 public interface IGradedLocalStorage
 {
-    ILocalStorageEntry<T> GetEntry<T>(string subKey, int importance);
+    ILocalStorageEntry<T> GetEntry<T>(string subKey, Importance importance);
 }
