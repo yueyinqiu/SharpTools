@@ -30,18 +30,18 @@
 
                 <h2>@displayingGua.DisplayedTitle</h2>
 
-                @if (gua.Painting == todaysGua.gua)
-                {
-                    @todaysGua.display
-                }
-
                 <p>
+                    @if (gua.Painting == todaysGua.gua)
+                    {
+                        @todaysGua.display
+                        <br />
+                    }
+
                     @gua.Text <br />
                     @gua.Xiang <br />
                     @gua.Tuan <br />
-                </p>
+                    <br />
 
-                <p>
                     @foreach (var line in gua.EnumerateYaos())
                     {
                         if (line.YaoText is not null)
@@ -49,6 +49,7 @@
                             @line.YaoText <br />
                             @line.Xiang <br />
                         }
+                        <br />
                     }
                 </p>
             }

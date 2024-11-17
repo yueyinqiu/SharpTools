@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using System.Diagnostics;
 using YiJingFramework.Annotating.Zhouyi.Entities;
 using YiJingFramework.EntityRelations.GuaDerivations.Extensions;
 using YiJingFramework.Nongli.Lunar;
@@ -81,6 +82,8 @@ public partial class MeihuaYishuPage
 
     private sealed class RawTools
     {
+#pragma warning disable IDE0079 // 请删除不必要的忽略
+#pragma warning disable CA1822 // 将成员标记为 static
         [JSInvokable]
         public RawInputs.RawNongliLunarInputs GetNongliLunarFromGregorian(DateTime dateTime)
         {
@@ -96,6 +99,8 @@ public partial class MeihuaYishuPage
             var selected = new SelectedNongliSolarDateTime(lunar);
             return new RawInputs.RawNongliSolarInputs(selected);
         }
+#pragma warning restore CA1822 // 将成员标记为 static
+#pragma warning restore IDE0079 // 请删除不必要的忽略
     }
 
     private sealed record RawInputs(
@@ -117,9 +122,9 @@ public partial class MeihuaYishuPage
             { }
         }
         public sealed record RawNongliSolarInputs(
-            int? Niangan, int? Nianzhi, 
+            int? Niangan, int? Nianzhi,
             int? Yuegan, int? Yuezhi,
-            int? Rigan, int? Rizhi, 
+            int? Rigan, int? Rizhi,
             int? Shigan, int? Shizhi)
         {
             public RawNongliSolarInputs(SelectedNongliSolarDateTime selected)
@@ -144,7 +149,7 @@ public partial class MeihuaYishuPage
     private ZhouyiHexagram? 互卦 = null;
     private ZhouyiHexagram? 变卦 = null;
 
-    public GuaTrigram 按先天数取卦(int 先天数)
+    private static GuaTrigram 按先天数取卦(int 先天数)
     {
         return ((先天数 % 8 + 8) % 8) switch
         {
@@ -164,10 +169,10 @@ public partial class MeihuaYishuPage
     public void GetGuas()
     {
         DateTime? western;
-        if (WesternDate.HasValue && WesternTime.HasValue)
+        if (this.WesternDate.HasValue && this.WesternTime.HasValue)
         {
-            var date = WesternDate.Value.Date;
-            var time = WesternTime.Value.TimeOfDay;
+            var date = this.WesternDate.Value.Date;
+            var time = this.WesternTime.Value.TimeOfDay;
             western = date.Add(time);
         }
         else
@@ -176,40 +181,49 @@ public partial class MeihuaYishuPage
         }
 
         var rawInputs = new RawInputs(
-            new(this.NongliLunar), new(this.NongliSolar), western, 
-            script,
-            upperInput, lowerInput, changingInput);
+            new(this.NongliLunar), new(this.NongliSolar), western,
+            this.script,
+            this.upperInput, this.lowerInput, this.changingInput);
         using var rawTools = DotNetObjectReference.Create(new RawTools());
 
-        var result = jsModule.Invoke<RawOutputs>("calculate", [
+        Debug.Assert(this.jsModule is not null);
+        var result = this.jsModule.Invoke<RawOutputs>("calculate", [
             rawInputs, new RawTools()
         ]);
 
         if (result.Error is not null)
         {
-            errorOrWarning = result.Error;
-            upperNumber = null;
-            lowerNumber = null;
-            changingNumber = null;
-            本卦 = null;
-            互卦 = null;
-            变卦 = null;
-            displayingGua = null;
+            this.errorOrWarning = result.Error;
+            this.upperNumber = null;
+            this.lowerNumber = null;
+            this.changingNumber = null;
+            this.本卦 = null;
+            this.互卦 = null;
+            this.变卦 = null;
+            this.displayingGua = null;
         }
         else
         {
-            errorOrWarning = result.Warning;
-            upperNumber = result.Shanggua;
-            lowerNumber = result.Xiagua;
-            changingNumber = result.Dongyao;
+            this.errorOrWarning = result.Warning;
+            this.upperNumber = result.Shanggua;
+            this.lowerNumber = result.Xiagua;
+            this.changingNumber = result.Dongyao;
 
-            var 上卦 = this.按先天数取卦(result.Shanggua);
-            var 下卦 = this.按先天数取卦(result.Xiagua);
+            var 上卦 = 按先天数取卦(result.Shanggua);
+            var 下卦 = 按先天数取卦(result.Xiagua);
 
-            本卦 = zhouyi[new(下卦.Concat(上卦))];
-            互卦 = zhouyi[本卦.Painting.Hugua()];
-            变卦 = zhouyi[本卦.Painting.ChangeYaos(((result.Dongyao - 1) % 6 + 6) % 6)];
-            displayingGua = null;
+            this.本卦 = this.zhouyi[new(下卦.Concat(上卦))];
+            this.互卦 = this.zhouyi[this.本卦.Painting.Hugua()];
+            this.变卦 = this.zhouyi[this.本卦.Painting.ChangeYaos(((result.Dongyao - 1) % 6 + 6) % 6)];
+            this.displayingGua = null;
         }
+    }
+
+    private void NavigateToJs()
+    {
+        var js = (IJSInProcessRuntime)this.JsRuntime;
+        js.InvokeVoid("open",
+            "https://github.com/yueyinqiu/SharpTools/blob/main/SharpTools/SptlWebsite/Pages/MeihuaYishu/MeihuaYishuPage.razor.js",
+            "_blank");
     }
 }

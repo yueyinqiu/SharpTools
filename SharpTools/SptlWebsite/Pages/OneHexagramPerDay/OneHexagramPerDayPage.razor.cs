@@ -60,7 +60,7 @@ public partial class OneHexagramPerDayPage
                 defaultGua = this.todaysGua.gua;
             }
 
-            displayingGua = this.guas.Single(x => x.Gua.Painting == defaultGua);
+            this.displayingGua = this.guas.Single(x => x.Gua.Painting == defaultGua);
         }
     }
 }

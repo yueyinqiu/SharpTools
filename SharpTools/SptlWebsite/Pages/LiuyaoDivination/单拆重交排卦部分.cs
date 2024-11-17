@@ -1,14 +1,14 @@
 ﻿using System.Collections.Immutable;
 using YiJingFramework.Annotating.Zhouyi.Entities;
+using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
 using YiJingFramework.EntityRelations.EntityStrings;
+using YiJingFramework.EntityRelations.GuaCharacters.Extensions;
+using YiJingFramework.EntityRelations.GuaHexagramBagongs.Extensions;
+using YiJingFramework.EntityRelations.GuaHexagramNajias.Extensions;
 using YiJingFramework.EntityRelations.WuxingRelations;
+using YiJingFramework.EntityRelations.WuxingRelations.Extensions;
 using YiJingFramework.PrimitiveTypes;
 using YiJingFramework.PrimitiveTypes.GuaWithFixedCount;
-using YiJingFramework.EntityRelations.GuaHexagramBagongs.Extensions;
-using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
-using YiJingFramework.EntityRelations.GuaHexagramNajias.Extensions;
-using YiJingFramework.EntityRelations.WuxingRelations.Extensions;
-using YiJingFramework.EntityRelations.GuaCharacters.Extensions;
 
 namespace SptlWebsite.Pages.LiuyaoDivination;
 

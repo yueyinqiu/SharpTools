@@ -2,7 +2,6 @@
 using System.Collections.Immutable;
 using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
-using static SptlWebsite.Components.InlineNongliLunarDateTimePicker;
 
 namespace SptlWebsite.Components;
 

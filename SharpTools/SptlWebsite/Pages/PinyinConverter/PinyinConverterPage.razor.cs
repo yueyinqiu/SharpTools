@@ -71,34 +71,34 @@ public partial class PinyinConverterPage
 
     private async Task CopyAsync()
     {
-        var items = output.Select(x => x.SelectedPinyin);
+        var items = this.output.Select(x => x.SelectedPinyin);
         var result = string.Join(" ", items);
         await this.ClipboardService.CopyTextToClipboardAsync(result);
     }
 
     private void Convert()
     {
-        if (toneFormat == PinyinFormat.WITH_TONE_MARK && caseFormat != PinyinFormat.WITH_U_UNICODE)
+        if (this.toneFormat == PinyinFormat.WITH_TONE_MARK && this.caseFormat != PinyinFormat.WITH_U_UNICODE)
         {
-            output = [new((IEnumerable<string>)[
+            this.output = [new((IEnumerable<string>)[
                 "无法在 v 、 yu 或 u: 上标记声调，可以改用 ü 或者数字声调"])];
             return;
         }
 
-        var format = caseFormat | vFormat | toneFormat;
+        var format = this.caseFormat | this.vFormat | this.toneFormat;
 
-        output = Pinyin4Net.GetPinyinArray(input, format)
+        this.output = Pinyin4Net.GetPinyinArray(this.input, format)
             .Select(x => new OutputItem(x))
             .ToImmutableArray();
 
-        PreferenceStorage.Set(new Preferences(format));
+        this.PreferenceStorage.Set(new Preferences(format));
     }
     internal sealed record Preferences(PinyinFormat Format);
     private ILocalStorageEntry<Preferences> PreferenceStorage =>
         this.LocalStorage.GetEntry<Preferences>("PinyinConverterPage.Preferences", 500);
     protected override void OnParametersSet()
     {
-        _ = PreferenceStorage.TryGet(out var preference);
+        _ = this.PreferenceStorage.TryGet(out var preference);
         var format = preference?.Format ?? PinyinFormat.None;
 
         this.caseFormat = this.caseFormats[0];

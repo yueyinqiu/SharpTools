@@ -3,6 +3,7 @@
 @inject IJSRuntime JsRuntime
 @inject IGradedLocalStorage LocalStorage
 @inject IBuiltInZhouyiAccessor BuiltInZhouyi
+@inject NavigationManager Navigation
 
 <PageTitle>梅花易数 - SharpTools</PageTitle>
 
@@ -22,7 +23,7 @@
                 <br />
             </div>
 
-            <div style="white-space: pre-wrap">
+            <div style="white-space: pre-wrap; color: darkred">
                 @timeWarnings
             </div>
 
@@ -44,14 +45,14 @@
 
             <FluentTextField Style="width: 100%" Label="动爻" @bind-Value="changingInput"></FluentTextField>
 
-            <FluentButton OnClick="GetGuas">起卦</FluentButton>
+            <FluentButton Style="width: 100%" OnClick="GetGuas">起卦</FluentButton>
         </FluentStack>
     </FluentCard>
 
     <FluentCard AreaRestricted="false">
         <FluentStack Orientation="Orientation.Vertical">
             <h2>卦象</h2>
-            <div>
+            <div style="color: darkred">
                 @errorOrWarning
             </div>
             @if (本卦 is not null)
@@ -78,31 +79,30 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>卦辞</h2>
 
-            @if (displayingGua is not null)
-            {
-                <p>
+            <div>
+
+                @if (displayingGua is not null)
+                {
                     @displayingGua.Text <br />
                     @displayingGua.Xiang <br />
                     @displayingGua.Tuan <br />
-                </p>
+                    <br />
 
-                @foreach (var line in displayingGua.EnumerateYaos())
-                {
-                    <p>
+                    @foreach (var line in displayingGua.EnumerateYaos())
+                    {
                         @if (line.YaoText is not null)
                         {
                             @line.YaoText <br />
                             @line.Xiang <br />
                         }
-                    </p>
+                        <br />
+                    }
                 }
-            }
-            else
-            {
-                <p>
-                    点击卦象可查看卦爻辞。
-                </p>
-            }
+                else
+                {
+                    <text>点击卦象可查看卦爻辞。</text>
+                }
+            </div>
         </FluentStack>
     </FluentCard>
 
@@ -110,6 +110,11 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>脚本</h2>
             <FluentTextArea @bind-Value="script" Rows="20" Style="width: 100%"></FluentTextArea>
+
+            <div>
+                <FluentButton OnClick="() => script = defaultScript">重置脚本</FluentButton>
+                <FluentButton OnClick="NavigateToJs">更多信息</FluentButton>
+            </div>
         </FluentStack>
     </FluentCard>
 </FluentStack>

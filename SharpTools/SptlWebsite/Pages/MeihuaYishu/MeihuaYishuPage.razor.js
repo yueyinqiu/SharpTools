@@ -1,4 +1,7 @@
-﻿class Tools
+﻿// 这里是 SharpTools 梅花易数的 JavaScript 互操作代码。
+// 其中 THE_FUNCTION_YOU_ARE_GOING_TO_IMPLEMENT 就是需要在“脚本”处实现的函数。
+
+class Tools
 {
     constructor(rawTools)
     {

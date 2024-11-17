@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Immutable;
 using YiJingFramework.Nongli.Lunar;
-using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
-using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
 namespace SptlWebsite.Components;
 
@@ -100,8 +98,8 @@ public partial class InlineNongliLunarDateTimePicker
     }
 
     public sealed record SelectedNongliLunarDateTime(
-        Dizhi? Nian, 
-        int? Yue, bool? IsRunyue, 
+        Dizhi? Nian,
+        int? Yue, bool? IsRunyue,
         int? Ri,
         Dizhi? Shi)
     {
@@ -110,7 +108,7 @@ public partial class InlineNongliLunarDateTimePicker
 
         public SelectedNongliLunarDateTime(LunarDateTime dateTime)
             : this(dateTime.Nian.Dizhi,
-                  dateTime.Yue, dateTime.IsRunyue, 
+                  dateTime.Yue, dateTime.IsRunyue,
                   dateTime.Ri,
                   dateTime.Shi)
         {

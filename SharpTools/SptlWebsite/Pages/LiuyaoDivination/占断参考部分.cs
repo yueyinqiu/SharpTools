@@ -1,18 +1,11 @@
 ﻿using System.Text;
-using YiJingFramework.EntityRelations.EntityCharacteristics.Extensions;
 using YiJingFramework.EntityRelations.EntityStrings.Conversions;
 using YiJingFramework.EntityRelations.EntityStrings.Extensions;
 using YiJingFramework.EntityRelations.GuaCharacters.Extensions;
 using YiJingFramework.EntityRelations.GuaHexagramBagongs;
 using YiJingFramework.EntityRelations.GuaHexagramBagongs.Extensions;
-using YiJingFramework.EntityRelations.TianganNianYuesAndRishis.Extensions;
-using YiJingFramework.Nongli.Extensions;
-using YiJingFramework.Nongli.Lunar;
-using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
 using YiJingFramework.PrimitiveTypes.GuaWithFixedCount;
-using static SptlWebsite.Components.InlineNongliLunarDateTimePicker;
-using static SptlWebsite.Components.InlineNongliSolarDateTimePicker;
 
 namespace SptlWebsite.Pages.LiuyaoDivination;
 
