@@ -6,11 +6,14 @@ namespace SptlWebsite;
 public partial class MainLayout
 {
     private static readonly ImmutableArray<ToolGroup> Groups = [
+        new ToolGroup("实用工具", "shi2 yong4 gong1 ju4", [
+            new ToolEntry("拼音转换器", "pin1 yin1 zhuan3 huan4 qi4", "/PinyinConverter"),
+            new ToolEntry("计数器", "ji4 shu4 qi4", "/NumberCounter"),
+        ]),
         new ToolGroup("编程工具", "bian1 cheng2 gong1 ju4", [
             new ToolEntry("Guid 生成器", "guid sheng1 cheng2 qi4", "/GuidGenerator"),
             new ToolEntry("字节数组表示", "zi4 jie2 shu4 zu3 biao3 shi4", "/BytesRepresentations"),
             new ToolEntry("Qr 码扫描器", "qr ma3 sao3 miao2 qi4", "/QrCodeScanner"),
-            new ToolEntry("拼音转换器", "pin1 yin1 zhuan3 huan4 qi4", "/PinyinConverter"),
         ]),
         new ToolGroup("易学工具", "yi4 xue2 gong1 ju4", [
             new ToolEntry("六爻预测", "liu4 yao2 yu4 ce4", "/LiuyaoDivination"),

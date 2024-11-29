@@ -1,0 +1,24 @@
+﻿@page "/NumberCounter"
+@inject IGradedLocalStorage LocalStorage
+
+<PageTitle>计数器 - SharpTools</PageTitle>
+
+<FluentStack Orientation="Orientation.Vertical">
+    <h1>计数器</h1>
+
+    <FluentCard AreaRestricted="false">
+        <h2>配置</h2>
+        <FluentNumberField TValue="long" Style="width: 100%" @bind-Value="StepLength" Label="步长"></FluentNumberField>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <h2>跳转</h2>
+        <FluentNumberField TValue="long" Style="width: 100%" @bind-Value="valueToSkipTo"></FluentNumberField>
+        <FluentButton Style="width: 100%" OnClick="Skip">修改当前计数为输入值</FluentButton>
+    </FluentCard>
+
+    <FluentCard AreaRestricted="false">
+        <h2>计数</h2>
+        <FluentButton Style="width: 100%" OnClick="Count">@ValueDisplay</FluentButton>
+    </FluentCard>
+</FluentStack>
