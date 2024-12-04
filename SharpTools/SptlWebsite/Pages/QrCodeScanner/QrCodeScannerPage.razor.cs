@@ -1,4 +1,5 @@
 ﻿using Microsoft.FluentUI.AspNetCore.Components;
+using QrCodeDecoderImageSharpUpgraded;
 using SixLabors.ImageSharp;
 using System.Collections.Immutable;
 
@@ -8,6 +9,7 @@ public partial class QrCodeScannerPage
 {
     private ImmutableArray<string> outputs = ["这里会以 Base64 字符串的形式显示扫描结果。"];
     private string activeTab = "tab0";
+    private readonly QRDecoder decoder = new QRDecoder();
 
     private void Input(IEnumerable<FluentInputFileEventArgs> files)
     {
@@ -35,7 +37,7 @@ public partial class QrCodeScannerPage
         byte[][]? bytes;
         try
         {
-            bytes = this.Qr.ImageDecoder(image);
+            bytes = decoder.ImageDecoder(image);
         }
         catch (Exception ex)
         {

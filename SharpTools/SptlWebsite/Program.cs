@@ -24,7 +24,6 @@ public class Program
         _ = builder.Services.AddFileDownloadBlazor();
         _ = builder.Services.AddClipboard();
         _ = builder.Services.AddHistoryBlazor();
-        _ = builder.Services.AddQRCodeDecoder();
 
         builder.Services.AddSptlLocalStorage("SharpTools");
         builder.Services.AddSptlBuiltInZhouyi(builder.HostEnvironment.BaseAddress);
