@@ -17,10 +17,6 @@
 		<Content Include="Pages\MeihuaYishu\MeihuaYishuPage.razor.js" />
 	</ItemGroup>
 
-	<ItemGroup Condition="true">
-		<!-- transitive vulnerable -->
-	</ItemGroup>
-	
 	<ItemGroup>
 		<PackageReference Include="Append.Blazor.Clipboard" Version="1.0.0" />
 		<PackageReference Include="HistoryBlazor" Version="0.0.3" />
@@ -37,6 +33,10 @@
 		<PackageReference Include="YiJingFramework.Nongli" Version="4.1.0" />
 		<PackageReference Include="YiJingFramework.PrimitiveTypes" Version="4.0.1" />
 		<PackageReference Include="Yueyinqiu.Su.OneHexagramPerDayCore" Version="0.0.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition="true">
+		<!-- transitive vulnerable -->
 	</ItemGroup>
 
 	<ItemGroup>
