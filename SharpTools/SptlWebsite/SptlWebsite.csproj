@@ -18,6 +18,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- 下面的包本应该随着其他包安装，但那个版本有安全问题 -->
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Append.Blazor.Clipboard" Version="1.0.0" />
 		<PackageReference Include="HistoryBlazor" Version="0.0.3" />
 		<PackageReference Include="FileDownloadBlazor" Version="0.0.4" />
@@ -25,20 +33,14 @@
 		<PackageReference Include="hyjiacan.pinyin4net" Version="4.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-*" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-*" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.4" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.4" />
 		<PackageReference Include="QRCodeDecoder-ImageSharp" Version="0.1.0" />
 		<PackageReference Include="YiJingFramework.Annotating.Zhouyi" Version="7.0.1" />
 		<PackageReference Include="YiJingFramework.EntityRelations" Version="4.1.1" />
 		<PackageReference Include="YiJingFramework.Nongli" Version="4.1.0" />
 		<PackageReference Include="YiJingFramework.PrimitiveTypes" Version="4.0.1" />
 		<PackageReference Include="Yueyinqiu.Su.OneHexagramPerDayCore" Version="0.0.1" />
-
-		<!-- 下面的包本应该随着其他包安装，但那个版本有安全问题 -->
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>
