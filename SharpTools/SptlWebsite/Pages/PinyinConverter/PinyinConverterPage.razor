@@ -13,11 +13,11 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>配置</h2>
 
-                <FluentSelect TOption="PinyinFormat" Label="声调" OptionText="GetOptionText" Items="toneFormats" @bind-SelectedOption="toneFormat">
+                <FluentSelect TOption="PinyinFormat" Label="声调" Width="100%" OptionText="GetOptionText" Items="toneFormats" @bind-SelectedOption="toneFormat">
                 </FluentSelect>
-                <FluentSelect TOption="PinyinFormat" Label="ü" OptionText="GetOptionText" Items="vFormats" @bind-SelectedOption="vFormat">
+            <FluentSelect TOption="PinyinFormat" Label="ü" Width="100%" OptionText="GetOptionText" Items="vFormats" @bind-SelectedOption="vFormat">
                 </FluentSelect>
-                <FluentSelect TOption="PinyinFormat" Label="大小写" OptionText="GetOptionText" Items="caseFormats" @bind-SelectedOption="caseFormat">
+            <FluentSelect TOption="PinyinFormat" Label="大小写" Width="100%" OptionText="GetOptionText" Items="caseFormats" @bind-SelectedOption="caseFormat">
                 </FluentSelect>
         </FluentStack>
     </FluentCard>
@@ -26,9 +26,9 @@
         <FluentStack Orientation="Orientation.Vertical">
             <h2>输入</h2>
 
-            <FluentTextField Placeholder="在这里输入内容" @bind-Value="input" AutoComplete="off"></FluentTextField>
+            <FluentTextField Placeholder="在这里输入内容" style="width: 100%" @bind-Value="input" AutoComplete="off"></FluentTextField>
 
-            <FluentButton OnClick="Convert">转换</FluentButton>
+            <FluentButton Style="width: 100%" OnClick="Convert">转换</FluentButton>
         </FluentStack>
     </FluentCard>
 
