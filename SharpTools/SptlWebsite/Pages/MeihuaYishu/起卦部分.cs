@@ -28,6 +28,15 @@ public partial class MeihuaYishuPage
 
         const 年月日加时总数 = 年 + 月 + 日 + 时;
 
+        const 乾 = 1;
+        const 兑 = 2;
+        const 离 = 3;
+        const 震 = 4;
+        const 巽 = 5;
+        const 坎 = 6;
+        const 艮 = 7;
+        const 坤 = 8;
+
         try
         {
             outputs.shanggua = eval(shangguaInput);
@@ -141,6 +150,11 @@ public partial class MeihuaYishuPage
 
 
     private string? errorOrWarning = "还未起卦。";
+
+    private string? currentUpperInput = null;
+    private string? currentLowerInput = null;
+    private string? currentChangingInput = null;
+
     private int? upperNumber = null;
     private int? lowerNumber = null;
     private int? changingNumber = null;
@@ -148,6 +162,10 @@ public partial class MeihuaYishuPage
     private ZhouyiHexagram? 本卦 = null;
     private ZhouyiHexagram? 互卦 = null;
     private ZhouyiHexagram? 变卦 = null;
+
+    private DateTime? currentWestern;
+    private SelectedNongliLunarDateTime? currentNongliLunar;
+    private SelectedNongliSolarDateTime? currentNongliSolar;
 
     private static GuaTrigram 按先天数取卦(int 先天数)
     {
@@ -201,6 +219,14 @@ public partial class MeihuaYishuPage
             this.互卦 = null;
             this.变卦 = null;
             this.displayingGua = null;
+
+            this.currentWestern = null;
+            this.currentNongliLunar = null;
+            this.currentNongliSolar = null;
+
+            this.currentUpperInput = null;
+            this.currentLowerInput = null;
+            this.currentChangingInput = null;
         }
         else
         {
@@ -216,6 +242,14 @@ public partial class MeihuaYishuPage
             this.互卦 = this.zhouyi[this.本卦.Painting.Hugua()];
             this.变卦 = this.zhouyi[this.本卦.Painting.ChangeYaos(((result.Dongyao - 1) % 6 + 6) % 6)];
             this.displayingGua = null;
+
+            this.currentWestern = western;
+            this.currentNongliLunar = this.NongliLunar;
+            this.currentNongliSolar = this.NongliSolar;
+
+            this.currentUpperInput = this.upperInput;
+            this.currentLowerInput = this.lowerInput;
+            this.currentChangingInput = this.changingInput;
 
             this.SavePreferences();
         }

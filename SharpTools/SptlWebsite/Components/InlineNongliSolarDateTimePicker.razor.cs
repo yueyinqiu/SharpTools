@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Immutable;
+using System.Text;
 using YiJingFramework.Nongli.Solar;
 using YiJingFramework.PrimitiveTypes;
 
@@ -66,6 +67,77 @@ public partial class InlineNongliSolarDateTimePicker
         public bool Meet(SolarDateTime other)
         {
             return this.Meet(new SelectedNongliSolarDateTime(other));
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+
+            bool contains = false;
+            if (this.Niangan.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Niangan.Value.ToString("C"));
+            }
+            if (this.Nianzhi.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Nianzhi.Value.ToString("C"));
+            }
+            if (contains)
+            {
+                _ = result.Append('年');
+            }
+
+            contains = false;
+            if (this.Yuegan.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Yuegan.Value.ToString("C"));
+            }
+            if (this.Yuezhi.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Yuezhi.Value.ToString("C"));
+            }
+            if (contains)
+            {
+                _ = result.Append('月');
+            }
+
+            contains = false;
+            if (this.Rigan.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Rigan.Value.ToString("C"));
+            }
+            if (this.Rizhi.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Rizhi.Value.ToString("C"));
+            }
+            if (contains)
+            {
+                _ = result.Append('日');
+            }
+
+            contains = false;
+            if (this.Shigan.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Shigan.Value.ToString("C"));
+            }
+            if (this.Shizhi.HasValue)
+            {
+                contains = true;
+                _ = result.Append(this.Shizhi.Value.ToString("C"));
+            }
+            if (contains)
+            {
+                _ = result.Append('时');
+            }
+
+            return result.ToString();
         }
     }
 

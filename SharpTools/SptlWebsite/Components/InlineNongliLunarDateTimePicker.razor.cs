@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections.Immutable;
+using System.Text;
 using YiJingFramework.Nongli.Lunar;
 using YiJingFramework.PrimitiveTypes;
 
@@ -134,14 +135,26 @@ public partial class InlineNongliLunarDateTimePicker
         {
             return this.Meet(new SelectedNongliLunarDateTime(other));
         }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+            if (this.Nian.HasValue)
+                _ = result.Append(this.Nian.Value.ToString("C")).Append('年');
+            if (this.Yue.HasValue)
+            {
+                if(this.IsRunyue is true)
+                    _ = result.Append('闰');
+                _ = result.Append(new NullableYueNumber(this.Yue)).Append('月');
+            }
+            if (this.Ri.HasValue)
+                _ = result.Append(new NullableRiNumber(this.Ri));
+            if (this.Shi.HasValue)
+                _ = result.Append(this.Shi.Value.ToString("C")).Append('时');
+            return result.ToString();
+        }
     }
 
-    private readonly ImmutableArray<NullableTiangan> possibleTiangans =
-        Enumerable.Range(1, 10)
-        .Select(Tiangan.FromIndex)
-        .Select(x => new NullableTiangan(x))
-        .Prepend(new NullableTiangan(null))
-        .ToImmutableArray();
     private readonly ImmutableArray<NullableDizhi> possibleDizhis =
         Enumerable.Range(1, 12)
         .Select(Dizhi.FromIndex)

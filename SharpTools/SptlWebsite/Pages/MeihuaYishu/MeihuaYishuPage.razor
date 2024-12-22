@@ -54,7 +54,14 @@
             @if (本卦 is not null)
             {
                 <div>
-                    上卦卦数：@upperNumber 下卦卦数：@lowerNumber 动爻数：@changingNumber
+                    西历：@currentWestern?.ToString("yyyy/MM/dd HH:mm") <br />
+                    阴历：@currentNongliLunar <br />
+                    干支：@currentNongliSolar
+                </div>
+                <div>
+                    上卦：@upperNumber<text></text>（@currentUpperInput） <br />
+                    下卦：@lowerNumber<text></text>（@currentLowerInput） <br />
+                    动爻：@changingNumber<text></text>（@currentChangingInput）
                 </div>
                 <div>
                     <FluentButton Style="font-size: 120px; height: 120px" OnClick="() => displayingGua = 本卦">

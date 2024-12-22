@@ -186,6 +186,15 @@ function THE_FUNCTION_YOU_ARE_GOING_TO_IMPLEMENT(
 
     const 年月日加时总数 = 年 + 月 + 日 + 时;
 
+    const 乾 = 1;
+    const 兑 = 2;
+    const 离 = 3;
+    const 震 = 4;
+    const 巽 = 5;
+    const 坎 = 6;
+    const 艮 = 7;
+    const 坤 = 8;
+
     try
     {
         outputs.shanggua = eval(shangguaInput);
