@@ -23,14 +23,14 @@
 		<PackageReference Include="FileDownloadBlazor" Version="0.0.4" />
 		<PackageReference Include="FluentUiBlazorMdiSvgIcons" Version="0.0.3" />
 		<PackageReference Include="hyjiacan.pinyin4net" Version="4.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.4" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.7" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.0" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.12.0" />
 		<PackageReference Include="QrCodeDecoderImageSharpUpgraded" Version="0.0.2" />
 		<PackageReference Include="YiJingFramework.Annotating.Zhouyi" Version="7.0.1" />
 		<PackageReference Include="YiJingFramework.EntityRelations" Version="4.1.1" />
-		<PackageReference Include="YiJingFramework.Nongli" Version="4.1.0" />
+		<PackageReference Include="YiJingFramework.Nongli" Version="5.0.1" />
 		<PackageReference Include="YiJingFramework.PrimitiveTypes" Version="4.0.1" />
 		<PackageReference Include="Yueyinqiu.Su.OneHexagramPerDayCore" Version="0.0.1" />
 	</ItemGroup>

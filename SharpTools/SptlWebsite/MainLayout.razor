@@ -1,17 +1,18 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject IGradedLocalStorage LocalStorage
 
 <FluentLayout>
     <FluentHeader>
-        <FluentButton IconStart="new Icons.Regular.Size24.Navigation()" OnClick="@(() => showNavMeau = !showNavMeau)" Appearance="Appearance.Accent" Style="font-size: var(--type-ramp-plus-1-font-size)" BackgroundColor="var(--accent-fill-rest)" Color="var(--fill-color)">
+        <FluentButton IconStart="new Size24.Navigation()" OnClick="@(() => showNavMeau = !showNavMeau)" Appearance="Appearance.Accent" Style="font-size: var(--type-ramp-plus-1-font-size)" BackgroundColor="var(--accent-fill-rest)" Color="var(--fill-color)">
             SharpTools
         </FluentButton>
     </FluentHeader>
 
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <FluentNavMenu Width="250" hidden="@(!showNavMeau)">
-            <FluentNavLink Icon="@(new Icons.Regular.Size24.Home())" Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
+            <FluentNavLink Icon="@(new Size24.Home())" Href="/" Match="NavLinkMatch.All">主页</FluentNavLink>
 
             @foreach (var group in Groups)
             {
